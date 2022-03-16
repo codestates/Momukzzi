@@ -1,6 +1,6 @@
 ---
-name: Feature request
-about: Suggest an idea for this project
+name: Issue Task Card
+about: write the issue for the task
 title: ''
 labels: ''
 assignees: ''
