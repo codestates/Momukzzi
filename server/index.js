@@ -15,10 +15,12 @@ app.use(
   cors({
     origin: ["https://localhost:3000"],
     credentials: true,
-    methods: ["GET", "POST", "OPTIONS"],
+    methods: ["GET", "POST", "OPTIONS", "PUT", "DELETE"],
   })
 );
 app.use(cookieParser());
+
+app.post("/users/signup", controllers.signup);
 
 const HTTPS_PORT = process.env.HTTPS_PORT || 4000;
 
@@ -36,4 +38,5 @@ if (fs.existsSync("./key.pem") && fs.existsSync("./cert.pem")) {
 } else {
   server = app.listen(HTTPS_PORT);
 }
-module.exports = server;
+
+// module.exports = server;
