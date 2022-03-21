@@ -1,8 +1,9 @@
 import logo from "./logo.svg";
 import "./App.css";
 import Signup from "./Components/Signup/Signup";
+import Intro from "./Components/intropage/Intro";
 import { createStore } from "redux";
-import { Provider, useSelector, useDispatch, connect } from "react-redux";
+import { Provider, useSelector, useDispatch, connect, shallowEqual } from "react-redux";
 
 function reducer(currentState, action) {
   if (currentState === undefined) {
