@@ -1,22 +1,19 @@
 const { users } = require("../../models");
-const jwt = require("jsonwebtoken");
 require("dotenv").config();
-const shortid = require("shortid");
-const res = require("express/lib/response");
-const req = require("express/lib/request");
+
 module.exports = async (req, res) => {
   const userInfo = await users.findOne({
     where: {
-      userid: req.body.userid,
+      user_id: req.body.user_id,
     },
   });
 
   if (!userInfo) {
     users
       .create({
-        userid: req.body.userid,
+        user_id: req.body.user_id,
         password: req.body.password,
-        nickname: req.body.ninkname,
+        nickname: req.body.nickname,
         email: req.body.email,
       })
       .then((response) => {
