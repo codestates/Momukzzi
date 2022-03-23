@@ -27,7 +27,8 @@ const store = createStore(reducer)
 function App() {
 	return (
 		<div className="App">
-			<Signup />
+			<Loginbtn />
+			<Mypage />
 		</div>
 	)
 }
