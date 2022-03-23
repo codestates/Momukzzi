@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import Loginmodal from './Loginmodal'
 
 function Loginbtn() {
@@ -15,7 +15,14 @@ function Loginbtn() {
 			>
 				Open
 			</button>
-			{modalOpen && <Loginmodal setOpenModal={setModalOpen} />}
+			{modalOpen && (
+				<Loginmodal
+					setOpenModal={setModalOpen}
+					close={() => {
+						setModalOpen(false)
+					}}
+				/>
+			)}
 		</div>
 	)
 }

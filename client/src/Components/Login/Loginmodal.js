@@ -1,7 +1,66 @@
 import React, { useState } from 'react'
 import axios from 'axios'
+import styled from 'styled-components'
+import Loginoauth from './Loginoauth'
 
-function Loginmodal({ setOpenModal }) {
+const ModalBackdrop = styled.div`
+	position: fixed;
+	z-index: 999;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	background-color: rgba(0, 0, 0, 0.4);
+`
+const LoginForm = styled.div`
+	margin: 0 auto;
+	width: 550px;
+	height: 600px;
+	font-weight: 700;
+	text-align: left;
+	transform: translateY(20%);
+	border: 1px solid black;
+	background-color: white;
+`
+const Div = styled.div`
+	margin: 0 auto;
+	width: 440px;
+	border: 1px solid black;
+	transform: translateY(20%);
+`
+const InputForm = styled.div`
+	margin: 0 auto;
+	margin: 5px;
+`
+
+const LoginButton = styled.div`
+	width: 430px;
+	height: 45px;
+	margin: 30px auto 0 auto;
+	border: solid 1px gainsboro;
+	text-align: center;
+	background-color: #2a2a2a;
+	color: white;
+	cursor: pointer;
+	line-height: 40px;
+`
+const InputBox = styled.div`
+	width: 430px;
+	height: 40px;
+	border: solid 2px gainsboro;
+`
+const Input = styled.input`
+	width: 390px;
+	border-style: none;
+	height: 39px;
+	padding-left: 5px;
+	font-size: 13px;
+	:focus {
+		outline: none;
+	}
+`
+
+function Loginmodal({ setOpenModal, close }) {
 	const [loginInfo, setLoginInfo] = useState({
 		userid: '',
 		password: '',
@@ -48,56 +107,56 @@ function Loginmodal({ setOpenModal }) {
 	}
 
 	return (
-		<div className="modalBackground">
-			<div className="modalContainer">
-				<div className="titleCloseBtn">
-					<button
+		<ModalBackdrop
+			onClick={() => {
+				close()
+			}}
+		>
+			<LoginForm onClick={e => e.stopPropagation()}>
+				<Div>
+					{/* <button
 						onClick={() => {
 							setOpenModal(false)
 						}}
 					>
 						X
-					</button>
-				</div>
-				<div className="title">
-					<h1>로그인</h1>
-				</div>
-				<div className="body">
-					<div className="login_id">
+					</button> */}
+					<InputForm>
 						<h4>아이디</h4>
-						<input
-							type="text"
-							placeholder="아이디"
-							name="input_id"
-							onChange={handleInputValue('userid')}
-						/>
-					</div>
-					<div className="login_pw">
+						<InputBox>
+							<Input
+								type="text"
+								placeholder="아이디"
+								name="input_id"
+								onChange={handleInputValue('userid')}
+							/>
+						</InputBox>
+					</InputForm>
+					<InputForm>
 						<h4>비밀번호</h4>
-						<input
-							type="password"
-							name="input_Password"
-							placeholder="비밀번호"
-							onChange={handleInputValue('password')}
-						/>
-					</div>
-				</div>
-				<div className="footer">
-					<div className="submit">
-						<button onClick={onClickLogin}>로그인</button>
-					</div>
-
-					<button
+						<InputBox>
+							<Input
+								type="password"
+								name="input_Password"
+								placeholder="비밀번호"
+								onChange={handleInputValue('password')}
+							/>
+						</InputBox>
+					</InputForm>
+					<LoginButton onClick={onClickLogin}>로그인</LoginButton>
+					<hr />
+					<Loginoauth />
+					{/* <button
 						onClick={() => {
 							setOpenModal(false)
 						}}
 						id="cancelBtn"
 					>
 						Cancel
-					</button>
-				</div>
-			</div>
-		</div>
+					</button> */}
+				</Div>
+			</LoginForm>
+		</ModalBackdrop>
 	)
 }
 
