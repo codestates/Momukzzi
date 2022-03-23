@@ -32,21 +32,21 @@ app.get("/users", controllers.userinfo);
 app.patch("/users", controllers.changeinfo);
 
 //음식점 정보 조회
-app.get("/shop/:shop_id", controllers.shopinfo);
+app.get("/shops/:shop_id", controllers.shopinfo);
 
 
 //아티클 조회, 게시, 삭제, 수정
-app.post("/article", controllers.createarticle);
-app.delete("/article",controllers.delarticle);
-app.get("/article", controllers.patcharticle);
-app.get("/article", controllers.article)
+app.post("/articles", controllers.createarticle);
+app.delete("/articles",controllers.delarticle);
+app.get("/articles", controllers.patcharticle);
+app.get("/articles", controllers.article)
 
 //리뷰 조회, 게시, 삭제, 수정
 
-app.post("/review", controllers.createreview);
-app.delete("/review",controllers.delreview);
-app.get("/review", controllers.patchreview);
-app.get("/review", controllers.review)
+app.post("/reviews", controllers.createreview);
+app.delete("/reviews",controllers.delreview);
+app.get("/reviews", controllers.patchreview);
+app.get("/reviews", controllers.review)
 
 const HTTPS_PORT = process.env.HTTPS_PORT || 4000;
 
