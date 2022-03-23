@@ -12,6 +12,7 @@ import {
 } from 'react-redux'
 import Loginbtn from '../src/Components/Login/Loginbtn'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import Mypage from './Components/Mypage/Mypage'
 
 function reducer(currentState, action) {
 	if (currentState === undefined) {
@@ -26,12 +27,7 @@ const store = createStore(reducer)
 function App() {
 	return (
 		<div className="App">
-			{/* <Signup /> */}
-			<Router>
-				<Route path="/">
-					<Loginbtn />
-				</Route>
-			</Router>
+			<Signup />
 		</div>
 	)
 }

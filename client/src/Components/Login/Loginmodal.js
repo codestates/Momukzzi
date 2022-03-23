@@ -114,13 +114,13 @@ function Loginmodal({ setOpenModal, close }) {
 		>
 			<LoginForm onClick={e => e.stopPropagation()}>
 				<Div>
-					<button
+					{/* <button
 						onClick={() => {
 							setOpenModal(false)
 						}}
 					>
 						X
-					</button>
+					</button> */}
 					<InputForm>
 						<h4>아이디</h4>
 						<InputBox>
