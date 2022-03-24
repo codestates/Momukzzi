@@ -176,6 +176,7 @@ function Signup() {
           } else if (response.data.message === "created") {
             setHideIDCheckFail(true);
             console.log(response.data);
+            window.location.replace("/");
           }
         })
         .catch((err) => {

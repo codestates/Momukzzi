@@ -73,27 +73,8 @@ if (fs.existsSync("./key.pem") && fs.existsSync("./cert.pem")) {
   server = https.createServer(credentials, app);
   server.listen(HTTPS_PORT, () => console.log(`server runnning ${HTTPS_PORT}`));
 } else {
+  db.sequelize.sync();
   server = app.listen(HTTPS_PORT);
 }
 
 module.exports = server;
-
-// let server;
-// if (fs.existsSync("./key.pem") && fs.existsSync("./cert.pem")) {
-//   const privateKey = fs.readFileSync(__dirname + "/key.pem", "utf8");
-//   const certificate = fs.readFileSync(__dirname + "/cert.pem", "utf8");
-//   const credentials = { key: privateKey, cert: certificate };
-
-//   server = https.createServer(credentials, app);
-//   db.sequelize.sync().then((req) => {
-//     app.listen(HTTPS_PORT, function () {
-//       console.log(`listen on ${HTTPS_PORT}`);
-//     });
-//   });
-// } else {
-//   db.sequelize.sync().then((req) => {
-//     app.listen(HTTPS_PORT, function () {
-//       console.log(`listen on ${HTTPS_PORT}`);
-//     });
-//   });
-// }

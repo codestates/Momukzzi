@@ -13,10 +13,11 @@ const FooterContainer = styled.footer`
     list-style-type: none;
     flex: 1 1 auto;
     margin-left: 200px;
-    transform: translateY();
   }
-  .footer_info > li > img {
+
+  .footer_info > li img {
     width: 200px;
+    height: 100px;
   }
 
   .footer_github {
@@ -38,10 +39,6 @@ const FooterContainer = styled.footer`
     margin: 5px 10px;
   }
 
-  /* .footer_github_members > div > img {
-      width: 60px;
-      cursor: pointer;
-    } */
   .github_icons {
     font-size: 50px;
     color: black;

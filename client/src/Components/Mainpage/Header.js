@@ -70,40 +70,6 @@ const HeaderContainer = styled.div`
   .person_circle {
     font-size: 25px;
   }
-
-  @media screen and (max-width: 768px) {
-    .navbar {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .navbar_menu {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
-    }
-
-    .navbar_menu li {
-      width: 100%;
-      text-align: center;
-    }
-
-    .navbar_icons {
-      display: none;
-      justify-content: center;
-      width: 100%;
-    }
-
-    .navbar_toggleBtn {
-      display: block;
-    }
-
-    .navbar_menu_active,
-    .navbar_icons_active {
-      display: flex;
-    }
-  }
 `;
 
 const Header = () => {
@@ -122,42 +88,51 @@ const Header = () => {
             <img src="img/logo.png" />
           </Link>
         </div>
-        <ul className={active ? "navbar_menu_active" : "navbar_menu"}>
-          <li
-            onClick={() => {
-              dispatch({ type: "login modal" });
-            }}
-          >
-            <div>로그인</div>
-          </li>
-          <li
-            onClick={() => {
-              dispatch({ type: "signup modal" });
-            }}
-          >
-            <div>회원가입</div>
-          </li>
-          <li>
-            <div>ㅁㅁㅁ님</div>
-          </li>
-          <Link to="/mypage">
+        {localStorage.getItem("accessToken") ? (
+          <ul className="navbar_menu">
             <li>
-              <div>마이페이지</div>
+              <div>{localStorage.getItem("nickname")}님</div>
             </li>
-          </Link>
-          <li>
-            <div>로그아웃</div>
-          </li>
-        </ul>
-        <ul className={active ? "navbar_icons_active" : "navbar_icons"}>
+            <Link to="/mypage">
+              <li>
+                <div>마이페이지</div>
+              </li>
+            </Link>
+            <li
+              onClick={() => {
+                localStorage.removeItem("accessToken");
+                localStorage.removeItem("nickname");
+                window.location.replace(window.location.pathname);
+              }}
+            >
+              <div>로그아웃</div>
+            </li>
+          </ul>
+        ) : (
+          <ul className="navbar_menu">
+            <li
+              onClick={() => {
+                dispatch({ type: "login modal" });
+              }}
+            >
+              <div>로그인</div>
+            </li>
+            <li
+              onClick={() => {
+                dispatch({ type: "signup modal" });
+              }}
+            >
+              <div>회원가입</div>
+            </li>
+          </ul>
+        )}
+
+        <ul className="navbar_icons">
           <li>
             {/* <img src="./favorite.png" /> */}
             <BsPersonCircle className="person_circle" />
           </li>
         </ul>
-        <a href="" className="navbar_toggleBtn" onClick={clickToggleBtn}>
-          <MdMenu />
-        </a>
       </nav>
     </HeaderContainer>
   );

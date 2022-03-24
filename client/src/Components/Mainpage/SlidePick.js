@@ -53,6 +53,10 @@ const SlidePickContainer = styled.div`
     transform: translateY(25%);
   }
 `;
+const PickImage = styled.img`
+  width: 100%;
+  height: 400px;
+`;
 function SlidePick() {
   return (
     <SlidePickContainer>
@@ -70,9 +74,11 @@ function SlidePick() {
         className="mySwiper"
       >
         {dummyData.map((data, i) => {
-          <SwiperSlide key={i}>
-            <img src={data.img}></img>
-          </SwiperSlide>;
+          return (
+            <SwiperSlide key={i}>
+              <PickImage src={data.img} />
+            </SwiperSlide>
+          );
         })}
       </Swiper>
     </SlidePickContainer>
