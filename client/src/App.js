@@ -13,6 +13,7 @@ import {
 import Loginbtn from '../src/Components/Login/Loginbtn'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import Mypage from './Components/Mypage/Mypage'
+import Signout from './Components/Mypage/Signout'
 
 function reducer(currentState, action) {
 	if (currentState === undefined) {
@@ -29,6 +30,7 @@ function App() {
 		<div className="App">
 			<Loginbtn />
 			<Mypage />
+			<Signout />
 		</div>
 	)
 }

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import styled from 'styled-components'
-
 const PageContainer = styled.div`
 	padding: 10px;
 	font-size: 14px;
@@ -86,7 +85,7 @@ const PageContainer = styled.div`
 
 const LeftContainer = styled.div``
 
-function Mypage() {
+function Mypage({ goSignout }) {
 	const accessToken = localStorage.getItem('accessToken')
 
 	const [userInfo, setUserInfo] = useState({})
@@ -174,28 +173,22 @@ function Mypage() {
 									/>
 									{message.nickname ===
 									'닉네임은 특수문자를 제외한 2 ~ 20 글자이어야 합니다.' ? (
-										<div className="signup-validation-message">
-											{message.nickname}
-										</div>
+										<div>{message.nickname}</div>
 									) : message.nickname === '사용 가능한 닉네임입니다.' ? (
-										<div className="signup-validation-ok">
-											{message.nickname}
-										</div>
+										<div>{message.nickname}</div>
 									) : (
-										<div className="signup-validation-error">
-											{message.nickname}
-										</div>
+										<div>{message.nickname}</div>
 									)}
 									{isValidForNickname ? (
 										<button
-											className="fix-toggle-button"
+											className="FixToggleBtn"
 											onClick={fixNicknameHandler}
 											type="submit"
 										>
 											수정
 										</button>
 									) : (
-										<button className="fix-toggle-button" disabled={true}>
+										<button className="FixToggleBtn" disabled={true}>
 											수정
 										</button>
 									)}
@@ -203,6 +196,10 @@ function Mypage() {
 							</div>
 						</form>
 					) : null}
+
+					<button className="mypage-withdrawal-button" onClick={goSignout}>
+						회원탈퇴
+					</button>
 				</div>
 			</div>
 			<div className="RightContainer">
