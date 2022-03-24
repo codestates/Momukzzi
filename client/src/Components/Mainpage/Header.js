@@ -6,12 +6,10 @@ import { Provider, useSelector, useDispatch, connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { BsPersonCircle } from "react-icons/bs";
 import { MdMenu } from "react-icons/md";
+import { Link } from "react-router-dom";
+
 const HeaderContainer = styled.div`
-  margin: 30px auto;
-  a {
-    text-decoration: none;
-    color: #f0f4f5;
-  }
+  margin: 0 auto;
 
   .navbar {
     display: flex;
@@ -40,11 +38,16 @@ const HeaderContainer = styled.div`
   .navbar_menu li {
     padding: 9px 12px;
     margin: 15px;
+    cursor: pointer;
   }
 
   .navbar_menu li:hover {
     background-color: #d49466;
     border-radius: 4px;
+  }
+
+  .navbar_menu li > div {
+    color: #f0f4f5;
   }
 
   .navbar_icons {
@@ -110,36 +113,49 @@ const Header = () => {
     setActive(!active);
   };
 
+  const dispatch = useDispatch();
   return (
     <HeaderContainer>
-      <nav class="navbar">
-        <div class="navbar_logo">
-          <img src="img/logo.png" />
+      <nav className="navbar">
+        <div className="navbar_logo">
+          <Link to="/">
+            <img src="img/logo.png" />
+          </Link>
         </div>
-        <ul class={active ? "navbar_menu_active" : "navbar_menu"}>
-          <li>
-            <a href="">로그인</a>
+        <ul className={active ? "navbar_menu_active" : "navbar_menu"}>
+          <li
+            onClick={() => {
+              dispatch({ type: "login modal" });
+            }}
+          >
+            <div>로그인</div>
+          </li>
+          <li
+            onClick={() => {
+              dispatch({ type: "signup modal" });
+            }}
+          >
+            <div>회원가입</div>
           </li>
           <li>
-            <a href="">회원가입</a>
+            <div>ㅁㅁㅁ님</div>
           </li>
+          <Link to="/mypage">
+            <li>
+              <div>마이페이지</div>
+            </li>
+          </Link>
           <li>
-            <a href="">ㅁㅁㅁ님</a>
-          </li>
-          <li>
-            <a href="">마이페이지</a>
-          </li>
-          <li>
-            <a href="">로그아웃</a>
+            <div>로그아웃</div>
           </li>
         </ul>
-        <ul class={active ? "navbar_icons_active" : "navbar_icons"}>
+        <ul className={active ? "navbar_icons_active" : "navbar_icons"}>
           <li>
             {/* <img src="./favorite.png" /> */}
             <BsPersonCircle className="person_circle" />
           </li>
         </ul>
-        <a href="#" class="navbar_toggleBtn" onClick={clickToggleBtn}>
+        <a href="" className="navbar_toggleBtn" onClick={clickToggleBtn}>
           <MdMenu />
         </a>
       </nav>

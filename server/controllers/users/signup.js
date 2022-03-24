@@ -1,17 +1,17 @@
-const { users } = require("../../models");
+const { user } = require("../../models");
 require("dotenv").config();
 
 module.exports = async (req, res) => {
-  const userInfo = await users.findOne({
+  const userInfo = await user.findOne({
     where: {
-      user_id: req.body.user_id,
+      userid: req.body.userid,
     },
   });
 
   if (!userInfo) {
-    users
+    user
       .create({
-        user_id: req.body.user_id,
+        userid: req.body.userid,
         password: req.body.password,
         nickname: req.body.nickname,
         email: req.body.email,

@@ -149,8 +149,6 @@ function Signup() {
     }
   };
 
-  const history = useHistory();
-
   const submit = () => {
     if (
       isMoreThan4Length() &&
@@ -162,7 +160,7 @@ function Signup() {
     ) {
       axios
         .post(
-          `${process.env.REACT_APP_API_URL}/users/signup`,
+          `${process.env.REACT_APP_API_URL}/users`,
           {
             userid: userId,
             password: password,
@@ -185,10 +183,14 @@ function Signup() {
         });
     }
   };
-
+  const dispatch = useDispatch();
   return (
-    <ModalBackdrop>
-      <SignUpForm>
+    <ModalBackdrop
+      onClick={() => {
+        dispatch({ type: "signup modal" });
+      }}
+    >
+      <SignUpForm onClick={(e) => e.stopPropagation()}>
         <Div>
           <InputForm>
             <div>아이디</div>

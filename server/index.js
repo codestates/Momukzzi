@@ -34,22 +34,20 @@ app.patch("/users", controllers.changeinfo);
 //음식점 정보 조회
 app.get("/shop/:shop_id", controllers.shopinfo);
 
-
 //아티클 조회, 게시, 삭제, 수정
 app.post("/article", controllers.createarticle);
-app.delete("/article",controllers.delarticle);
+app.delete("/article", controllers.delarticle);
 app.get("/article", controllers.patcharticle);
-app.get("/article", controllers.article)
+app.get("/article", controllers.article);
 
 //리뷰 조회, 게시, 삭제, 수정
 
 app.post("/review", controllers.createreview);
-app.delete("/review",controllers.delreview);
+app.delete("/review", controllers.delreview);
 app.get("/review", controllers.patchreview);
-app.get("/review", controllers.review)
+app.get("/review", controllers.review);
 
 const HTTPS_PORT = process.env.HTTPS_PORT || 4000;
-
 
 // 인증서 파일들이 존재하는 경우에만 https 프로토콜을 사용하는 서버를 실행합니다.
 // 만약 인증서 파일이 존재하지 않는경우, http 프로토콜을 사용하는 서버를 실행합니다.
@@ -61,19 +59,9 @@ if (fs.existsSync("./key.pem") && fs.existsSync("./cert.pem")) {
   const credentials = { key: privateKey, cert: certificate };
 
   server = https.createServer(credentials, app);
-  db.sequelize.sync().then((req) => {
-    app.listen(HTTPS_PORT, function () {
-      console.log(`listen on ${HTTPS_PORT}`);
-    });
-    
-  });;
+  server.listen(HTTPS_PORT, () => console.log(`server runnning ${HTTPS_PORT}`));
 } else {
-  db.sequelize.sync().then((req) => {
-    app.listen(HTTPS_PORT, function () {
-      console.log(`listen on ${HTTPS_PORT}`);
-    });
-    
-  });;
+  server = app.listen(HTTPS_PORT);
 }
 
-// module.exports = server;
+module.exports = server;
