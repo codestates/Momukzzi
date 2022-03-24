@@ -1,6 +1,7 @@
 const { user } = require("../../models");
 require("dotenv").config();
 
+<<<<<<< HEAD
 module.exports = async (req, res) => {
   const userInfo = await user.findOne({
     where: {
@@ -25,4 +26,14 @@ module.exports = async (req, res) => {
   } else {
     res.status(226).send({ message: "exist" });
   }
+=======
+module.exports = (req, res) => {
+  let payload = req.body
+
+  user.create(payload).then(
+  res.status(200).json({
+      message : "signup success!",
+      data: {payload}
+  }))
+>>>>>>> 48d18e7bab098a22c58c40cb90d4896565a49cae
 };

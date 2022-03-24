@@ -1,10 +1,10 @@
-const { users } = require("../../models");
+const { user } = require("../../models");
 const jwt = require("jsonwebtoken");
 
 module.exports = async (req, res) => {
     console.log("login");
 
-    const userInfo = await users.findOne({
+    const userInfo = await user.findOne({
         where: {
         user_id: req.body.user_id,
         password: req.body.password,
@@ -31,11 +31,11 @@ module.exports = async (req, res) => {
             sameSite: "none",
         })
         .json({
+            message: "Login success!",
             data: {
             accessToken: access_Token,
             email: userInfo.dataValues.email,
             },
-            message: "ok",
         });
     }
 };

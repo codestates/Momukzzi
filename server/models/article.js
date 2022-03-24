@@ -7,10 +7,10 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-     static associate(models) {
+    static associate(models) {
       // define association here
-      models.menu.belongsTo(models.shop, {
-        foreignKey: "shop_id",
+      models.menu.belongsTo(models.user, {
+        foreignKey: "user_id",
         targetKey: "id",
         onDelete: "cascade",
       });
@@ -18,8 +18,9 @@ module.exports = (sequelize, DataTypes) => {
   }
   article.init(
     {
+      user_id : DataTypes.INTEGER,
       title: DataTypes.STRING,
-      content: DataTypes.STRING
+      content: DataTypes.TEXT
     },
     {
       sequelize,
