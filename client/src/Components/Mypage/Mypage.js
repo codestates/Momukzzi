@@ -29,11 +29,6 @@ const PageContainer = styled.div`
 	.RightContainer {
 		width: 50%;
 	}
-	.Title {
-		margin-bottom: 5px;
-		font-size: 20px;
-		font-weight: bolder;
-	}
 	.MyinfoContainer {
 		height: 650px;
 		padding-left: 25px;
@@ -41,6 +36,11 @@ const PageContainer = styled.div`
 		-webkit-box-direction: normal;
 		-ms-flex-direction: column;
 		flex-direction: column;
+	}
+	.Title {
+		margin-bottom: 5px;
+		font-size: 20px;
+		font-weight: bolder;
 	}
 	.MyinfoNickname {
 		margin-top: 20px;
@@ -57,34 +57,118 @@ const PageContainer = styled.div`
 		height: 670px;
 		overflow: auto;
 	}
+	.Fix-toggle-container {
+		padding: 5px;
+		display: -webkit-box;
+		display: -ms-flexbox;
+		display: flex;
+		-webkit-box-pack: start;
+		-ms-flex-pack: start;
+		justify-content: flex-start;
+	}
+	.Fix-toggle-input {
+		font-size: 13px;
+		border: 2px solid;
+		border-radius: 5px;
+		-webkit-transition: 100ms ease all;
+		transition: 100ms ease all;
+		height: 20px;
+		padding: 2px 0 2px 0;
+		margin-top: 4px;
+		margin-bottom: 5px;
+	}
+
+	.Fix-toggle-input:focus {
+		border: 2px solid #ffcc1d;
+		outline: none;
+	}
 `
+
 const LeftContainer = styled.div``
 
 function Mypage() {
+	const accessToken = localStorage.getItem('accessToken')
+
+	const [userInfo, setUserInfo] = useState({})
+	const [fixNicknameToggle, setFixNicknameToggle] = useState(false)
+	const [changeInfo, setchangeInfo] = useState({
+		user_nickname: '',
+		user_password: '',
+		// verifyPassword: '',
+		// user_phone_number: '',
+		verification_code: '',
+	})
+	const [message, setMessage] = useState({
+		password: '비밀번호는 8글자 이상, 영문, 숫자 조합이어야 합니다.',
+		// verifyPassword: '비밀번호를 확인해주세요.',
+		nickname: '닉네임은 특수문자를 제외한 2 ~ 20 글자이어야 합니다.',
+	})
+	const [validation, setValidation] = useState({
+		nickname: false,
+		checkNickname: false,
+		password: false,
+		// verifyPassword: false,
+	})
+	const isValidForNickname = validation.nickname && validation.checkNickname
+
+	function isNickname(asValue) {
+		let regExp = /^[\w\Wㄱ-ㅎㅏ-ㅣ가-힣]{2,20}$/
+		return regExp.test(asValue)
+	}
+
+	const fixNicknameHandler = () => {
+		setFixNicknameToggle(!fixNicknameToggle)
+	}
+
+	const handleInputValue = key => e => {
+		setchangeInfo({ ...changeInfo, [key]: e.target.value })
+	}
+
+	const handleOnblurName = key => e => {
+		if (!isNickname(changeInfo.user_nickname)) {
+			setMessage({ ...message, nickname: '특수문자는 입력이 불가능 합니다.' })
+			return
+		}
+		if (
+			changeInfo.user_nickname.length > 20 ||
+			changeInfo.user_nickname.length < 2
+		) {
+			setMessage({ ...message, nickname: '2 ~ 20 글자이어야 합니다.' })
+			return
+		}
+		axios
+			.patch('https://localhost:4000/users', {
+				[key]: e.target.value,
+			})
+			.then(res => {
+				setValidation({ ...validation, checkNickname: true })
+				setMessage({ ...message, nickname: '사용 가능한 닉네임입니다.' })
+			})
+			.catch(err => {
+				setValidation({ ...validation, checkNickname: false })
+				setMessage({ ...message, nickname: '중복된 닉네임입니다.' })
+			})
+	}
+
 	return (
 		<PageContainer>
 			<div className="LeftContainer">
 				<div className="Title">내 정보</div>
 				<div className="MyinfoContainer">
-					<div className="MyinfoNickname">
-						{/* 환영합니다! '{userInfo.user_nickname}'님 */}
-					</div>
-					<span
-						className="FixToggleBtn"
-						// onClick={openFixNicknameToggleHandler}
-					>
+					<div className="MyinfoNickname">윤혁2님 오늘 뭐먹죠?</div>
+					<span className="FixToggleBtn" onClick={fixNicknameHandler}>
 						닉네임 수정
 					</span>
-					{/* {isOpenFixNicknameToggle ? (
+					{fixNicknameToggle ? (
 						<form
-							className="mypage-fix-toggle-container"
+							className="Fix-toggle-container"
 							onSubmit={e => e.preventDefault()}
 						>
-							<div className="nickname-container">
-								<div className="fix-toggle-title">닉네임</div>
-								<div className="fix-toggle-container">
+							<div>
+								<div className="Fix-toggle-title">닉네임</div>
+								<div className="Fix-toggle-container">
 									<input
-										className="fix-toggle-input"
+										className="Fix-toggle-input"
 										onChange={handleInputValue('user_nickname')}
 										onBlur={handleOnblurName('user_nickname')}
 									/>
@@ -118,152 +202,13 @@ function Mypage() {
 								</div>
 							</div>
 						</form>
-					) : null} */}
-					{/* <div className="mypage-myinfo-email">
-						{userInfo.user_email === ''
-							? '이메일 제공 동의를 하지 않으셨습니다.'
-							: userInfo.user_email}
-					</div> */}
-					{/* {isKakaoLogin === 'kakao' ? (
-						<span
-							className="mypage-fix-myinfo-not-toggle-button"
-							disabled={true}
-						>
-							카카오 계정으로 로그인 하신 계정은 비밀번호 수정을 하실 수
-							없습니다
-						</span>
-					) : (
-						<span
-							className="mypage-fix-myinfo-toggle-button"
-							onClick={openFixPasswordToggleHandler}
-						>
-							비밀번호 수정
-						</span>
-					)} */}
-
-					{/* {isOpenFixPasswordToggle ? (
-						<form
-							className="mypage-fix-toggle-container"
-							onSubmit={e => e.preventDefault()}
-						>
-							<div className="password-container">
-								<div className="fix-toggle-title">비밀번호</div>
-								<input
-									className="fix-toggle-input"
-									type="password"
-									onChange={handleInputValue('user_password')}
-								/>
-								{message.password ===
-								'비밀번호는 8글자 이상, 영문, 숫자 조합이어야 합니다.' ? (
-									<div className="signup-validation-message">
-										{message.password}
-									</div>
-								) : message.password === '사용할 수 있는 비밀번호 입니다.' ? (
-									<div className="signup-validation-ok">{message.password}</div>
-								) : (
-									<div className="signup-validation-error">
-										{message.password}
-									</div>
-								)}
-							</div>
-							<div className="password-container">
-								<div className="fix-toggle-title">비밀번호 확인</div>
-								<input
-									className="fix-toggle-input"
-									type="password"
-									onChange={handleInputValue('verifyPassword')}
-								/>
-								{isValidForPassword ? (
-									<button
-										className="fix-toggle-button"
-										onClick={fixPasswordHandler}
-									>
-										수정
-									</button>
-								) : (
-									<button className="fix-toggle-button" disabled={true}>
-										수정
-									</button>
-								)}
-								{message.verifyPassword === '비밀번호를 확인해주세요.' ? (
-									<div className="signup-validation-message">
-										{message.verifyPassword}
-									</div>
-								) : message.verifyPassword === '비밀번호가 일치합니다.' ? (
-									<div className="signup-validation-ok">
-										{message.verifyPassword}
-									</div>
-								) : (
-									<div className="signup-validation-error">
-										{message.verifyPassword}
-									</div>
-								)}
-							</div>
-						</form>
-					) : null} */}
-					{/* {isVerification ? (
-						<div className="mypage-phone-verification-success-container">
-							<div className="mypage-phone-verification-success-text">
-								휴대폰 인증
-							</div>
-							<img
-								className="mypage-phone-verification-check"
-								src={require('../img/check.png').default}
-								alt=""
-							/>
-						</div>
-					) : (
-						<div className="mypage-phone-verification-failure-container">
-							<div
-								className="mypage-phone-verification-button"
-								onClick={openPhoneModalHandler}
-							>
-								휴대폰 인증
-							</div>
-							<img
-								className="mypage-phone-verification-not-check"
-								src={require('../img/notcheck.png').default}
-								alt=""
-							/>
-						</div>
-					)} */}
-
-					{/* <button
-						className="mypage-withdrawal-button"
-						onClick={() => navigate('/withdrawal')}
-					>
-						회원탈퇴
-					</button> */}
-					{/* <img
-						className="mypage-myinfo-deco-image"
-						src={require('../img/mypage-myinfo.png').default}
-						alt=""
-					/> */}
+					) : null}
 				</div>
 			</div>
 			<div className="RightContainer">
 				<div className="Title">최근 리뷰 내역</div>
-				<div className="ReviewContainer">
-					{/* <Review
-						navigate={navigate}
-						alertMessage={alertMessage}
-						setAlertMessage={setAlertMessage}
-						openAlertHandler={openAlertHandler}
-					/> */}
-					리뷰
-				</div>
+				<div className="ReviewContainer">리뷰</div>
 			</div>
-			{/* {isOpenPhoneModal ? (
-				<PhoneVerificationModal
-					signupInfo={signupInfo}
-					setSignupInfo={setSignupInfo}
-					isNumberAlert={isNumberAlert}
-					setIsNumberAlert={setIsNumberAlert}
-					openPhoneModalHandler={openPhoneModalHandler}
-					phoneVerification={phoneVerification}
-					phoneVerificationComplete={phoneVerificationComplete}
-				/>
-			) : null} */}
 		</PageContainer>
 	)
 }

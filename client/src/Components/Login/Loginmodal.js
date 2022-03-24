@@ -62,7 +62,7 @@ const Input = styled.input`
 
 function Loginmodal({ setOpenModal, close }) {
 	const [loginInfo, setLoginInfo] = useState({
-		userid: '',
+		user_id: '',
 		password: '',
 	})
 
@@ -72,8 +72,8 @@ function Loginmodal({ setOpenModal, close }) {
 	console.log(loginInfo)
 
 	const onClickLogin = () => {
-		const { userid, password } = loginInfo
-		if (userid === '') {
+		const { user_id, password } = loginInfo
+		if (user_id === '') {
 			console.log('아이디를 입력하세요')
 			return
 		} else if (password === '') {
@@ -83,9 +83,9 @@ function Loginmodal({ setOpenModal, close }) {
 		console.log('click login')
 		axios
 			.post(
-				`${process.env.REACT_APP_API_URL}/user/login`,
+				'https://localhost:4000/users/login',
 				{
-					userid,
+					user_id,
 					password,
 				},
 				{ 'Content-Type': 'application/json' }
@@ -102,7 +102,8 @@ function Loginmodal({ setOpenModal, close }) {
 			})
 			.catch(err => {
 				console.log(err)
-				alert('아이디와 비밀번호를 확인해 주세요.')
+				console.log('로그인실패')
+				// alert('아이디와 비밀번호를 확인해 주세요.')
 			})
 	}
 
@@ -128,7 +129,7 @@ function Loginmodal({ setOpenModal, close }) {
 								type="text"
 								placeholder="아이디"
 								name="input_id"
-								onChange={handleInputValue('userid')}
+								onChange={handleInputValue('user_id')}
 							/>
 						</InputBox>
 					</InputForm>

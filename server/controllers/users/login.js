@@ -31,11 +31,11 @@ module.exports = async (req, res) => {
             sameSite: "none",
         })
         .json({
+            message: "Login success!",
             data: {
             accessToken: access_Token,
             email: userInfo.dataValues.email,
             },
-            message: "ok",
         });
     }
 };

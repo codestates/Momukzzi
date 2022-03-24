@@ -6,7 +6,7 @@ module.exports = (req, res) => {
 
   user.create(payload).then(
   res.status(200).json({
-      message : "work!",
-      payload: {payload}
+      message : "signup success!",
+      data: {payload}
   }))
 };
