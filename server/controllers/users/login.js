@@ -34,7 +34,7 @@ module.exports = async (req, res) => {
             message: "Login success!",
             data: {
             accessToken: access_Token,
-            email: userInfo.dataValues.email,
+            nickname: userInfo.dataValues.nickname,
             },
         });
     }
