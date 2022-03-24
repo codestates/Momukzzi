@@ -22,31 +22,44 @@ app.use(
 app.use(cookieParser());
 
 //로그인, 아웃
-app.post("/users/login", controllers.login);
-app.get("/users/logout", controllers.logout);
+app.post("/users/login", controllers.login); //로그인
+app.get("/users/logout", controllers.logout); //로그아웃
 
 //신규 유저 가입, 탈퇴, 유저 정보 조회, 유저 정보 변경
-app.post("/users", controllers.signup);
-app.delete("/users", controllers.signout);
-app.get("/users", controllers.userinfo);
-app.patch("/users", controllers.changeinfo);
+app.post("/users", controllers.signup); // 유저 정보 변경
+app.delete("/users", controllers.signout); // 회원 탈퇴
+app.get("/users", controllers.userinfo);  // 유저 정보 조회
+app.patch("/users", controllers.changeinfo); // 유저 정보 변경
 
-//음식점 정보 조회
-app.get("/shop/:shop_id", controllers.shopinfo);
+//음식점 정보 조회, 사진업로드, 사진 업로드, 사진 삭제
+app.get("/shops/:shop_id", controllers.shopinfo); // 음식점 정보 조회
+app.post("/shops-pics", controllers.shoppic.post); // 
+app.delete("/shops-pics",controllers.shoppic.delete)
+app.get("/shops-tags",controllers.shoptag.get);
+app.post("/shops-tags",controllers.shoptag.post);
+app.delete("/shops-tags",controllers.shoptag.delete);
+app.patch("/shops-tags",controllers.shoptag.patch);
+
+//아티클 조회, 업로드, 삭제, 수정
+app.post("/articles", controllers.createarticle);
+app.delete("/articles",controllers.delarticle);
+app.patch("/articles", controllers.patcharticle);
+app.get("/articles/:article_id", controllers.article)
 
 
-//아티클 조회, 게시, 삭제, 수정
-app.post("/article", controllers.createarticle);
-app.delete("/article",controllers.delarticle);
-app.get("/article", controllers.patcharticle);
-app.get("/article", controllers.article)
+//리뷰 조회, 업로드, 삭제, 수정, 리뷰사진 업로드, 리뷰사진 삭제
+app.post("/reviews", controllers.createreview);
+app.delete("/reviews",controllers.delreview);
+app.patch("/reviews", controllers.patchreview);
+app.get("/reviews", controllers.review)
+app.post("/reviews-pics", controllers.reviewpic.post);
+app.delete("/reviews-pics",controllers.reviewpic.delete)
 
-//리뷰 조회, 게시, 삭제, 수정
+//tag 조회, 업로드, 삭제
+app.post("/tags", controllers.tag.post);
+app.delete("/tags", controllers.tag.delete);
+app.patch("/tags", controllers.tag.patch);
 
-app.post("/review", controllers.createreview);
-app.delete("/review",controllers.delreview);
-app.get("/review", controllers.patchreview);
-app.get("/review", controllers.review)
 
 const HTTPS_PORT = process.env.HTTPS_PORT || 4000;
 

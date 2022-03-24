@@ -1,4 +1,4 @@
-const { users } = require('../../models');
+const { user } = require('../../models');
 const jwt = require("jsonwebtoken");
 
 module.exports = (req, res) => {
@@ -10,7 +10,7 @@ module.exports = (req, res) => {
         const data = jwt.verify(token, "1234")
 
 
-        users.destroy({
+        user.destroy({
             where : {
                 user_id : data.user_id
             }

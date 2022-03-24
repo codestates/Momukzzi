@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     {
 
       shop_id: DataTypes.INTEGER,
-      pic_URL: DataTypes.STRING,
+      pic_URL: DataTypes.TEXT,
     },
     {
       sequelize,
