@@ -93,10 +93,10 @@ function Loginmodal({ setOpenModal, close }) {
 			.then(res => {
 				console.log(res)
 				console.log(res.data.data.accessToken)
-				localStorage.setItem('accessToken')
-				localStorage.setItem('nickname')
+				localStorage.setItem('accessToken', res.data.data.accessToken)
+				localStorage.setItem('email', res.data.data.email)
 				if (res.data.data.accessToken) {
-					localStorage.setItem('accessToken')
+					localStorage.setItem('accessToken', res.data.data.accessToken)
 				}
 				return window.location.replace('/')
 			})

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import styled from 'styled-components'
+import Signout from './Signout'
+
 const PageContainer = styled.div`
 	padding: 10px;
 	font-size: 14px;
@@ -85,10 +87,11 @@ const PageContainer = styled.div`
 
 const LeftContainer = styled.div``
 
-function Mypage({ goSignout }) {
+function Mypage() {
 	const accessToken = localStorage.getItem('accessToken')
 
-	const [userInfo, setUserInfo] = useState({})
+	const [userinfo, setUserinfo] = useState('')
+	const [modalSignout, setModalSignout] = useState(false)
 	const [fixNicknameToggle, setFixNicknameToggle] = useState(false)
 	const [changeInfo, setchangeInfo] = useState({
 		user_nickname: '',
@@ -123,6 +126,31 @@ function Mypage({ goSignout }) {
 		setchangeInfo({ ...changeInfo, [key]: e.target.value })
 	}
 
+	const userinfoHandler = () => {
+		if (!accessToken) {
+			return
+		} else {
+			axios
+				.get('https://localhost:4000/users', {
+					headers: { authorization: `Bearer ${accessToken}` },
+					'Content-Type': 'application/json',
+				})
+				.then(res => {
+					console.log(res)
+					console.log(res.data.data.userInfo)
+					console.log(res.data.data.userInfo.nickname)
+					setUserinfo(res)
+					console.log('개인정보 가져오기 성공')
+				})
+				.catch(err => {
+					console.log('개인정보 가져오기 에러', err)
+				})
+		}
+	}
+	useEffect(() => {
+		userinfoHandler()
+	}, [])
+
 	const handleOnblurName = key => e => {
 		if (!isNickname(changeInfo.user_nickname)) {
 			setMessage({ ...message, nickname: '특수문자는 입력이 불가능 합니다.' })
@@ -154,7 +182,9 @@ function Mypage({ goSignout }) {
 			<div className="LeftContainer">
 				<div className="Title">내 정보</div>
 				<div className="MyinfoContainer">
-					<div className="MyinfoNickname">윤혁2님 오늘 뭐먹죠?</div>
+					<div className="MyinfoNickname">
+						{userinfo && userinfo.data.data.userInfo.nickname}님 오늘 뭐먹죠?
+					</div>
 					<span className="FixToggleBtn" onClick={fixNicknameHandler}>
 						닉네임 수정
 					</span>
@@ -197,9 +227,20 @@ function Mypage({ goSignout }) {
 						</form>
 					) : null}
 
-					<button className="mypage-withdrawal-button" onClick={goSignout}>
+					<button
+						className="mypage-withdrawal-button"
+						onClick={() => setModalSignout(true)}
+					>
 						회원탈퇴
 					</button>
+					{modalSignout && (
+						<Signout
+							setModalSignout={setModalSignout}
+							close={() => {
+								setModalSignout(false)
+							}}
+						/>
+					)}
 				</div>
 			</div>
 			<div className="RightContainer">
