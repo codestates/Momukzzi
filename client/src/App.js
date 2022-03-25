@@ -16,35 +16,39 @@ import './App.css'
 import Signup from './Components/Signup/Signup'
 import Intro from './Components/intropage/Intro'
 import Loginbtn from '../src/Components/Login/Loginbtn'
-import { Route, Routes, BrowserRouter } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import Mypage from './Components/Mypage/Mypage'
+import SlideTopic from './Components/Mainpage/SlideTopic'
+import Hashtag from './Components/Mainpage/Hashtag'
+import Loginmodal from './Components/Login/Loginmodal'
 import Signout from './Components/Mypage/Signout'
 
-function reducer(currentState, action) {
-	if (currentState === undefined) {
-		return {}
-	}
-
-	const newState = { ...currentState }
-	return newState
-}
-const store = createStore(reducer)
-
 function App() {
+	const isLogInOpen = useSelector(state => state.isLogInOpen)
+	const isSignUpOpen = useSelector(state => state.isSignUpOpen)
 	return (
-		<BrowserRouter>
-			<div className="App">
-				<Routes>
-					<Route path="/" element={<Intro />} />
-					<Route path="/signup" element={<Signup />} />
-					<Route path="/signout" element={<Signout />} />
-					<Route path="/login" element={<Loginbtn />} />
+		<div className="App">
+			<BrowserRouter>
+				<Header />
+				{isLogInOpen ? <Loginmodal /> : ''}
+				{isSignUpOpen ? <Signup /> : ''}
+				<Switch>
+					<Route exact path="/">
+						<Hashtag />
+						<SlideShop />
+						<SlidePick />
+						<SlideTopic />
+					</Route>
 					<Route path="/mypage">
 						<Mypage />
 					</Route>
-				</Routes>
-			</div>
-		</BrowserRouter>
+					<Route path="/signout">
+						<Signout />
+					</Route>
+				</Switch>
+				<Footer />
+			</BrowserRouter>
+		</div>
 	)
 }
 

@@ -23,10 +23,6 @@ const dummyData = [
   {
     img: "https://recipe1.ezmember.co.kr/cache/recipe/2017/07/03/763d39368613aec94c2ddad3ee5a03451.jpg",
   },
-  { img: "https://img.siksinhot.com/article/1594266663930121.jpeg" },
-  {
-    img: "https://img.kr.news.samsung.com/kr/wp-content/uploads/2017/03/%ED%91%B8%EB%93%9C%ED%8F%AC%EC%BB%A4%EC%8A%A44%ED%8E%B804.jpg",
-  },
 ];
 
 export default dummyData;

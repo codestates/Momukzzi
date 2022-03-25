@@ -149,6 +149,7 @@ function Signup() {
 		}
 	}
 
+<<<<<<< HEAD
 	// const history = useHistory();
 
 	const submit = () => {
@@ -205,6 +206,67 @@ function Signup() {
 							중복된 아이디 입니다.
 						</ValidateMsg>
 					</InputForm>
+=======
+  const submit = () => {
+    if (
+      isMoreThan4Length() &&
+      onlyNumberAndEnglish() &&
+      isEmailValidate() &&
+      isPasswordEquel() &&
+      isPasswordValidate() &&
+      nameCheck()
+    ) {
+      axios
+        .post(
+          `${process.env.REACT_APP_API_URL}/users`,
+          {
+            userid: userId,
+            password: password,
+            nickname: name,
+            email: email,
+          },
+          { withCredentials: true }
+        )
+        .then((response) => {
+          if (response.data.message === "exist") {
+            setHideIDCheckFail(false);
+            console.log(response.data);
+          } else if (response.data.message === "created") {
+            setHideIDCheckFail(true);
+            console.log(response.data);
+            window.location.replace("/");
+          }
+        })
+        .catch((err) => {
+          throw err;
+        });
+    }
+  };
+  const dispatch = useDispatch();
+  return (
+    <ModalBackdrop
+      onClick={() => {
+        dispatch({ type: "signup modal" });
+      }}
+    >
+      <SignUpForm onClick={(e) => e.stopPropagation()}>
+        <Div>
+          <InputForm>
+            <div>아이디</div>
+            <InputBox>
+              <Input type="text" onChange={(e) => setUserId(e.target.value)} />
+            </InputBox>
+            <ValidateMsg hide={hideLengthFail}>
+              아이디는 네 글 자 이상이여야 합니다.
+            </ValidateMsg>
+            <ValidateMsg hide={hideIDFail}>
+              아이디는 영어 또는 숫자만 가능합니다.
+            </ValidateMsg>
+            <ValidateMsg hide={hideIDCheckFail}>
+              중복된 아이디 입니다.
+            </ValidateMsg>
+          </InputForm>
+>>>>>>> dev
 
 					<InputForm>
 						<div>Email</div>
