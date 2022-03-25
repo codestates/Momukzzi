@@ -47,7 +47,7 @@ export default function ShopDetail() {
   return (
     <>
       {isOpen ? (
-        <ShopImageModal isOpen={isOpen} currentImage={currentImage} />
+        <ShopImageModal setOpen={setOpen} currentImage={currentImage} />
       ) : (
         <></>
       )}
