@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import styled from 'styled-components'
-import Signout from './Signout'
-
+import { Redirect } from 'react-router-dom'
 const PageContainer = styled.div`
 	padding: 10px;
 	font-size: 14px;
@@ -80,18 +79,17 @@ const PageContainer = styled.div`
 	}
 
 	.Fix-toggle-input:focus {
-		border: 2px solid #ffcc1d;
+		border: 2px solid black;
 		outline: none;
 	}
 `
 
 const LeftContainer = styled.div``
 
-function Mypage() {
+function Mypage({ goSignout }) {
 	const accessToken = localStorage.getItem('accessToken')
 
-	const [userinfo, setUserinfo] = useState('')
-	const [modalSignout, setModalSignout] = useState(false)
+	const [userInfo, setUserInfo] = useState({})
 	const [fixNicknameToggle, setFixNicknameToggle] = useState(false)
 	const [changeInfo, setchangeInfo] = useState({
 		user_nickname: '',
@@ -126,31 +124,6 @@ function Mypage() {
 		setchangeInfo({ ...changeInfo, [key]: e.target.value })
 	}
 
-	const userinfoHandler = () => {
-		if (!accessToken) {
-			return
-		} else {
-			axios
-				.get('https://localhost:4000/users', {
-					headers: { authorization: `Bearer ${accessToken}` },
-					'Content-Type': 'application/json',
-				})
-				.then(res => {
-					console.log(res)
-					console.log(res.data.data.userInfo)
-					console.log(res.data.data.userInfo.nickname)
-					setUserinfo(res)
-					console.log('개인정보 가져오기 성공')
-				})
-				.catch(err => {
-					console.log('개인정보 가져오기 에러', err)
-				})
-		}
-	}
-	useEffect(() => {
-		userinfoHandler()
-	}, [])
-
 	const handleOnblurName = key => e => {
 		if (!isNickname(changeInfo.user_nickname)) {
 			setMessage({ ...message, nickname: '특수문자는 입력이 불가능 합니다.' })
@@ -176,78 +149,73 @@ function Mypage() {
 				setMessage({ ...message, nickname: '중복된 닉네임입니다.' })
 			})
 	}
-
 	return (
-		<PageContainer>
-			<div className="LeftContainer">
-				<div className="Title">내 정보</div>
-				<div className="MyinfoContainer">
-					<div className="MyinfoNickname">
-						{userinfo && userinfo.data.data.userInfo.nickname}님 오늘 뭐먹죠?
-					</div>
-					<span className="FixToggleBtn" onClick={fixNicknameHandler}>
-						닉네임 수정
-					</span>
-					{fixNicknameToggle ? (
-						<form
-							className="Fix-toggle-container"
-							onSubmit={e => e.preventDefault()}
-						>
-							<div>
-								<div className="Fix-toggle-title">닉네임</div>
-								<div className="Fix-toggle-container">
-									<input
-										className="Fix-toggle-input"
-										onChange={handleInputValue('user_nickname')}
-										onBlur={handleOnblurName('user_nickname')}
-									/>
-									{message.nickname ===
-									'닉네임은 특수문자를 제외한 2 ~ 20 글자이어야 합니다.' ? (
-										<div>{message.nickname}</div>
-									) : message.nickname === '사용 가능한 닉네임입니다.' ? (
-										<div>{message.nickname}</div>
-									) : (
-										<div>{message.nickname}</div>
-									)}
-									{isValidForNickname ? (
-										<button
-											className="FixToggleBtn"
-											onClick={fixNicknameHandler}
-											type="submit"
-										>
-											수정
-										</button>
-									) : (
-										<button className="FixToggleBtn" disabled={true}>
-											수정
-										</button>
-									)}
-								</div>
-							</div>
-						</form>
-					) : null}
+		<>
+			{localStorage.getItem('accessToken') ? (
+				<PageContainer>
+					<div className="LeftContainer">
+						<div className="Title">내 정보</div>
+						<div className="MyinfoContainer">
+							<div className="MyinfoNickname">윤혁2님 오늘 뭐먹죠?</div>
+							<span className="FixToggleBtn" onClick={fixNicknameHandler}>
+								닉네임 수정
+							</span>
+							{fixNicknameToggle ? (
+								<form
+									className="Fix-toggle-container"
+									onSubmit={e => e.preventDefault()}
+								>
+									<div>
+										<div className="Fix-toggle-title">닉네임</div>
+										<div className="Fix-toggle-container">
+											<input
+												className="Fix-toggle-input"
+												onChange={handleInputValue('user_nickname')}
+												onBlur={handleOnblurName('user_nickname')}
+											/>
+											{message.nickname ===
+											'닉네임은 특수문자를 제외한 2 ~ 20 글자이어야 합니다.' ? (
+												<div>{message.nickname}</div>
+											) : message.nickname === '사용 가능한 닉네임입니다.' ? (
+												<div>{message.nickname}</div>
+											) : (
+												<div>{message.nickname}</div>
+											)}
+											{isValidForNickname ? (
+												<button
+													className="FixToggleBtn"
+													onClick={fixNicknameHandler}
+													type="submit"
+												>
+													수정
+												</button>
+											) : (
+												<button className="FixToggleBtn" disabled={true}>
+													수정
+												</button>
+											)}
+										</div>
+									</div>
+								</form>
+							) : null}
 
-					<button
-						className="mypage-withdrawal-button"
-						onClick={() => setModalSignout(true)}
-					>
-						회원탈퇴
-					</button>
-					{modalSignout && (
-						<Signout
-							setModalSignout={setModalSignout}
-							close={() => {
-								setModalSignout(false)
-							}}
-						/>
-					)}
-				</div>
-			</div>
-			<div className="RightContainer">
-				<div className="Title">최근 리뷰 내역</div>
-				<div className="ReviewContainer">리뷰</div>
-			</div>
-		</PageContainer>
+							<button
+								className="mypage-signout-button"
+								onClick={() => window.location.replace('/signout')}
+							>
+								회원탈퇴
+							</button>
+						</div>
+					</div>
+					<div className="RightContainer">
+						<div className="Title">최근 리뷰 내역</div>
+						<div className="ReviewContainer">리뷰</div>
+					</div>
+				</PageContainer>
+			) : (
+				<Redirect />
+			)}
+		</>
 	)
 }
 export default Mypage

@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 const ModalBackdrop = styled.div`
@@ -139,7 +138,6 @@ const SignoutBtnContainer = styled.div`
 
 function Signout({ close }) {
 	const accessToken = localStorage.getItem('accessToken')
-	const navigate = useNavigate()
 
 	const [agreeChecked, setAgreeChecked] = useState(false)
 	const [fillinText, setFillinText] = useState('')
@@ -166,7 +164,7 @@ function Signout({ close }) {
 				localStorage.removeItem('email')
 				alert('회원 탈퇴가 완료되었습니다.')
 				// openAlertHandler();
-				navigate('/')
+				window.location.replace('/')
 			})
 			.catch(err => {
 				alert('잘못된 요청입니다')
@@ -221,7 +219,7 @@ function Signout({ close }) {
 							)}
 							<button
 								className="signout-submit-button"
-								onClick={() => navigate('/mypage')}
+								onClick={() => window.location.replace('/')}
 							>
 								취소 (홈으로)
 							</button>
