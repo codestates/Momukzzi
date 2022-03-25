@@ -4,7 +4,7 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     let datas = [];
 
-    for (let i = 0; i < 50; i++) {
+    for (let i = 1; i < 51; i++) {
       const position = ["FW", "MF", "DF", "GK"];
       let obj = {
         user_id: "user" + i,
