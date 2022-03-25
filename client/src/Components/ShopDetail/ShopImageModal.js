@@ -51,17 +51,22 @@ const ImageModalBackdrop = styled.div`
 // `;
 
 export default function ShopImageModal({ setOpen, currentImage }) {
+  const BackgroundClick = (e) => {
+    const clicked = e.target.closest(".swiper");
+    if (clicked) return;
+    else setOpen(false);
+  };
   return (
     <>
-      <ImageModalBackdrop>
+      <ImageModalBackdrop onClick={BackgroundClick}>
         <Swiper
           style={{
             "--swiper-navigation-color": "#fff",
             "--swiper-pagination-color": "#fff",
             width: "70%",
             height: "70%",
-            "border-radius": "10px",
-            "background-color": "rgba(0, 0, 0, 0.5)",
+            borderRadius: "10px",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
           }}
           zoom={true}
           navigation={true}
@@ -72,9 +77,9 @@ export default function ShopImageModal({ setOpen, currentImage }) {
           className="mySwiper"
           initialSlide={currentImage}
         >
-          {dummyData.map((item) => {
+          {dummyData.map((item, i) => {
             return (
-              <SwiperSlide style={{ overflow: "hidden" }}>
+              <SwiperSlide key={i} style={{ overflow: "hidden" }}>
                 <div className="swiper-zoom-container">
                   <img src={item.img} style={{ width: "80%", height: "80%" }} />
                 </div>
@@ -84,21 +89,5 @@ export default function ShopImageModal({ setOpen, currentImage }) {
         </Swiper>
       </ImageModalBackdrop>
     </>
-
-    // <ImageModalBackdrop>
-    //   <ImageModalView>
-    //     <button onClick={() => setOpen(false)}>닫기</button>
-    //     {/* <img src={currentImage} /> */}
-    //     <ul>
-    //       {dummyData.map((item) => {
-    //         return (
-    //           <ImageModalList>
-    //             <img src={item.img} />
-    //           </ImageModalList>
-    //         );
-    //       })}
-    //     </ul>
-    //   </ImageModalView>
-    // </ImageModalBackdrop>
   );
 }
