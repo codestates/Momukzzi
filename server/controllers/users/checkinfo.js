@@ -10,7 +10,6 @@ module.exports = async (req, res) => {
         
     const checknick = await user.findOne( 
         {where : {
-            user_id : newuserinfo.user_id,
             nickname : newuserinfo.nickname}})
 
 
