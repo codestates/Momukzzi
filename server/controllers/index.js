@@ -1,5 +1,3 @@
-
-
 module.exports = {
   login: require("./users/login"),
   logout: require("./users/logout"),
@@ -8,6 +6,7 @@ module.exports = {
   signout: require("./users/signout"),
   userinfo: require("./users/userinfo"),
   changeinfo: require("./users/changeinfo"),
+  checkinfo: require("./users/checkinfo"),
 
   shopinfo : require("./shop/shopinfo"),
   shoppic : require("./pic/shoppic"),
@@ -25,4 +24,6 @@ module.exports = {
 
   tag : require("./tag/tag"),
   shoptag : require("./tag/shoptag"),
+  data : require("./getdata/getdatas"),
+
 };
