@@ -5,6 +5,16 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { Provider, useSelector, useDispatch, connect } from "react-redux";
 
+const ModalBackdrop = styled.div`
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+`;
+
 const SignUpForm = styled.div`
   margin: 0 auto;
   width: 550px;
@@ -13,6 +23,7 @@ const SignUpForm = styled.div`
   text-align: left;
   transform: translateY(20%);
   border: 1px solid black;
+  background-color: white;
 `;
 
 const Div = styled.div`
@@ -95,31 +106,21 @@ function Signup() {
     }
   };
 
-  // const idCheck = () => {
-  //   axios
-  //     .post(`${process.env.REACT_APP_API_URL}/user/checkid`, {
-  //       userid: userId,
-  //     })
-  //     .then((response) => {
-  //       if (response.data.message === "exist") {
-  //         setHideIDCheckFail(false);
-  //       } else if (response.data.message === "new") {
-  //         setHideIDCheckFail(true);
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       throw err;
-  //     });
-  //   console.log(hideIDCheckFail);
-  // };
-
-  const isEmailValidate = () => {};
-  const isPasswordEquel = () => {
-    if (password === passwordRetype) {
-      setHidePasswordEquelFail(() => true);
+  const isEmailValidate = () => {
+    if (/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-z]+$/.test(email)) {
+      setHideEmailFail(true);
       return true;
     } else {
-      setHidePasswordEquelFail(() => false);
+      setHideEmailFail(false);
+      return false;
+    }
+  };
+  const isPasswordEquel = () => {
+    if (password === passwordRetype) {
+      setHidePasswordEquelFail(true);
+      return true;
+    } else {
+      setHidePasswordEquelFail(false);
       return false;
     }
   };
@@ -130,20 +131,20 @@ function Signup() {
         password
       )
     ) {
-      setHidePasswordFail(() => true);
+      setHidePasswordFail(true);
       return true;
     } else {
-      setHidePasswordFail(() => false);
+      setHidePasswordFail(false);
       return false;
     }
   };
 
   const nameCheck = () => {
     if (name === "") {
-      setHideNameFail(() => false);
+      setHideNameFail(false);
       return false;
     } else {
-      setHideNameFail(() => true);
+      setHideNameFail(true);
       return true;
     }
   };
@@ -154,20 +155,30 @@ function Signup() {
     if (
       isMoreThan4Length() &&
       onlyNumberAndEnglish() &&
+      isEmailValidate() &&
       isPasswordEquel() &&
       isPasswordValidate() &&
       nameCheck()
-      // idCheck() &&
     ) {
-      
       axios
-        .post(`${process.env.REACT_APP_API_URL}/user/signup`, {
-          userid: userId,
-          password: password,
-          fullname: name,
-        })
+        .post(
+          `${process.env.REACT_APP_API_URL}/users/signup`,
+          {
+            userid: userId,
+            password: password,
+            nickname: name,
+            email: email,
+          },
+          { withCredentials: true }
+        )
         .then((response) => {
-          history.push("/");
+          if (response.data.message === "exist") {
+            setHideIDCheckFail(false);
+            console.log(response.data);
+          } else if (response.data.message === "created") {
+            setHideIDCheckFail(true);
+            console.log(response.data);
+          }
         })
         .catch((err) => {
           throw err;
@@ -175,78 +186,77 @@ function Signup() {
     }
   };
 
-  const isSignup = (callback) => {
-    return new Promise((resolve, reject) => {
-      resolve(callback);
-    });
-  };
   return (
-    <SignUpForm>
-      <Div>
-        <InputForm>
-          <div>아이디</div>
-          <InputBox>
-            <Input type="text" onChange={(e) => setUserId(e.target.value)} />
-          </InputBox>
-          <ValidateMsg hide={hideLengthFail}>
-            아이디는 네 글 자 이상이여야 합니다.
-          </ValidateMsg>
-          <ValidateMsg hide={hideIDFail}>
-            아이디는 영어 또는 숫자만 가능합니다.
-          </ValidateMsg>
-          <ValidateMsg hide={hideIDCheckFail}>
-            중복된 아이디 입니다.
-          </ValidateMsg>
-        </InputForm>
+    <ModalBackdrop>
+      <SignUpForm>
+        <Div>
+          <InputForm>
+            <div>아이디</div>
+            <InputBox>
+              <Input type="text" onChange={(e) => setUserId(e.target.value)} />
+            </InputBox>
+            <ValidateMsg hide={hideLengthFail}>
+              아이디는 네 글 자 이상이여야 합니다.
+            </ValidateMsg>
+            <ValidateMsg hide={hideIDFail}>
+              아이디는 영어 또는 숫자만 가능합니다.
+            </ValidateMsg>
+            <ValidateMsg hide={hideIDCheckFail}>
+              중복된 아이디 입니다.
+            </ValidateMsg>
+          </InputForm>
 
-        <InputForm>
-          <div>Email</div>
-          <InputBox>
-            <Input type="text" onChange={(e) => setEmail(e.target.value)} />
-          </InputBox>
-          <ValidateMsg hide={hideEmailFail}>
-            올바른 이메일 형식을 입력해주세요
-          </ValidateMsg>
-        </InputForm>
+          <InputForm>
+            <div>Email</div>
+            <InputBox>
+              <Input type="text" onChange={(e) => setEmail(e.target.value)} />
+            </InputBox>
+            <ValidateMsg hide={hideEmailFail}>
+              올바른 이메일 형식을 입력해주세요
+            </ValidateMsg>
+          </InputForm>
 
-        <InputForm>
-          <div>비밀번호</div>
-          <InputBox>
-            <Input
-              type="password"
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </InputBox>
-        </InputForm>
+          <InputForm>
+            <div>비밀번호</div>
+            <InputBox>
+              <Input
+                type="password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </InputBox>
+          </InputForm>
 
-        <InputForm>
-          <div>비밀번호 확인</div>
-          <InputBox>
-            <Input
-              type="password"
-              onChange={(e) => setPasswordRetype(e.target.value)}
-            />
-          </InputBox>
-          <ValidateMsg hide={hidePasswordEquelFail}>
-            비밀번호가 일치하지 않습니다.
-          </ValidateMsg>
-          <ValidateMsg hide={hidePasswordFail}>
-            비밀번호는 최소 8자 이상, 알파벳과 숫자 및 특수문자를 포함해야
-            합니다.
-          </ValidateMsg>
-        </InputForm>
+          <InputForm>
+            <div>비밀번호 확인</div>
+            <InputBox>
+              <Input
+                type="password"
+                onChange={(e) => setPasswordRetype(e.target.value)}
+              />
+            </InputBox>
+            <ValidateMsg hide={hidePasswordEquelFail}>
+              비밀번호가 일치하지 않습니다.
+            </ValidateMsg>
+            <ValidateMsg hide={hidePasswordFail}>
+              비밀번호는 최소 8자 이상, 알파벳과 숫자 및 특수문자를 포함해야
+              합니다.
+            </ValidateMsg>
+          </InputForm>
 
-        <InputForm>
-          <div>이름</div>
-          <InputBox>
-            <Input type="text" onChange={(e) => setName(e.target.value)} />
-          </InputBox>
-          <ValidateMsg hide={hideNameFail}>이름은 필수입력입니다.</ValidateMsg>
-        </InputForm>
+          <InputForm>
+            <div>이름</div>
+            <InputBox>
+              <Input type="text" onChange={(e) => setName(e.target.value)} />
+            </InputBox>
+            <ValidateMsg hide={hideNameFail}>
+              이름은 필수입력입니다.
+            </ValidateMsg>
+          </InputForm>
 
-        <SignUpButton onClick={submit}>가입하기</SignUpButton>
-      </Div>
-    </SignUpForm>
+          <SignUpButton onClick={submit}>가입하기</SignUpButton>
+        </Div>
+      </SignUpForm>
+    </ModalBackdrop>
   );
 }
 
