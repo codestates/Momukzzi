@@ -199,6 +199,26 @@ function Mypage({ goSignout }) {
 								</form>
 							) : null}
 
+<<<<<<< HEAD
+              <button className="mypage-withdrawal-button" onClick={goSignout}>
+                회원탈퇴
+              </button>
+            </div>
+          </div>
+          <div className="RightContainer">
+            <div className="Title">최근 리뷰 내역</div>
+            <div className="ReviewContainer">리뷰</div>
+          </div>
+        </PageContainer>
+      ) : (
+        <>
+          {alert("마이페이지는 로그인 상태에서 접근할 수 있습니다.")}
+          <Redirect to="/" />
+        </>
+      )}
+    </>
+  );
+=======
 							<button
 								className="mypage-signout-button"
 								onClick={() => window.location.replace('/signout')}
@@ -217,5 +237,6 @@ function Mypage({ goSignout }) {
 			)}
 		</>
 	)
+>>>>>>> 09b8d14a2f70c28f41a9d1753fda0c3852b27e0a
 }
 export default Mypage
