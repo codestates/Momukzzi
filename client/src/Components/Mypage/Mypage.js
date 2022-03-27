@@ -210,7 +210,10 @@ function Mypage({ goSignout }) {
           </div>
         </PageContainer>
       ) : (
-        <Redirect />
+        <>
+          {alert("마이페이지는 로그인 상태에서 접근할 수 있습니다.")}
+          <Redirect to="/" />
+        </>
       )}
     </>
   );

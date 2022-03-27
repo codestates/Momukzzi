@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import { BsPersonCircle } from "react-icons/bs";
 import { MdMenu } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 const HeaderContainer = styled.div`
   margin: 0 auto;
@@ -70,6 +71,9 @@ const HeaderContainer = styled.div`
   .person_circle {
     font-size: 25px;
   }
+  .navbar_icons > li {
+    cursor: pointer;
+  }
 `;
 
 const Header = () => {
@@ -130,7 +134,12 @@ const Header = () => {
         <ul className="navbar_icons">
           <li>
             {/* <img src="./favorite.png" /> */}
-            <BsPersonCircle className="person_circle" />
+            <BsPersonCircle
+              className="person_circle"
+              onClick={() => {
+                dispatch({ type: "favorite modal" });
+              }}
+            />
           </li>
         </ul>
       </nav>
