@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import styled from 'styled-components'
+import { Redirect } from 'react-router-dom'
 const PageContainer = styled.div`
 	padding: 10px;
 	font-size: 14px;
@@ -78,7 +79,7 @@ const PageContainer = styled.div`
 	}
 
 	.Fix-toggle-input:focus {
-		border: 2px solid #ffcc1d;
+		border: 2px solid black;
 		outline: none;
 	}
 `
@@ -148,65 +149,73 @@ function Mypage({ goSignout }) {
 				setMessage({ ...message, nickname: '중복된 닉네임입니다.' })
 			})
 	}
-
 	return (
-		<PageContainer>
-			<div className="LeftContainer">
-				<div className="Title">내 정보</div>
-				<div className="MyinfoContainer">
-					<div className="MyinfoNickname">윤혁2님 오늘 뭐먹죠?</div>
-					<span className="FixToggleBtn" onClick={fixNicknameHandler}>
-						닉네임 수정
-					</span>
-					{fixNicknameToggle ? (
-						<form
-							className="Fix-toggle-container"
-							onSubmit={e => e.preventDefault()}
-						>
-							<div>
-								<div className="Fix-toggle-title">닉네임</div>
-								<div className="Fix-toggle-container">
-									<input
-										className="Fix-toggle-input"
-										onChange={handleInputValue('user_nickname')}
-										onBlur={handleOnblurName('user_nickname')}
-									/>
-									{message.nickname ===
-									'닉네임은 특수문자를 제외한 2 ~ 20 글자이어야 합니다.' ? (
-										<div>{message.nickname}</div>
-									) : message.nickname === '사용 가능한 닉네임입니다.' ? (
-										<div>{message.nickname}</div>
-									) : (
-										<div>{message.nickname}</div>
-									)}
-									{isValidForNickname ? (
-										<button
-											className="FixToggleBtn"
-											onClick={fixNicknameHandler}
-											type="submit"
-										>
-											수정
-										</button>
-									) : (
-										<button className="FixToggleBtn" disabled={true}>
-											수정
-										</button>
-									)}
-								</div>
-							</div>
-						</form>
-					) : null}
+		<>
+			{localStorage.getItem('accessToken') ? (
+				<PageContainer>
+					<div className="LeftContainer">
+						<div className="Title">내 정보</div>
+						<div className="MyinfoContainer">
+							<div className="MyinfoNickname">윤혁2님 오늘 뭐먹죠?</div>
+							<span className="FixToggleBtn" onClick={fixNicknameHandler}>
+								닉네임 수정
+							</span>
+							{fixNicknameToggle ? (
+								<form
+									className="Fix-toggle-container"
+									onSubmit={e => e.preventDefault()}
+								>
+									<div>
+										<div className="Fix-toggle-title">닉네임</div>
+										<div className="Fix-toggle-container">
+											<input
+												className="Fix-toggle-input"
+												onChange={handleInputValue('user_nickname')}
+												onBlur={handleOnblurName('user_nickname')}
+											/>
+											{message.nickname ===
+											'닉네임은 특수문자를 제외한 2 ~ 20 글자이어야 합니다.' ? (
+												<div>{message.nickname}</div>
+											) : message.nickname === '사용 가능한 닉네임입니다.' ? (
+												<div>{message.nickname}</div>
+											) : (
+												<div>{message.nickname}</div>
+											)}
+											{isValidForNickname ? (
+												<button
+													className="FixToggleBtn"
+													onClick={fixNicknameHandler}
+													type="submit"
+												>
+													수정
+												</button>
+											) : (
+												<button className="FixToggleBtn" disabled={true}>
+													수정
+												</button>
+											)}
+										</div>
+									</div>
+								</form>
+							) : null}
 
-					<button className="mypage-withdrawal-button" onClick={goSignout}>
-						회원탈퇴
-					</button>
-				</div>
-			</div>
-			<div className="RightContainer">
-				<div className="Title">최근 리뷰 내역</div>
-				<div className="ReviewContainer">리뷰</div>
-			</div>
-		</PageContainer>
+							<button
+								className="mypage-signout-button"
+								onClick={() => window.location.replace('/signout')}
+							>
+								회원탈퇴
+							</button>
+						</div>
+					</div>
+					<div className="RightContainer">
+						<div className="Title">최근 리뷰 내역</div>
+						<div className="ReviewContainer">리뷰</div>
+					</div>
+				</PageContainer>
+			) : (
+				<Redirect />
+			)}
+		</>
 	)
 }
 export default Mypage

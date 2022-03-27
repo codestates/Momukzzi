@@ -53,6 +53,10 @@ const SlidePickContainer = styled.div`
     transform: translateY(25%);
   }
 `;
+const PickImage = styled.img`
+  width: 100%;
+  height: 400px;
+`;
 function SlidePick() {
   return (
     <SlidePickContainer>
@@ -69,25 +73,13 @@ function SlidePick() {
         modules={[Pagination, Navigation]}
         className="mySwiper"
       >
-        <SwiperSlide>
-          <img
-            className="food-picture"
-            src="https://w.namu.la/s/b7f340235a984c691396ebcc8548ea963ada9595b79f715d54c5cac460c6b4ea7639b71b68a0c3cb9814d264bb4b904d3aaf071a2005f7ffe1acac25483ca4f4803641d94eee0884a77b149d733240823509489592c8c3b8f7c0ba1cdd078c78"
-          />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img
-            className="food-picture"
-            src="https://t1.daumcdn.net/cfile/blog/244A1848595D9D7007"
-          />
-        </SwiperSlide>
-        <SwiperSlide>Slide 3</SwiperSlide>
-        <SwiperSlide>Slide 4</SwiperSlide>
-        <SwiperSlide>Slide 5</SwiperSlide>
-        <SwiperSlide>Slide 6</SwiperSlide>
-        <SwiperSlide>Slide 7</SwiperSlide>
-        <SwiperSlide>Slide 8</SwiperSlide>
-        <SwiperSlide>Slide 9</SwiperSlide>
+        {dummyData.map((data, i) => {
+          return (
+            <SwiperSlide key={i}>
+              <PickImage src={data.img} />
+            </SwiperSlide>
+          );
+        })}
       </Swiper>
     </SlidePickContainer>
   );

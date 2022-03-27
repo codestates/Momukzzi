@@ -16,6 +16,7 @@ import { Grid, Pagination, Navigation } from "swiper";
 import dummyData from "./dummyData";
 
 const SlideShopContainer = styled.div`
+  margin-top: 30px;
   .swiper {
     width: 1300px;
     height: 500px;
