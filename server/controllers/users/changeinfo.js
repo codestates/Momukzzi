@@ -6,8 +6,9 @@ module.exports = async (req, res) => {
     const newuserinfo = req.body
 
     await user.update(newuserinfo, {where : {user_id : newuserinfo.user_id}})
-    .then((res) =>{
-        if (res){
+    .then((result) =>{
+        if (result[0] === 1) {
+        console.log(result)
         res.status(200).json({
         message: "userinfo changed !",
         data: {
@@ -15,12 +16,15 @@ module.exports = async (req, res) => {
         },
     })}else{
         res.status(400).json({
-            message : "not be change",
+            message : "not be change, No such user",
         })
-    }}).catch(
-        res.status(400).json({
-            message : "not be change",
-        }))
+    }})
+    .catch(err => {
+        console.log(err)}
+        // res.status(400).json({
+        //     message : "not be change",
+        // })
+    )
 
 }
 
