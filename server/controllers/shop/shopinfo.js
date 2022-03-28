@@ -1,4 +1,4 @@
-const { shop, menu, shop_pic, shop_tag, tag,review } = require('../../models');
+const { shop, menu, shop_pic, shop_tag, tag,review,review_pic } = require('../../models');
 
 module.exports = async (req, res) => {
     console.log('get shopinfo')
@@ -15,7 +15,7 @@ module.exports = async (req, res) => {
         {
             model : review,
             attributes : ['user_id','comment','star']
-        }],
+        },],
 
         where: {
             id: req.params.shop_id,

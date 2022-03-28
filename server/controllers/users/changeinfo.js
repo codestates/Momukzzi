@@ -5,8 +5,10 @@ module.exports = async (req, res) => {
 
     const newuserinfo = req.body
 
+    console.log(req.body)
     await user.update(newuserinfo, {where : {user_id : newuserinfo.user_id}})
     .then((result) =>{
+        console.log(result)
         if (result[0] === 1) {
         console.log(result)
         res.status(200).json({
