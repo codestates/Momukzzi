@@ -22,6 +22,7 @@ import SlideTopic from './Components/Mainpage/SlideTopic'
 import Hashtag from './Components/Mainpage/Hashtag'
 import Loginmodal from './Components/Login/Loginmodal'
 import Signout from './Components/Mypage/Signout'
+import Review from './Components/Mypage/Review'
 
 function App() {
 	const isLogInOpen = useSelector(state => state.isLogInOpen)
@@ -44,6 +45,9 @@ function App() {
 					</Route>
 					<Route path="/signout">
 						<Signout />
+					</Route>
+					<Route path="/review">
+						<Review />
 					</Route>
 				</Switch>
 				<Footer />
