@@ -170,7 +170,7 @@ const Intro = () => {
             // -----------------------카테고리 검색--------------------------------------
             axios
               .get(
-                `https://dapi.kakao.com/v2/local/search/category.json?category_group_code=FD6&page=1&size=15&sort=accuracy&x=${position.coords.longitude}&y=${position.coords.latitude}&radius=10000`,
+                `https://dapi.kakao.com/v2/local/search/category.json?category_group_code=FD6&page=1&size=15&sort=accuracy&x=${position.coords.longitude}&y=${position.coords.latitude}&radius=2000`,
                 {
                   headers: {
                     Authorization: "KakaoAK 2af87592ef59bb8f2f504dc1544a0a89",
@@ -178,27 +178,32 @@ const Intro = () => {
                 }
               )
               .then((res) => {
-                dispatch({
-                  type: "shop_info",
-                  data: res.data.documents[1],
-                });
-                console.log(res.data.documents[1]);
-                axios
-                  .post("https://localhost:4000/data", res.data.documents[1], {
-                    withCredentials: true,
-                  })
-                  .then((res) => {
-                    dispatch({
-                      type: "shop_menu",
-                      data: Object.entries(res.data.data.menu),
-                    });
-                    dispatch({
-                      type: "shop_shoppic",
-                      data: res.data.data.shoppic,
-                    });
-                    console.log(res.data.data.shoppic);
-                    console.log(Object.entries(res.data.data.menu));
-                  });
+                // dispatch({
+                //   type: "shop_info",
+                //   data: res.data.documents[1],
+                // });
+                // console.log(res.data.documents);
+                // axios
+                //   .post(
+                //     "https://localhost:4000/data",
+                //     { data: res.data.documents },
+                //     {
+                //       withCredentials: true,
+                //     }
+                //   )
+                //   .then((res) => {
+                //     // dispatch({
+                //     //   type: "shop_menu",
+                //     //   data: Object.entries(res.data.data.menu),
+                //     // });
+                //     // dispatch({
+                //     //   type: "shop_shoppic",
+                //     //   data: res.data.data.shoppic,
+                //     // });
+                //     // console.log(res.data.data.shoppic);
+                //     // console.log(Object.entries(res.data.data.menu));
+                //     console.log(res);
+                //   });
               });
           },
           function (error) {
