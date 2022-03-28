@@ -65,8 +65,7 @@ app.patch("/tags", controllers.tag.patch);
 //프론트에서 데이터 받기
 app.post("/data", controllers.data);
 
-//테스트용(지워도 되요)
-app.post("/test", controllers.test);
+
 
 const HTTPS_PORT = process.env.HTTPS_PORT || 4000;
 

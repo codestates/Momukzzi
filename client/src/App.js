@@ -37,6 +37,7 @@ function App() {
         <Switch>
           <Route exact path="/">
             <Hashtag />
+            <Intro />
             <SlideShop />
             <SlidePick />
             <SlideTopic />
@@ -47,9 +48,6 @@ function App() {
         </Switch>
         <Footer />
       </BrowserRouter>{" "}
-      */}
-      {/* <TodaysPick />
-      {/* <Intro /> */}
     </div>
   );
 }

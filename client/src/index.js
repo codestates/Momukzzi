@@ -13,7 +13,6 @@ import {
   shallowEqual,
 } from "react-redux";
 
-
 const initialState = {
   isLogInOpen: false,
   isSignUpOpen: false,
@@ -34,6 +33,8 @@ const initialState = {
       y: null,
     },
   ],
+  shopMenu: [],
+  shopPic: [],
 };
 
 function reducer(currentState = initialState, action) {
@@ -44,8 +45,12 @@ function reducer(currentState = initialState, action) {
     newState.isSignUpOpen = !newState.isSignUpOpen;
   } else if (action.type === "favorite modal") {
     newState.isFavoriteModal = !newState.isFavoriteModal;
-  } else if (action.type === "shopinfo") {
+  } else if (action.type === "shop_info") {
     newState.shopInfo = action.data;
+  } else if (action.type === "shop_menu") {
+    newState.shopMenu = action.data;
+  } else if (action.type === "shop_shoppic") {
+    newState.shopPic = action.data;
   }
   return newState;
 }
