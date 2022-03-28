@@ -1,6 +1,6 @@
 /* global kakao */
 
-import react, { useEffect, useState } from "react";
+import react, { useEffect, useState, Suspense } from "react";
 import styled from "styled-components";
 import Slider from "react-slick";
 // Import Swiper React components
@@ -22,6 +22,7 @@ import {
   shallowEqual,
 } from "react-redux";
 import { put } from "redux-saga/effects";
+import { AiOutlineConsoleSql } from "react-icons/ai";
 const TodaysPickContainer = styled.div`
   border: 1px solid black;
   width: 1000px;
@@ -66,7 +67,9 @@ const ShopMenu = styled.div`
 `;
 
 const Intro = () => {
+  let test;
   const [randomInt, setRandomInt] = useState(0);
+  const [mapList, setMapList] = useState([]);
   const dispatch = useDispatch();
   const shopInfo = useSelector((state) => state.shopInfo);
   useEffect(() => {
@@ -138,7 +141,10 @@ const Intro = () => {
                 }
               }
             }
-            dispatch({ type: "shopinfo", data: list });
+
+            setMapList(list);
+            localStorage.setItem("list", list);
+
             // 지도에 마커를 표시하는 함수입니다
             function displayMarker(place) {
               // 마커를 생성하고 지도에 표시합니다
@@ -159,6 +165,17 @@ const Intro = () => {
               });
             }
             // -----------------------카테고리 검색--------------------------------------
+            axios({
+              method: "get", //you can set what request you want to be
+              url: "https://dapi.kakao.com/v2/local/search/category.json?category_group_code=FD6&page=1&size=15&sort=accuracy&x=126.6523752&y=37.5371225&radius=10000",
+              data: {},
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: "KakaoAK 2af87592ef59bb8f2f504dc1544a0a89",
+              },
+            }).then((res) => {
+              console.log(res);
+            });
           },
           function (error) {
             console.error(error);
@@ -174,8 +191,34 @@ const Intro = () => {
       }
     }
     getLocation();
+
+    // setTimeout(() => {
+    //   axios.post("https://localhost:4000/test", {
+    //     mapList,
+    //   });
+    // }, 2);
+
+    const headers = new Headers();
+    headers.append("Authorization", "KakaoAK 2af87592ef59bb8f2f504dc1544a0a89");
+
+    axios
+      .get(
+        "https://dapi.kakao.com/v2/local/search/category.json?category_group_code=FD6&page=1&size=15&sort=accuracy&x=126.6523752&y=37.5371225&radius=10000",
+        {
+          headers: {
+            Authorization: "KakaoAK 2af87592ef59bb8f2f504dc1544a0a89",
+          },
+          withCredentials: false,
+        }
+      )
+      .then((res) => {
+        dispatch({ type: "shopinfo", data: res.data.documents });
+        //   document.querySelector(".test").textContent =
+        //     res.data.documents[0].address_name;
+      });
   }, []);
 
+  console.log(mapList);
   return (
     <TodaysPickContainer>
       <Section>
@@ -205,7 +248,7 @@ const Intro = () => {
         <Map>
           <div id="map" style={{ width: "500px", height: "400px" }}></div>
         </Map>
-        <ShopMenu>{""}</ShopMenu>
+        <ShopMenu className="test">{shopInfo[0].id}</ShopMenu>
       </Section>
     </TodaysPickContainer>
   );
