@@ -1,4 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import { BsStar } from "react-icons/bs";
+import Review from "../Review/Review";
+import ShopImageModal from "./ShopImageModal";
 import {
   ShopImages,
   ShopBody,
@@ -12,26 +17,14 @@ import {
   ReviewIcon,
   FavoriteButton,
 } from "./ShopDetail.style";
-import { useEffect } from "react";
-import axios from "axios";
-import dummyData from "../Mainpage/dummyData";
-import ShopImageModal from "./ShopImageModal";
 
 /*global kakao*/
 
 export default function ShopDetail() {
   const [isOpen, setOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState("");
-
-  useEffect(() => {
-    // 카카오 map 객체 생성
-    var container = document.getElementById("map");
-    var options = {
-      center: new kakao.maps.LatLng(37.63462628004234, 126.83257800122841),
-      level: 3,
-    };
-    var map = new kakao.maps.Map(container, options);
-  }, []);
+  const [info, setInfo] = useState({ shop_pics: [], menus: [], reviews: [] });
+  let reviewCount = 5;
 
   const handleImageClick = (item, i) => {
     setOpen(true);
@@ -44,19 +37,39 @@ export default function ShopDetail() {
     console.log("hello");
   };
 
+  useEffect(() => {
+    // 카카오 map 객체 생성
+    var container = document.getElementById("map");
+    var options = {
+      center: new kakao.maps.LatLng(37.63462628004234, 126.83257800122841),
+      level: 3,
+    };
+    var map = new kakao.maps.Map(container, options);
+
+    // TODO: 메인페이지에서 shopid를 내려주면 엔드포인트에 붙여서 get요청
+
+    axios.get("https://localhost:4000/shops/1").then((res) => {
+      setInfo(res.data.data.targetshop);
+    });
+  }, []);
+
   return (
     <>
       {isOpen ? (
-        <ShopImageModal setOpen={setOpen} currentImage={currentImage} />
+        <ShopImageModal
+          setOpen={setOpen}
+          currentImage={currentImage}
+          imageSet={info.shop_pics}
+        />
       ) : (
         <></>
       )}
       <ShopImages>
-        {dummyData.map((item, i) => {
+        {info.shop_pics.map((item, i) => {
           return (
             <img
               key={i}
-              src={item.img}
+              src={item.pic_URL}
               onClick={() => handleImageClick(item, i)}
             />
           );
@@ -65,31 +78,51 @@ export default function ShopDetail() {
       <ShopBody>
         <ShopBasicInfo>
           <ShopBasicInfoHeader>
-            <span>가게이름</span>
-            <span>평점</span>
-            {/*클릭 시 리뷰 페이지로 이동*/}
-            {/* <Link to="/"> */}
+            <span>가게 이름 : {info.shop_name}</span>
+            <span>평점 : {info.star_avg}</span>
             <Buttons>
-              <ReviewButton>
-                <ReviewIcon />
-                <span>리뷰</span>
-              </ReviewButton>
-              {/* </Link> */}
+              <Link to="/review">
+                <ReviewButton>
+                  <ReviewIcon />
+                  <span>리뷰</span>
+                </ReviewButton>
+              </Link>
 
               {/*클릭 시 즐겨찾기 등록 or 해제 */}
-              <FavoriteButton onClick={handleStar}>즐겨찾기</FavoriteButton>
+              <ReviewButton>
+                <BsStar className="favoriteButton" onClick={handleStar} />
+                <span>즐겨찾기</span>
+              </ReviewButton>
             </Buttons>
           </ShopBasicInfoHeader>
-          {/* table tag (th,td) 활용 */}
-          <ShopDetailInfo>가게 상세 info</ShopDetailInfo>
+          <ShopDetailInfo>
+            <ul>
+              <li>주소 : {info.location}</li>
+              <li>음식 종류 : {info.genus}</li>
+              <li>영업시간 : {info.work_time}</li>
+              <li>휴일 : {info.holiday}</li>
+              <li>
+                {info.menus.map((item) => {
+                  return (
+                    <div>
+                      {item.menu_name} 가격은 {item.price}
+                    </div>
+                  );
+                })}
+              </li>
+            </ul>
+          </ShopDetailInfo>
 
           <ShopReview>
-            리뷰들
-            <div>안녕하세요</div>
-            <div>리뷰1</div>
-            <div>리뷰2</div>
-            <div>리뷰3</div>
-            <div>리뷰4</div>
+            {info.reviews.map((item, idx) => {
+              return (
+                <div key={idx} style={{ height: 30 }}>
+                  아이디 : {item.user_id}
+                  코멘트 : {item.comment}
+                  평점 : {item.star}
+                </div>
+              );
+            })}
           </ShopReview>
         </ShopBasicInfo>
         <ShopLocation id="map"></ShopLocation>

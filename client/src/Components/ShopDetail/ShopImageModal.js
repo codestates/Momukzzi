@@ -20,37 +20,7 @@ const ImageModalBackdrop = styled.div`
   place-items: center;
 `;
 
-// const ImageModalView = styled.div`
-//   border-radius: 10px;
-//   background-color: rgba(0, 0, 0, 0.5);
-//   width: 70%;
-//   height: 70%;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-
-//   > img {
-//     object-fit: cover;
-//     width: 80%;
-//     height: 80%;
-//   }
-
-//   > ul {
-//     display: flex;
-//   }
-// `;
-
-// const ImageModalList = styled.li`
-//   width: 100px;
-//   height: 100px;
-//   > img {
-//     position: relative;
-//     width: 50px;
-//     height: 50px;
-//   }
-// `;
-
-export default function ShopImageModal({ setOpen, currentImage }) {
+export default function ShopImageModal({ setOpen, currentImage, imageSet }) {
   const BackgroundClick = (e) => {
     const clicked = e.target.closest(".swiper");
     if (clicked) return;
@@ -77,11 +47,14 @@ export default function ShopImageModal({ setOpen, currentImage }) {
           className="mySwiper"
           initialSlide={currentImage}
         >
-          {dummyData.map((item, i) => {
+          {imageSet.map((item, i) => {
             return (
               <SwiperSlide key={i} style={{ overflow: "hidden" }}>
                 <div className="swiper-zoom-container">
-                  <img src={item.img} style={{ width: "80%", height: "80%" }} />
+                  <img
+                    src={item.pic_URL}
+                    style={{ width: "80%", height: "80%" }}
+                  />
                 </div>
               </SwiperSlide>
             );
