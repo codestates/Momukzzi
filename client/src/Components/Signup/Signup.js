@@ -1,9 +1,18 @@
+<<<<<<< HEAD
+import React, { useEffect } from 'react'
+import { useState } from 'react'
+import axios from 'axios'
+import { useHistory } from 'react-router-dom'
+import styled from 'styled-components'
+import { Provider, useSelector, useDispatch, connect } from 'react-redux'
+=======
 import React, { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { Provider, useSelector, useDispatch, connect } from "react-redux";
+>>>>>>> 179987c30f958a2a1e9ad69730973dfe894ace80
 
 const ModalBackdrop = styled.div`
   position: fixed;
@@ -106,6 +115,76 @@ function Signup() {
     }
   };
 
+<<<<<<< HEAD
+	const nameCheck = () => {
+		if (name === '') {
+			setHideNameFail(false)
+			return false
+		} else {
+			setHideNameFail(true)
+			return true
+		}
+	}
+	const submit = () => {
+		if (
+			isMoreThan4Length() &&
+			onlyNumberAndEnglish() &&
+			isEmailValidate() &&
+			isPasswordEquel() &&
+			isPasswordValidate() &&
+			nameCheck()
+		) {
+			axios
+				.post(
+					`${process.env.REACT_APP_API_URL}/users`,
+					{
+						userid: userId,
+						password: password,
+						nickname: name,
+						email: email,
+					},
+					{ withCredentials: true }
+				)
+				.then(response => {
+					if (response.data.message === 'exist') {
+						setHideIDCheckFail(false)
+						console.log(response.data)
+					} else if (response.data.message === 'created') {
+						setHideIDCheckFail(true)
+						console.log(response.data)
+						window.location.replace('/')
+					}
+				})
+				.catch(err => {
+					throw err
+				})
+		}
+	}
+	const dispatch = useDispatch()
+	return (
+		<ModalBackdrop
+			onClick={() => {
+				dispatch({ type: 'signup modal' })
+			}}
+		>
+			<SignUpForm onClick={e => e.stopPropagation()}>
+				<Div>
+					<InputForm>
+						<div>아이디</div>
+						<InputBox>
+							<Input type="text" onChange={e => setUserId(e.target.value)} />
+						</InputBox>
+						<ValidateMsg hide={hideLengthFail}>
+							아이디는 네 글 자 이상이여야 합니다.
+						</ValidateMsg>
+						<ValidateMsg hide={hideIDFail}>
+							아이디는 영어 또는 숫자만 가능합니다.
+						</ValidateMsg>
+						<ValidateMsg hide={hideIDCheckFail}>
+							중복된 아이디 입니다.
+						</ValidateMsg>
+					</InputForm>
+=======
   const isEmailValidate = () => {
     if (/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-z]+$/.test(email)) {
       setHideEmailFail(true);
@@ -149,8 +228,6 @@ function Signup() {
     }
   };
 
-  const history = useHistory();
-
   const submit = () => {
     if (
       isMoreThan4Length() &&
@@ -162,7 +239,7 @@ function Signup() {
     ) {
       axios
         .post(
-          `${process.env.REACT_APP_API_URL}/users/signup`,
+          `${process.env.REACT_APP_API_URL}/users`,
           {
             userid: userId,
             password: password,
@@ -178,6 +255,7 @@ function Signup() {
           } else if (response.data.message === "created") {
             setHideIDCheckFail(true);
             console.log(response.data);
+            window.location.replace("/");
           }
         })
         .catch((err) => {
@@ -185,10 +263,14 @@ function Signup() {
         });
     }
   };
-
+  const dispatch = useDispatch();
   return (
-    <ModalBackdrop>
-      <SignUpForm>
+    <ModalBackdrop
+      onClick={() => {
+        dispatch({ type: "signup modal" });
+      }}
+    >
+      <SignUpForm onClick={(e) => e.stopPropagation()}>
         <Div>
           <InputForm>
             <div>아이디</div>
@@ -205,6 +287,7 @@ function Signup() {
               중복된 아이디 입니다.
             </ValidateMsg>
           </InputForm>
+>>>>>>> 179987c30f958a2a1e9ad69730973dfe894ace80
 
           <InputForm>
             <div>Email</div>

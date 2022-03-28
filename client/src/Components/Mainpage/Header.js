@@ -6,12 +6,11 @@ import { Provider, useSelector, useDispatch, connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { BsPersonCircle } from "react-icons/bs";
 import { MdMenu } from "react-icons/md";
+import { Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
+
 const HeaderContainer = styled.div`
-  margin: 30px auto;
-  a {
-    text-decoration: none;
-    color: #f0f4f5;
-  }
+  margin: 0 auto;
 
   .navbar {
     display: flex;
@@ -40,11 +39,16 @@ const HeaderContainer = styled.div`
   .navbar_menu li {
     padding: 9px 12px;
     margin: 15px;
+    cursor: pointer;
   }
 
   .navbar_menu li:hover {
     background-color: #d49466;
     border-radius: 4px;
+  }
+
+  .navbar_menu li > div {
+    color: #f0f4f5;
   }
 
   .navbar_icons {
@@ -67,39 +71,8 @@ const HeaderContainer = styled.div`
   .person_circle {
     font-size: 25px;
   }
-
-  @media screen and (max-width: 768px) {
-    .navbar {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .navbar_menu {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
-    }
-
-    .navbar_menu li {
-      width: 100%;
-      text-align: center;
-    }
-
-    .navbar_icons {
-      display: none;
-      justify-content: center;
-      width: 100%;
-    }
-
-    .navbar_toggleBtn {
-      display: block;
-    }
-
-    .navbar_menu_active,
-    .navbar_icons_active {
-      display: flex;
-    }
+  .navbar_icons > li {
+    cursor: pointer;
   }
 `;
 
@@ -110,38 +83,65 @@ const Header = () => {
     setActive(!active);
   };
 
+  const dispatch = useDispatch();
   return (
     <HeaderContainer>
-      <nav class="navbar">
-        <div class="navbar_logo">
-          <img src="img/logo.png" />
+      <nav className="navbar">
+        <div className="navbar_logo">
+          <Link to="/">
+            <img src="img/logo.png" />
+          </Link>
         </div>
-        <ul class={active ? "navbar_menu_active" : "navbar_menu"}>
-          <li>
-            <a href="">로그인</a>
-          </li>
-          <li>
-            <a href="">회원가입</a>
-          </li>
-          <li>
-            <a href="">ㅁㅁㅁ님</a>
-          </li>
-          <li>
-            <a href="">마이페이지</a>
-          </li>
-          <li>
-            <a href="">로그아웃</a>
-          </li>
-        </ul>
-        <ul class={active ? "navbar_icons_active" : "navbar_icons"}>
+        {localStorage.getItem("accessToken") ? (
+          <ul className="navbar_menu">
+            <li>
+              <div>{localStorage.getItem("nickname")}님</div>
+            </li>
+            <Link to="/mypage">
+              <li>
+                <div>마이페이지</div>
+              </li>
+            </Link>
+            <li
+              onClick={() => {
+                localStorage.removeItem("accessToken");
+                localStorage.removeItem("nickname");
+                window.location.replace(window.location.pathname);
+              }}
+            >
+              <div>로그아웃</div>
+            </li>
+          </ul>
+        ) : (
+          <ul className="navbar_menu">
+            <li
+              onClick={() => {
+                dispatch({ type: "login modal" });
+              }}
+            >
+              <div>로그인</div>
+            </li>
+            <li
+              onClick={() => {
+                dispatch({ type: "signup modal" });
+              }}
+            >
+              <div>회원가입</div>
+            </li>
+          </ul>
+        )}
+
+        <ul className="navbar_icons">
           <li>
             {/* <img src="./favorite.png" /> */}
-            <BsPersonCircle className="person_circle" />
+            <BsPersonCircle
+              className="person_circle"
+              onClick={() => {
+                dispatch({ type: "favorite modal" });
+              }}
+            />
           </li>
         </ul>
-        <a href="#" class="navbar_toggleBtn" onClick={clickToggleBtn}>
-          <MdMenu />
-        </a>
       </nav>
     </HeaderContainer>
   );
