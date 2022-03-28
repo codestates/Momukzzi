@@ -64,6 +64,11 @@ export const Buttons = styled.div`
   margin-left: auto;
   display: flex;
   align-items: center;
+  .favoriteButton {
+    display: block;
+    width: 35px;
+    height: 35px;
+  }
 `;
 
 export const ReviewButton = styled.button`
@@ -72,28 +77,31 @@ export const ReviewButton = styled.button`
   border: 0px;
   border-radius: 0;
   background-color: transparent;
+  & > span {
+    font-size: 12px;
+  }
 `;
 
 export const ReviewIcon = styled.i`
   display: block;
-  width: 32px;
-  height: 32px;
+  width: 35px;
+  height: 35px;
   background-image: url("img/review_icon.png");
   background-size: cover;
   background-repeat: no-repeat;
 `;
 
-export const FavoriteButton = styled.button`
-  appearance: none;
-  cursor: pointer;
-  border: 0px;
-  border-radius: 0;
-  background-color: transparent;
-  margin-left: 5px;
-  margin-right: 10px;
-  width: 50px;
-  height: 50px;
-`;
+// export const FavoriteButton = styled.button`
+//   appearance: none;
+//   cursor: pointer;
+//   border: 0px;
+//   border-radius: 0;
+//   background-color: transparent;
+//   margin-left: 5px;
+//   margin-right: 10px;
+//   width: 50px;
+//   height: 50px;
+// `;
 
 export const ShopDetailInfo = styled.div`
   border: 1px solid black;
