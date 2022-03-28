@@ -1,4 +1,4 @@
-const { review } = require('../../models');
+const { review, user,shop } = require('../../models');
 
 module.exports = async (req, res) => {
     console.log('get reviews')
@@ -12,7 +12,11 @@ module.exports = async (req, res) => {
 
     if (shopid){
         const shopreviews = await review.findAll(
-            {where : 
+            {include:[{
+                model : shop,
+                attributes : ['shop_name']
+            }],
+            where : 
                 {shop_id : shopid}})
         
         res.status(200).json({
@@ -23,7 +27,11 @@ module.exports = async (req, res) => {
         })
     } else if (userid){
         const userreviews = await review.findAll(
-            {where : 
+            {include:[{
+                model : user,
+                attributes : ['user_id']
+            }],
+                where : 
                 {user_id : userid}})
         
         res.status(200).json({
