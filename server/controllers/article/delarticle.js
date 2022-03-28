@@ -1,12 +1,26 @@
-const { users } = require('../../models');
+const { article } = require('../../models');
 
 module.exports = async (req, res) => {
-    console.log('changeinfo')
+    console.log('delete article')
 
-    newuserinfo = req.body
+    const targetarticle = await article.findOne({
+        where : {
+            id: req.body.article_id,
+        }
+    })
 
-    await users.update(newuserinfo, {where : {userid : newuserinfo.userid}})
-    .then(res.status(200).json("done!"))
+
+    if (targetarticle){
+
+        article.destroy({
+            where : {
+                id : req.body.article_id
+            }
+        }).then(res.status(200).json({message : `article id ${req.body.article_id} has deleted!`}))
+        
+    }else{
+        res.status(400).json({message : "no aricle"})}
+
+
 
 }
-
