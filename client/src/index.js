@@ -12,7 +12,7 @@ import {
   connect,
   shallowEqual,
 } from "react-redux";
-axios.defaults.withCredentials = true;
+
 
 const initialState = {
   isLogInOpen: false,

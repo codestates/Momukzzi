@@ -22,15 +22,11 @@
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.3.3",
     "nodemon": "^2.0.15",
-<<<<<<< HEAD
-    "redux-saga-effects": "^1.1.0",
-=======
     "npm": "^8.5.5",
     "puppeteer": "^13.5.1",
     "puppeteer-autoscroll-down": "^1.1.0",
     "puppeteer-core": "^13.5.1",
     "sanitize-html": "^2.7.0",
->>>>>>> 09b8d14a2f70c28f41a9d1753fda0c3852b27e0a
     "sequelize": "^6.17.0",
     "shortid": "^2.2.16"
   },

@@ -1,4 +1,3 @@
-
 require("dotenv").config();
 const axios = require("axios");
 const cheerio = require("cheerio");
@@ -33,7 +32,7 @@ app.post("/users", controllers.signup); // 유저 정보 변경
 app.delete("/users", controllers.signout); // 회원 탈퇴
 app.get("/users", controllers.userinfo); // 유저 정보 조회
 app.patch("/users", controllers.changeinfo); // 유저 정보 변경
-app.post("/users/check", controllers.checkinfo) // 중복 조회
+app.post("/users/check", controllers.checkinfo); // 중복 조회
 
 //음식점 정보 조회, 사진업로드, 사진 업로드, 사진 삭제
 app.get("/shops/:shop_id", controllers.shopinfo); // 음식점 정보 조회
@@ -66,6 +65,8 @@ app.patch("/tags", controllers.tag.patch);
 //프론트에서 데이터 받기
 app.post("/data", controllers.data);
 
+//테스트용(지워도 되요)
+app.post("/test", controllers.test);
 
 const HTTPS_PORT = process.env.HTTPS_PORT || 4000;
 
