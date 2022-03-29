@@ -1,12 +1,15 @@
 require("dotenv").config();
-const axios = require("axios");
-const cheerio = require("cheerio");
 const fs = require("fs");
 const https = require("https");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const express = require("express");
 const app = express();
+const bodyParser = require('body-parser');
+const multer  = require('multer')
+const form_data = multer();
+
+const upload = multer({ dest: 'uploads/' })
 
 const controllers = require("./controllers");
 
@@ -22,6 +25,10 @@ app.use(
   })
 );
 app.use(cookieParser());
+
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({extended: true}));
+// app.use(form_data.array());
 
 //로그인, 아웃
 app.post("/users/login", controllers.login); //로그인
@@ -50,7 +57,7 @@ app.patch("/articles", controllers.patcharticle);
 app.get("/articles/:article_id", controllers.article);
 
 //리뷰 조회, 업로드, 삭제, 수정, 리뷰사진 업로드, 리뷰사진 삭제
-app.post("/reviews", controllers.createreview);
+app.post("/reviews", upload.array("img"),controllers.createreview);
 app.delete("/reviews", controllers.delreview);
 app.patch("/reviews", controllers.patchreview);
 app.get("/reviews", controllers.review);
@@ -65,8 +72,7 @@ app.patch("/tags", controllers.tag.patch);
 //프론트에서 데이터 받기
 app.post("/data", controllers.data);
 
-//테스트용(지워도 되요)
-app.post("/test", controllers.test);
+
 
 const HTTPS_PORT = process.env.HTTPS_PORT || 4000;
 

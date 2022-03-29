@@ -1,4 +1,5 @@
-const { shop, menu, shop_pic, shop_tag, tag,review,review_pic } = require('../../models');
+const { shop, menu, shop_pic, shop_tag, tag,review,review_pic,user } = require('../../models');
+const userinfo = require('../users/userinfo');
 
 module.exports = async (req, res) => {
     console.log('get shopinfo')
@@ -14,6 +15,10 @@ module.exports = async (req, res) => {
         },
         {
             model : review,
+            include:[{
+                model : user,
+                attributes : ['user_id']
+            }],
             attributes : ['user_id','comment','star']
         },],
 

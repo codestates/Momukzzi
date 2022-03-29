@@ -23,14 +23,19 @@ import {
 } from "react-redux";
 import { put } from "redux-saga/effects";
 import { AiOutlineConsoleSql } from "react-icons/ai";
+import { type } from "@testing-library/user-event/dist/type";
 const TodaysPickContainer = styled.div`
   border: 1px solid black;
-  width: 1000px;
-  height: 1000px;
+  width: 800px;
+  height: 830px;
   margin: 0 auto;
   .swiper-slide {
-    height: 400px;
+    height: 300px;
     border: 1px solid black;
+  }
+  .swiper-slide > img {
+    /* width: 790px; */
+    /* height: 300px; */
   }
   .map-container {
     display: flex;
@@ -49,7 +54,7 @@ const ShopDetail = styled.div`
 
 const ShopName = styled.div`
   border: 1px solid black;
-  height: 100px;
+  height: 80px;
   text-align: center;
   line-height: 90px;
   #shop-name {
@@ -72,6 +77,8 @@ const Intro = () => {
   const [mapList, setMapList] = useState([]);
   const dispatch = useDispatch();
   const shopInfo = useSelector((state) => state.shopInfo);
+  const shopPic = useSelector((state) => state.shopPic);
+  const shopMenu = useSelector((state) => state.shopMenu);
   useEffect(() => {
     // 0 ~ 44 랜덤 정수 생성
     function getRandomInt(min, max) {
@@ -80,7 +87,7 @@ const Intro = () => {
       return Math.floor(Math.random() * (max - min)) + min; //최댓값은 제외, 최솟값은 포함
     }
 
-    setRandomInt(getRandomInt(1, 44));
+    setRandomInt(getRandomInt(0, 15));
 
     var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
 
@@ -127,23 +134,19 @@ const Intro = () => {
             // 카테고리로 은행을 검색합니다
             ps.categorySearch("FD6", placesSearchCB, {
               useMapBounds: true,
-              page: 3,
+              page: 1,
             });
 
             // 키워드 검색 완료 시 호출되는 콜백함수 입니다
-            const list = [];
+
             function placesSearchCB(data, status, pagination) {
               if (status === kakao.maps.services.Status.OK) {
                 pagination.prevPage();
                 for (var i = 0; i < data.length; i++) {
                   displayMarker(data[i]);
-                  list.push(data[i]);
                 }
               }
             }
-
-            setMapList(list);
-            localStorage.setItem("list", list);
 
             // 지도에 마커를 표시하는 함수입니다
             function displayMarker(place) {
@@ -165,17 +168,43 @@ const Intro = () => {
               });
             }
             // -----------------------카테고리 검색--------------------------------------
-            axios({
-              method: "get", //you can set what request you want to be
-              url: "https://dapi.kakao.com/v2/local/search/category.json?category_group_code=FD6&page=1&size=15&sort=accuracy&x=126.6523752&y=37.5371225&radius=10000",
-              data: {},
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: "KakaoAK 2af87592ef59bb8f2f504dc1544a0a89",
-              },
-            }).then((res) => {
-              console.log(res);
-            });
+            axios
+              .get(
+                `https://dapi.kakao.com/v2/local/search/category.json?category_group_code=FD6&page=1&size=15&sort=accuracy&x=${position.coords.longitude}&y=${position.coords.latitude}&radius=2000`,
+                {
+                  headers: {
+                    Authorization: "KakaoAK 2af87592ef59bb8f2f504dc1544a0a89",
+                  },
+                }
+              )
+              .then((res) => {
+                // dispatch({
+                //   type: "shop_info",
+                //   data: res.data.documents[1],
+                // });
+                // console.log(res.data.documents);
+                // axios
+                //   .post(
+                //     "https://localhost:4000/data",
+                //     { data: res.data.documents },
+                //     {
+                //       withCredentials: true,
+                //     }
+                //   )
+                //   .then((res) => {
+                //     // dispatch({
+                //     //   type: "shop_menu",
+                //     //   data: Object.entries(res.data.data.menu),
+                //     // });
+                //     // dispatch({
+                //     //   type: "shop_shoppic",
+                //     //   data: res.data.data.shoppic,
+                //     // });
+                //     // console.log(res.data.data.shoppic);
+                //     // console.log(Object.entries(res.data.data.menu));
+                //     console.log(res);
+                //   });
+              });
           },
           function (error) {
             console.error(error);
@@ -191,34 +220,8 @@ const Intro = () => {
       }
     }
     getLocation();
-
-    // setTimeout(() => {
-    //   axios.post("https://localhost:4000/test", {
-    //     mapList,
-    //   });
-    // }, 2);
-
-    const headers = new Headers();
-    headers.append("Authorization", "KakaoAK 2af87592ef59bb8f2f504dc1544a0a89");
-
-    axios
-      .get(
-        "https://dapi.kakao.com/v2/local/search/category.json?category_group_code=FD6&page=1&size=15&sort=accuracy&x=126.6523752&y=37.5371225&radius=10000",
-        {
-          headers: {
-            Authorization: "KakaoAK 2af87592ef59bb8f2f504dc1544a0a89",
-          },
-          withCredentials: false,
-        }
-      )
-      .then((res) => {
-        dispatch({ type: "shopinfo", data: res.data.documents });
-        //   document.querySelector(".test").textContent =
-        //     res.data.documents[0].address_name;
-      });
   }, []);
 
-  console.log(mapList);
   return (
     <TodaysPickContainer>
       <Section>
@@ -235,20 +238,37 @@ const Intro = () => {
           modules={[Pagination, Navigation]}
           className="mySwiper"
         >
-          <SwiperSlide className="swiper-slide"></SwiperSlide>
-          <SwiperSlide className="swiper-slide">2</SwiperSlide>
-          <SwiperSlide className="swiper-slide">3</SwiperSlide>
+          {shopPic.map((img, i) => {
+            return (
+              <SwiperSlide className="swiper-slide" key={i}>
+                <img src={img}></img>
+              </SwiperSlide>
+            );
+          })}
+          <SwiperSlide>
+            <img src="https://img1.kakaocdn.net/cthumb/local/R0x420/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flocal%2FkakaomapPhoto%2Freview%2Fa221c94e8f86b8b6833a39a33371025fabaf23cf%3Foriginal"></img>
+          </SwiperSlide>
         </Swiper>
         <ShopName>
-          <span id="shop-name">가게이름</span>
-          <span id="shop-category">종류</span>
+          <span id="shop-name">{shopInfo.place_name}</span>
+          <span id="shop-category">{shopInfo.category_name}</span>
         </ShopName>
       </Section>
       <Section className="map-container">
         <Map>
-          <div id="map" style={{ width: "500px", height: "400px" }}></div>
+          <div id="map" style={{ width: "400px", height: "300px" }}></div>
         </Map>
-        <ShopMenu className="test">{shopInfo[0].id}</ShopMenu>
+        <ShopMenu className="test">
+          <ul>
+            <h3>메뉴</h3>
+            {shopMenu.map((el, i) => {
+              if (el[0] === undefined) {
+                return;
+              }
+              return <li key={i}>{`${el[0]} : ${el[1]}원`}</li>;
+            })}
+          </ul>
+        </ShopMenu>
       </Section>
     </TodaysPickContainer>
   );

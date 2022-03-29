@@ -38,6 +38,7 @@ function App() {
 				<Switch>
 					<Route exact path="/">
 						<Hashtag />
+						<Intro />
 						<SlideShop />
 						<SlidePick />
 						<SlideTopic />
@@ -48,14 +49,9 @@ function App() {
 					<Route path="/signout">
 						<Signout />
 					</Route>
-					<Route path="/review">
-						<Review />
-					</Route>
 				</Switch>
 				<Footer />
 			</BrowserRouter>
-			{/* <TodaysPick />
-      {/* <Intro /> */}
 		</div>
 	)
 }
