@@ -17,15 +17,20 @@ import {
   ReviewIcon,
   FavoriteButton,
 } from "./ShopDetail.style";
+import { useSelector } from "react-redux";
 
 /*global kakao*/
 
-export default function ShopDetail() {
+export default function ShopDetail({ match }) {
   const [isOpen, setOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState("");
   const [info, setInfo] = useState({ shop_pics: [], menus: [], reviews: [] });
   let reviewCount = 5;
 
+  const shopInfo = useSelector((state) => state.shopInfo);
+  // const shopDetailInfo = useSelector((state) => state.shopDetailInfo);
+
+  // console.log(shopDetailInfo[match.params.id]);
   const handleImageClick = (item, i) => {
     setOpen(true);
     setCurrentImage(i);
@@ -48,8 +53,9 @@ export default function ShopDetail() {
 
     // TODO: 메인페이지에서 shopid를 내려주면 엔드포인트에 붙여서 get요청
 
-    axios.get("https://localhost:4000/shops/1").then((res) => {
+    axios.get(`https://localhost:4000/shops/${match.params.id}`).then((res) => {
       setInfo(res.data.data.targetshop);
+      console.log(res.data.data.targetshop);
     });
   }, []);
 
@@ -65,7 +71,8 @@ export default function ShopDetail() {
         <></>
       )}
       <ShopImages>
-        {info.shop_pics.map((item, i) => {
+        {match.params.i}
+        {/* {info.shop_pics.map((item, i) => {
           return (
             <img
               key={i}
@@ -73,13 +80,13 @@ export default function ShopDetail() {
               onClick={() => handleImageClick(item, i)}
             />
           );
-        })}
+        })} */}
       </ShopImages>
       <ShopBody>
         <ShopBasicInfo>
           <ShopBasicInfoHeader>
-            <span>가게 이름 : {info.shop_name}</span>
-            <span>평점 : {info.star_avg}</span>
+            {/* <span>가게 이름 : {info.shop_name}</span>
+            <span>평점 : {info.star_avg}</span> */}
             <Buttons>
               <Link to="/review">
                 <ReviewButton>
@@ -97,7 +104,7 @@ export default function ShopDetail() {
           </ShopBasicInfoHeader>
           <ShopDetailInfo>
             <ul>
-              <li>주소 : {info.location}</li>
+              {/* <li>주소 : {info.location}</li>
               <li>음식 종류 : {info.genus}</li>
               <li>영업시간 : {info.work_time}</li>
               <li>휴일 : {info.holiday}</li>
@@ -109,12 +116,14 @@ export default function ShopDetail() {
                     </div>
                   );
                 })}
-              </li>
+              </li> */}
+              {/* <li>{shopInfo[match.params.i].address_name}</li>
+              <li>{ShopDetailInfo[match.params.i].menulist[0][0]}</li> */}
             </ul>
           </ShopDetailInfo>
 
           <ShopReview>
-            {info.reviews.map((item, idx) => {
+            {/* {info.reviews.map((item, idx) => {
               return (
                 <div key={idx} style={{ height: 30 }}>
                   아이디 : {item.user_id}
@@ -122,7 +131,7 @@ export default function ShopDetail() {
                   평점 : {item.star}
                 </div>
               );
-            })}
+            })} */}
           </ShopReview>
         </ShopBasicInfo>
         <ShopLocation id="map"></ShopLocation>
