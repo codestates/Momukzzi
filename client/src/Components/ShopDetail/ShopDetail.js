@@ -29,7 +29,7 @@ export default function ShopDetail({ match }) {
 
   const shopInfo = useSelector((state) => state.shopInfo);
   // const shopDetailInfo = useSelector((state) => state.shopDetailInfo);
-  console.log(shopInfo[match.params.i].id);
+
   // console.log(shopDetailInfo[match.params.i]);
   const handleImageClick = (item, i) => {
     setOpen(true);

@@ -14,12 +14,15 @@ import {
 } from "react-redux";
 import dummyShopInfo from "./dummy/dummyShopInfo";
 import dummyShopDetailInfo from "./dummy/dummyShopDetailInfo";
+import dummyShopPicInfo from "./dummy/dummyShopPicInfo";
 const initialState = {
   isLogInOpen: false,
   isSignUpOpen: false,
   isFavoriteModal: false,
   shopInfo: dummyShopInfo,
   shopDetailInfo: dummyShopDetailInfo,
+  topicShopInfo: dummyShopInfo.slice(),
+  topicShopDetailInfo: dummyShopPicInfo,
 };
 
 function reducer(currentState = initialState, action) {
@@ -34,6 +37,10 @@ function reducer(currentState = initialState, action) {
     newState.shopInfo = action.data;
   } else if (action.type === "shop_detail_info") {
     newState.shopDetailInfo = action.data;
+  } else if (action.type === "topic_shop_info") {
+    newState.topicShopInfo = action.data;
+  } else if (action.type === "topic_shop_detail_info") {
+    newState.topicShopDetailInfo = action.data;
   }
 
   return newState;

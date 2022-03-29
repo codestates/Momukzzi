@@ -23,7 +23,6 @@ import Mypage from "./Components/Mypage/Mypage";
 import Signout from "./Components/Mypage/Signout";
 import Review from "./Components/Mypage/Review";
 import Favorite from "./Components/Favorites/Favorites";
-import TodaysPick from "./Components/Mainpage/TodaysPick";
 import ShopDetail from "./Components/ShopDetail/ShopDetail";
 import { useEffect } from "react";
 import axios from "axios";
@@ -32,6 +31,7 @@ function App() {
   const isSignUpOpen = useSelector((state) => state.isSignUpOpen);
   const isFavoriteModal = useSelector((state) => state.isFavoriteModal);
   const shopInfo = useSelector((state) => state.shopInfo);
+  const shopDetailInfo = useSelector((state) => state.shopDetailInfo);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -87,6 +87,25 @@ function App() {
     }
     getLocation();
   }, []);
+
+  useEffect(() => {
+    axios
+      .get("https://localhost:4000/topicshop/total_review", {
+        withCredentials: true,
+      })
+      .then((res) => {
+        dispatch({
+          type: "topic_shop_info",
+          data: res.data.data.shopInfo,
+        });
+        dispatch({
+          type: "topic_shop_detail_info",
+          data: res.data.data.shopPicInfos,
+        });
+      });
+  }, []);
+  // console.log(shopInfo);
+  // console.log(shopDetailInfo);
   return (
     <div className="App">
       <BrowserRouter>
@@ -96,7 +115,6 @@ function App() {
         {isFavoriteModal ? <Favorite /> : ""}
         <Switch>
           <Route exact path="/">
-            <Hashtag />
             <Intro />
             <SlideShop />
             <SlidePick />
@@ -105,7 +123,7 @@ function App() {
           <Route path="/mypage">
             <Mypage />
           </Route>
-          <Route path="/shopdetail/:i" exact component={ShopDetail} />
+          <Route path="/shopdetail/:i" exact component={ShopDetail} />\
         </Switch>
         <Footer />
       </BrowserRouter>

@@ -187,8 +187,8 @@ const Intro = () => {
       <Section>
         <ShopDetail>상세 정보</ShopDetail>
         <Swiper
-          slidesPerView={1}
-          slidesPerGroup={1}
+          slidesPerView={2}
+          slidesPerGroup={2}
           loop={true}
           loopFillGroupWithBlank={true}
           pagination={{

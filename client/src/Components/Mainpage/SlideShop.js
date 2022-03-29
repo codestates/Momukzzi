@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react";
 import { useEffect } from "react";
-import Slider from "react-slick";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 // Import Swiper React components
@@ -61,15 +60,6 @@ function SlideShop() {
     return el.shoppic;
   });
 
-  // useEffect(() => {
-  //   axios.get('',{
-  //     idArr : shopInfo.map((el) => el.id)
-  //   },{
-  //     withCredentials: true
-  //   })
-  // },[])
-
-  console.log(shopInfo);
   return (
     <SlideShopContainer>
       <Swiper
@@ -88,7 +78,7 @@ function SlideShop() {
       >
         {shopPic.map((el, i) => {
           return (
-            <SwiperSlide>
+            <SwiperSlide key={i}>
               <Link to={`/shopdetail/${i}`}>
                 <img src={el[0]} className="food-picture"></img>
               </Link>

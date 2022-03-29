@@ -65,7 +65,8 @@ app.patch("/tags", controllers.tag.patch);
 //프론트에서 데이터 받기
 app.post("/data", controllers.data);
 
-
+// 주제별 식당 추천
+app.get("/topicshop/:topic", controllers.topicshop);
 
 const HTTPS_PORT = process.env.HTTPS_PORT || 4000;
 
