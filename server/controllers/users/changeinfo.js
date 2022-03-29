@@ -1,7 +1,6 @@
 const { user } = require('../../models')
 
 module.exports = async (req, res) => {
-
 	console.log('changeinfo')
 	console.log(req.body)
 	const newuserinfo = req.body
