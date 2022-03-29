@@ -6,7 +6,7 @@ const { scrollPageToBottom } = require("puppeteer-autoscroll-down");
 module.exports = async (req, res) => {
   // let address = req.body.road_address_name;
   let address = undefined;
-  let result = {}; //결과를 담을 객체
+  let result = []; //결과를 담을 객체
   // console.log(req.body.data);
   for (let i = 0; i < req.body.data.length; i++) {
     // 데이터 베이스에 있는지 검증
@@ -23,7 +23,7 @@ module.exports = async (req, res) => {
       console.log("데이터 베이스에서 정보가 나갑니다~");
       let eachshop = [];
       let photodatas = []; //이미지 크롤링 결과
-      let menulist = {}; //메뉴 정보 크롤링 결과
+      let menulist = []; //메뉴 정보 크롤링 결과
 
       const shopid = shopinfo.id;
 
@@ -44,19 +44,19 @@ module.exports = async (req, res) => {
       });
 
       for (let i = 0; i < menu_list.length; i++) {
-        menulist[menu_list[i].menu_name] = menu_list[i].price;
+        menulist.push([menu_list[i].menu_name, menu_list[i].price]);
       }
 
-      result[req.body.data[i].place_name] = {
+      result.push({
         shoppic: photodatas,
         menulist: menulist,
-      };
+      });
     } else {
       console.log("크롤링해서 정보가 나갑니다~");
 
       let eachshop = [];
       let photodatas = []; //이미지 크롤링 결과
-      let menulist = {}; //메뉴 정보 크롤링 결과
+      let menulist = []; //메뉴 정보 크롤링 결과
       let genus = req.body.data[i].category_name.split(" > ")[1];
 
       // 크롤링시작
@@ -109,11 +109,11 @@ module.exports = async (req, res) => {
         if (price.length !== 0) {
           const somemenu = menulists[i].children[0].data;
           const eachprice = price[i].children[1].data;
-          menulist[somemenu] = eachprice;
+          menulist.push([somemenu, eachprice]);
         } else {
           const somemenu = menulists[i].children[0].data;
           const eachprice = "가격 정보 없음"; //상품 가격 (가끔 가격이 없는 곳도 있음)
-          menulist[somemenu] = eachprice;
+          menulist.push([somemenu, eachprice]);
         }
       }
 
@@ -146,9 +146,9 @@ module.exports = async (req, res) => {
       }
 
       // 메뉴 저장
-      for (let i = 0; i < Object.keys(menulist).length; i++) {
-        const menu_name = Object.keys(menulist)[i];
-        const price_list = Object.values(menulist)[i];
+      for (let i = 0; i < menulist.length; i++) {
+        const menu_name = menulist[i][0];
+        const price_list = menulist[i][1];
         await menu.create({
           shop_id: shopid,
           menu_name: menu_name,
@@ -156,10 +156,10 @@ module.exports = async (req, res) => {
         });
       }
 
-      result[req.body.data[i].place_name] = {
+      result.push({
         shoppic: photodatas,
         menulist: menulist,
-      };
+      });
     }
   }
 

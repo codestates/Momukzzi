@@ -72,13 +72,11 @@ const ShopMenu = styled.div`
 `;
 
 const Intro = () => {
-  let test;
   const [randomInt, setRandomInt] = useState(0);
   const [mapList, setMapList] = useState([]);
   const dispatch = useDispatch();
   const shopInfo = useSelector((state) => state.shopInfo);
-  const shopPic = useSelector((state) => state.shopPic);
-  const shopMenu = useSelector((state) => state.shopMenu);
+  const shopDetailInfo = useSelector((state) => state.shopDetailInfo);
   useEffect(() => {
     // 0 ~ 44 랜덤 정수 생성
     function getRandomInt(min, max) {
@@ -168,43 +166,6 @@ const Intro = () => {
               });
             }
             // -----------------------카테고리 검색--------------------------------------
-            axios
-              .get(
-                `https://dapi.kakao.com/v2/local/search/category.json?category_group_code=FD6&page=1&size=15&sort=accuracy&x=${position.coords.longitude}&y=${position.coords.latitude}&radius=2000`,
-                {
-                  headers: {
-                    Authorization: "KakaoAK 2af87592ef59bb8f2f504dc1544a0a89",
-                  },
-                }
-              )
-              .then((res) => {
-                // dispatch({
-                //   type: "shop_info",
-                //   data: res.data.documents[1],
-                // });
-                // console.log(res.data.documents);
-                // axios
-                //   .post(
-                //     "https://localhost:4000/data",
-                //     { data: res.data.documents },
-                //     {
-                //       withCredentials: true,
-                //     }
-                //   )
-                //   .then((res) => {
-                //     // dispatch({
-                //     //   type: "shop_menu",
-                //     //   data: Object.entries(res.data.data.menu),
-                //     // });
-                //     // dispatch({
-                //     //   type: "shop_shoppic",
-                //     //   data: res.data.data.shoppic,
-                //     // });
-                //     // console.log(res.data.data.shoppic);
-                //     // console.log(Object.entries(res.data.data.menu));
-                //     console.log(res);
-                //   });
-              });
           },
           function (error) {
             console.error(error);
@@ -221,7 +182,6 @@ const Intro = () => {
     }
     getLocation();
   }, []);
-
   return (
     <TodaysPickContainer>
       <Section>
@@ -238,20 +198,18 @@ const Intro = () => {
           modules={[Pagination, Navigation]}
           className="mySwiper"
         >
-          {shopPic.map((img, i) => {
+          {shopDetailInfo[randomInt].shoppic.map((img) => {
             return (
-              <SwiperSlide className="swiper-slide" key={i}>
+              <SwiperSlide>
                 <img src={img}></img>
               </SwiperSlide>
             );
           })}
-          <SwiperSlide>
-            <img src="https://img1.kakaocdn.net/cthumb/local/R0x420/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flocal%2FkakaomapPhoto%2Freview%2Fa221c94e8f86b8b6833a39a33371025fabaf23cf%3Foriginal"></img>
-          </SwiperSlide>
+          <SwiperSlide></SwiperSlide>
         </Swiper>
         <ShopName>
-          <span id="shop-name">{shopInfo.place_name}</span>
-          <span id="shop-category">{shopInfo.category_name}</span>
+          <span id="shop-name">{shopInfo[randomInt].place_name}</span>
+          <span id="shop-category">{shopInfo[randomInt].category_name}</span>
         </ShopName>
       </Section>
       <Section className="map-container">
@@ -261,11 +219,8 @@ const Intro = () => {
         <ShopMenu className="test">
           <ul>
             <h3>메뉴</h3>
-            {shopMenu.map((el, i) => {
-              if (el[0] === undefined) {
-                return;
-              }
-              return <li key={i}>{`${el[0]} : ${el[1]}원`}</li>;
+            {shopDetailInfo[randomInt].menulist.map((el, i) => {
+              return <li key={i}>{`${el[0]} : ${el[1]}`}</li>;
             })}
           </ul>
         </ShopMenu>

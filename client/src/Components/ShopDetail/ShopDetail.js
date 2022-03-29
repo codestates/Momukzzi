@@ -17,15 +17,20 @@ import {
   ReviewIcon,
   FavoriteButton,
 } from "./ShopDetail.style";
+import { useSelector } from "react-redux";
 
 /*global kakao*/
 
-export default function ShopDetail() {
+export default function ShopDetail({ match }) {
   const [isOpen, setOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState("");
   const [info, setInfo] = useState({ shop_pics: [], menus: [], reviews: [] });
   let reviewCount = 5;
 
+  const shopInfo = useSelector((state) => state.shopInfo);
+  // const shopDetailInfo = useSelector((state) => state.shopDetailInfo);
+  console.log(shopInfo[match.params.i].id);
+  // console.log(shopDetailInfo[match.params.i]);
   const handleImageClick = (item, i) => {
     setOpen(true);
     setCurrentImage(i);
@@ -110,6 +115,8 @@ export default function ShopDetail() {
                   );
                 })}
               </li>
+              {/* <li>{shopInfo[match.params.i].address_name}</li>
+              <li>{ShopDetailInfo[match.params.i].menulist[0][0]}</li> */}
             </ul>
           </ShopDetailInfo>
 

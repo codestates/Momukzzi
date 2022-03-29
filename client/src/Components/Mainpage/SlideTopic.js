@@ -1,6 +1,6 @@
 import react from "react";
 import styled from "styled-components";
-import dummyData from "./dummyData";
+
 const SlideTopicContainer = styled.div`
   width: 1300px;
   height: 475px;
@@ -23,17 +23,7 @@ const SlideTopicImage = styled.img`
 `;
 
 const SlideTopic = () => {
-  return (
-    <SlideTopicContainer>
-      {dummyData.map((data, i) => {
-        return (
-          <SlideTopicShop key={i}>
-            <SlideTopicImage src={data.img}></SlideTopicImage>
-          </SlideTopicShop>
-        );
-      })}
-    </SlideTopicContainer>
-  );
+  return <SlideTopicContainer></SlideTopicContainer>;
 };
 
 export default SlideTopic;
