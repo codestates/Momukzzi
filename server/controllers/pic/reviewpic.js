@@ -1,15 +1,18 @@
 const { review_pic } = require('../../models');
+var multer   = require('multer');
 
 module.exports = {
     post : async (req, res) => {
         console.log("review pic create!")
+        console.log(req.files)
+        console.log(req.body)
         let payload = req.body
-        review_pic.create(payload).then(
-            res.status(200).json({
-                message : "review pics uploaded",
-                payload : {payload}
-                })
-            )
+        // review_pic.create(payload).then(
+        //     res.status(200).json({
+        //         message : "review pics uploaded",
+        //         payload : {payload}
+        //         })
+        //     )
         },
     
     delete : async (req, res) => {

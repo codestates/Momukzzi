@@ -1,11 +1,18 @@
-const { review, shop, user } = require('../../models');
+const { review, shop, user,review_pic } = require('../../models');
 const Sequelize = require('sequelize');
 
 module.exports = async (req, res) => {
     console.log('create review')
+    console.log(Object.keys(req))
+    console.log(req.body)
+    console.log(req.files)
+    
 
 
     const newreview = req.body
+    const newreviewpic = req.files
+
+
 
     review.create(newreview).then( async ()=> { 
             const upreview = await review.findOne({
@@ -55,11 +62,31 @@ module.exports = async (req, res) => {
             await shop.update({star_avg : star_avg, total_review : totalrev}, {where : {id : newreview.shop_id}}) 
             await user.update({total_review : userreviewcount}, {where : {id : newreview.user_id}}) 
 
+            
+        }).then(async ()=>{
+            const upreview = await review.findOne({
+                where : {
+                    user_id : newreview.user_id,
+                    shop_id : newreview.shop_id,
+                    comment : newreview.comment
+                }})
+
+            const id = upreview.id
+        
+
+            for(let i =0; i < newreviewpic.length; i++){
+                const payload = {
+                    review_id : id, 
+                    pic_URL : `${newreviewpic[i].filename}.${newreviewpic[i].mimetype.slice(6,newreviewpic[i].mimetype.length)}` }
+
+                review_pic.create(payload)
+            }
+        }).then(
             res.status(200).json({
                 message : "new review updated!",
-                data : {upreview}
-            })
+                data : {newreview}
+            }))
 
-        })
-}
-
+    } 
+    
+    
