@@ -107,9 +107,16 @@ module.exports = async (req, res) => {
 
             for (let i = 0; i < menulists.length; i++) {
                 if (price.length !== 0) {
-                const somemenu = menulists[i].children[0].data;
-                const eachprice = price[i].children[1].data;
-                menulist[somemenu] = eachprice;
+                    try{
+                        const somemenu = menulists[i].children[0].data;
+                        const eachprice = price[i].children[1].data;
+                        menulist[somemenu] = eachprice;
+                    } catch(err) {
+                        const somemenu = menulists[i].children[0].data;
+                        const eachprice = "가격 정보 없음"; //상품 가격 (가끔 가격이 없는 곳도 있음)
+                        menulist[somemenu] = eachprice;
+                    }
+    
                 } else {
                 const somemenu = menulists[i].children[0].data;
                 const eachprice = "가격 정보 없음"; //상품 가격 (가끔 가격이 없는 곳도 있음)
@@ -158,22 +165,32 @@ module.exports = async (req, res) => {
 
             const checkerr = await shop_pic.findOne({
                 where : {
-                    shop_id : shopid
+                    shop_id : shopid,
                 }
             })
-            
-            if(checkerr.dataValues.pic_URL){
-                result[req.body.data[i].place_name] = {
-                    shoppic: photodatas,
-                    menulist: menulist,
-                };
-            }else{
+
+            try{
+                if(checkerr.dataValues.pic_URL === ""){
+                    await shop.destroy({
+                                where : {
+                                    id : shopid
+                                }
+                            })
+                }
+            }catch(err){
                 await shop.destroy({
                     where : {
                         id : shopid
                     }
                 })
             }
+
+
+            result[req.body.data[i].place_name] = {
+                        shoppic: photodatas,
+                        menulist: menulist,
+            }
+
 
         
         }
