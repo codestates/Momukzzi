@@ -5,11 +5,11 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const express = require("express");
 const app = express();
-const bodyParser = require('body-parser');
-const multer  = require('multer')
+const bodyParser = require("body-parser");
+const multer = require("multer");
 const form_data = multer();
 
-const upload = multer({ dest: 'uploads/' })
+const upload = multer({ dest: "uploads/" });
 
 const controllers = require("./controllers");
 
@@ -42,7 +42,7 @@ app.patch("/users", controllers.changeinfo); // 유저 정보 변경
 app.post("/users/check", controllers.checkinfo); // 중복 조회
 
 //음식점 정보 조회, 사진업로드, 사진 업로드, 사진 삭제
-app.get("/shops/:shop_id", controllers.shopinfo); // 음식점 정보 조회
+app.get("/shops/:map_id", controllers.shopinfo); // 음식점 정보 조회
 app.post("/shops-pics", controllers.shoppic.post); //
 app.delete("/shops-pics", controllers.shoppic.delete);
 app.get("/shops-tags", controllers.shoptag.get);
@@ -57,7 +57,7 @@ app.patch("/articles", controllers.patcharticle);
 app.get("/articles/:article_id", controllers.article);
 
 //리뷰 조회, 업로드, 삭제, 수정, 리뷰사진 업로드, 리뷰사진 삭제
-app.post("/reviews", upload.array("img"),controllers.createreview);
+app.post("/reviews", upload.array("img"), controllers.createreview);
 app.delete("/reviews", controllers.delreview);
 app.patch("/reviews", controllers.patchreview);
 app.get("/reviews", controllers.review);

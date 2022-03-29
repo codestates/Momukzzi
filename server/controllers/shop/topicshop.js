@@ -32,7 +32,7 @@ module.exports = async (req, res) => {
             shop_id: shopInfo[i].dataValues.id,
           },
         });
-        console.log(shopPicInfo);
+        // console.log(shopPicInfo);
         shopPicInfos.push(shopPicInfo);
       }
       res.status(200).send({ data: { shopInfo, shopPicInfos } });

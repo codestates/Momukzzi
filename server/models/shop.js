@@ -44,6 +44,7 @@ module.exports = (sequelize, DataTypes) => {
       star_avg: DataTypes.INTEGER,
       work_time: DataTypes.STRING,
       holiday: DataTypes.STRING,
+      map_id: DataTypes.STRING,
     },
     {
       sequelize,

@@ -77,6 +77,7 @@ const Intro = () => {
   const dispatch = useDispatch();
   const shopInfo = useSelector((state) => state.shopInfo);
   const shopDetailInfo = useSelector((state) => state.shopDetailInfo);
+
   useEffect(() => {
     // 0 ~ 44 랜덤 정수 생성
     function getRandomInt(min, max) {

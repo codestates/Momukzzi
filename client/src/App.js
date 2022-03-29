@@ -64,7 +64,7 @@ function App() {
                     }
                   )
                   .then((res) => {
-                    // console.log(res.data.data.result);
+                    console.log(res.data.data.result);
                     dispatch({
                       type: "shop_detail_info",
                       data: res.data.data.result,
@@ -104,8 +104,8 @@ function App() {
         });
       });
   }, []);
-  // console.log(shopInfo);
-  // console.log(shopDetailInfo);
+  console.log("카카오로 받아온 정보", shopInfo);
+  console.log("크롤링으로 받아온 정보", shopDetailInfo);
   return (
     <div className="App">
       <BrowserRouter>
@@ -123,7 +123,7 @@ function App() {
           <Route path="/mypage">
             <Mypage />
           </Route>
-          <Route path="/shopdetail/:i" exact component={ShopDetail} />\
+          <Route path="/shopdetail/:id" exact component={ShopDetail} />\
         </Switch>
         <Footer />
       </BrowserRouter>

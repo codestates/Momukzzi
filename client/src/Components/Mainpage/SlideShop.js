@@ -17,7 +17,7 @@ import axios from "axios";
 
 const SlideShopContainer = styled.div`
   margin-top: 30px;
-  .swiper {
+  .mySwiper {
     width: 1300px;
     height: 500px;
     margin-left: auto;
@@ -79,7 +79,7 @@ function SlideShop() {
         {shopPic.map((el, i) => {
           return (
             <SwiperSlide key={i}>
-              <Link to={`/shopdetail/${i}`}>
+              <Link to={`/shopdetail/${shopInfo[i].id}`}>
                 <img src={el[0]} className="food-picture"></img>
               </Link>
             </SwiperSlide>
