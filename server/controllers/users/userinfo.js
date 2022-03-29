@@ -19,6 +19,10 @@ const logininfo = req.headers.authorization;
                     include :[{
                         //all: true, nested: true
                         model :review,
+                        include:[{
+                            model : shop,
+                            attributes : ['shop_name']
+                        }],
                         attributes : ['shop_id','star','comment','createdAt']
                     },
                     // {
