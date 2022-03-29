@@ -139,7 +139,6 @@ function Signup() {
 		}
 	}
 
-<<<<<<< HEAD
 	const nameCheck = () => {
 		if (name === '') {
 			setHideNameFail(false)
@@ -219,120 +218,6 @@ function Signup() {
 							올바른 이메일 형식을 입력해주세요
 						</ValidateMsg>
 					</InputForm>
-=======
-  const isEmailValidate = () => {
-    if (/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-z]+$/.test(email)) {
-      setHideEmailFail(true);
-      return true;
-    } else {
-      setHideEmailFail(false);
-      return false;
-    }
-  };
-  const isPasswordEquel = () => {
-    if (password === passwordRetype) {
-      setHidePasswordEquelFail(true);
-      return true;
-    } else {
-      setHidePasswordEquelFail(false);
-      return false;
-    }
-  };
-
-  const isPasswordValidate = () => {
-    if (
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(
-        password
-      )
-    ) {
-      setHidePasswordFail(true);
-      return true;
-    } else {
-      setHidePasswordFail(false);
-      return false;
-    }
-  };
-
-  const nameCheck = () => {
-    if (name === "") {
-      setHideNameFail(false);
-      return false;
-    } else {
-      setHideNameFail(true);
-      return true;
-    }
-  };
-
-  const submit = () => {
-    if (
-      isMoreThan4Length() &&
-      onlyNumberAndEnglish() &&
-      isEmailValidate() &&
-      isPasswordEquel() &&
-      isPasswordValidate() &&
-      nameCheck()
-    ) {
-      axios
-        .post(
-          `${process.env.REACT_APP_API_URL}/users`,
-          {
-            userid: userId,
-            password: password,
-            nickname: name,
-            email: email,
-          },
-          { withCredentials: true }
-        )
-        .then((response) => {
-          if (response.data.message === "exist") {
-            setHideIDCheckFail(false);
-            console.log(response.data);
-          } else if (response.data.message === "created") {
-            setHideIDCheckFail(true);
-            console.log(response.data);
-            window.location.replace("/");
-          }
-        })
-        .catch((err) => {
-          throw err;
-        });
-    }
-  };
-  const dispatch = useDispatch();
-  return (
-    <ModalBackdrop
-      onClick={() => {
-        dispatch({ type: "signup modal" });
-      }}
-    >
-      <SignUpForm onClick={(e) => e.stopPropagation()}>
-        <Div>
-          <InputForm>
-            <div>아이디</div>
-            <InputBox>
-              <Input type="text" onChange={(e) => setUserId(e.target.value)} />
-            </InputBox>
-            <ValidateMsg hide={hideLengthFail}>
-              아이디는 네 글 자 이상이여야 합니다.
-            </ValidateMsg>
-            <ValidateMsg hide={hideIDFail}>
-              아이디는 영어 또는 숫자만 가능합니다.
-            </ValidateMsg>
-            <ValidateMsg hide={hideIDCheckFail}>
-              중복된 아이디 입니다.
-            </ValidateMsg>
-          </InputForm>
-
-          <InputForm>
-            <div>Email</div>
-            <InputBox>
-              <Input type="text" onChange={(e) => setEmail(e.target.value)} />
-            </InputBox>
-            <ValidateMsg hide={hideEmailFail}>
-              올바른 이메일 형식을 입력해주세요
-            </ValidateMsg>
-          </InputForm>
->>>>>>> 4202ae7980508fbc0c7b8b7a8679145688694e82
 
 					<InputForm>
 						<div>비밀번호</div>
@@ -379,3 +264,4 @@ function Signup() {
 }
 
 export default Signup
+
