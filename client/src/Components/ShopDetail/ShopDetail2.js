@@ -21,7 +21,7 @@ import { useSelector } from "react-redux";
 
 /*global kakao*/
 
-export default function ShopDetail({ match }) {
+export default function ShopDetail2({ match }) {
   const [isOpen, setOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState("");
   const [info, setInfo] = useState({ shop_pics: [], menus: [], reviews: [] });
@@ -53,10 +53,12 @@ export default function ShopDetail({ match }) {
 
     // TODO: 메인페이지에서 shopid를 내려주면 엔드포인트에 붙여서 get요청
 
-    axios.get(`https://localhost:4000/shops/${match.params.id}`).then((res) => {
-      setInfo(res.data.data.targetshop);
-      console.log(res.data.data.targetshop);
-    });
+    axios
+      .get(`https://localhost:4000/shops2/${match.params.id}`)
+      .then((res) => {
+        setInfo(res.data.data.targetshop);
+        console.log(res.data.data.targetshop);
+      });
   }, []);
 
   return (

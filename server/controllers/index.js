@@ -25,4 +25,8 @@ module.exports = {
   tag: require("./tag/tag"),
   shoptag: require("./tag/shoptag"),
   data: require("./getdata/getdatas"),
+
+  topicshop: require("./shop/topicshop"),
+
+  shopinfo2: require("./shop/shopinfo2"),
 };

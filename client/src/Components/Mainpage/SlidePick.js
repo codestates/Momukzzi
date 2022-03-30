@@ -13,7 +13,6 @@ import "swiper/css/navigation";
 
 // import required modules
 import { Grid, Pagination, Navigation } from "swiper";
-import dummyData from "./dummyData";
 
 const SlidePickContainer = styled.div`
   margin: 30px auto;
@@ -73,13 +72,13 @@ function SlidePick() {
         modules={[Pagination, Navigation]}
         className="mySwiper"
       >
-        {dummyData.map((data, i) => {
+        {/* {dummyData.map((data, i) => {
           return (
             <SwiperSlide key={i}>
               <PickImage src={data.img} />
             </SwiperSlide>
           );
-        })}
+        })} */}
       </Swiper>
     </SlidePickContainer>
   );

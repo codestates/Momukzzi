@@ -12,29 +12,19 @@ import {
   connect,
   shallowEqual,
 } from "react-redux";
+import dummyShopInfo from "./dummy/dummyShopInfo";
+import dummyShopDetailInfo from "./dummy/dummyShopDetailInfo";
+import dummyShopPicInfo from "./dummy/dummyShopPicInfo";
+import dummyTopicShopInfo from "./dummy/dummyTopicShopInfo";
 
 const initialState = {
   isLogInOpen: false,
   isSignUpOpen: false,
   isFavoriteModal: false,
-  shopInfo: [
-    {
-      address_name: null,
-      category_group_code: null,
-      category_group_name: null,
-      category_name: null,
-      distance: "",
-      id: null,
-      phone: null,
-      place_name: null,
-      place_url: null,
-      road_address_name: null,
-      x: null,
-      y: null,
-    },
-  ],
-  shopMenu: [],
-  shopPic: [],
+  shopInfo: dummyShopInfo,
+  shopDetailInfo: dummyShopDetailInfo,
+  topicShopInfo: dummyTopicShopInfo,
+  topicShopDetailInfo: dummyShopPicInfo,
 };
 
 function reducer(currentState = initialState, action) {
@@ -47,11 +37,14 @@ function reducer(currentState = initialState, action) {
     newState.isFavoriteModal = !newState.isFavoriteModal;
   } else if (action.type === "shop_info") {
     newState.shopInfo = action.data;
-  } else if (action.type === "shop_menu") {
-    newState.shopMenu = action.data;
-  } else if (action.type === "shop_shoppic") {
-    newState.shopPic = action.data;
+  } else if (action.type === "shop_detail_info") {
+    newState.shopDetailInfo = action.data;
+  } else if (action.type === "topic_shop_info") {
+    newState.topicShopInfo = action.data;
+  } else if (action.type === "topic_shop_detail_info") {
+    newState.topicShopDetailInfo = action.data;
   }
+
   return newState;
 }
 const store = createStore(reducer);

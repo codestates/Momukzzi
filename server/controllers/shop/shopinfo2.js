@@ -11,8 +11,8 @@ const {
 const userinfo = require("../users/userinfo");
 
 module.exports = async (req, res) => {
-  console.log("get shopinfo");
-  console.log(req.params.map_id);
+  console.log("get shopinfo2");
+  console.log(req.params.shop_id);
   const targetshop = await shop.findOne({
     include: [
       {
@@ -36,7 +36,7 @@ module.exports = async (req, res) => {
     ],
 
     where: {
-      map_id: req.params.map_id,
+      id: req.params.shop_id,
     },
   });
 

@@ -1,8 +1,7 @@
 import React, { useRef, useState } from "react";
 import { useEffect } from "react";
-import Slider from "react-slick";
 import styled from "styled-components";
-
+import { Link } from "react-router-dom";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
@@ -13,11 +12,12 @@ import "swiper/css/navigation";
 
 // import required modules
 import { Grid, Pagination, Navigation } from "swiper";
-import dummyData from "./dummyData";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 const SlideShopContainer = styled.div`
   margin-top: 30px;
-  .swiper {
+  .mySwiper {
     width: 1300px;
     height: 500px;
     margin-left: auto;
@@ -54,6 +54,12 @@ const SlideShopContainer = styled.div`
 `;
 
 function SlideShop() {
+  const shopDetailInfo = useSelector((state) => state.shopDetailInfo);
+  const shopInfo = useSelector((state) => state.shopInfo);
+  const shopPic = shopDetailInfo.map((el) => {
+    return el.shoppic;
+  });
+
   return (
     <SlideShopContainer>
       <Swiper
@@ -70,22 +76,15 @@ function SlideShop() {
         modules={[Grid, Pagination, Navigation]}
         className="mySwiper"
       >
-        {dummyData.map((data, i) => {
+        {shopPic.map((el, i) => {
           return (
             <SwiperSlide key={i}>
-              <img className="food-picture" src={data.img} />
+              <Link to={`/shopdetail1/${shopInfo[i].id}`}>
+                <img src={el[0]} className="food-picture"></img>
+              </Link>
             </SwiperSlide>
           );
         })}
-        <SwiperSlide>Slide 1</SwiperSlide>
-        <SwiperSlide>Slide 2</SwiperSlide>
-        <SwiperSlide>Slide 3</SwiperSlide>
-        <SwiperSlide>Slide 4</SwiperSlide>
-        <SwiperSlide>Slide 5</SwiperSlide>
-        <SwiperSlide>Slide 6</SwiperSlide>
-        <SwiperSlide>Slide 7</SwiperSlide>
-        <SwiperSlide>Slide 8</SwiperSlide>
-        <SwiperSlide>Slide 9</SwiperSlide>
       </Swiper>
     </SlideShopContainer>
   );
