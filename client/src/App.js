@@ -20,10 +20,11 @@ import SlideTopic from "./Components/Mainpage/SlideTopic";
 import Hashtag from "./Components/Mainpage/Hashtag";
 import Loginmodal from "./Components/Login/Loginmodal";
 import Mypage from "./Components/Mypage/Mypage";
-import Review from "./Components/Mypage/Review";
+// import Review from "./Components/Mypage/Review";
 import Favorite from "./Components/Favorites/Favorites";
 import ShopDetail from "./Components/ShopDetail/ShopDetail";
 import ShopDetail2 from "./Components/ShopDetail/ShopDetail2";
+import Review from "./Components/Review/Review";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -132,6 +133,7 @@ function App() {
           </Route>
           <Route path="/shopdetail1/:id" component={ShopDetail} />
           <Route path="/shopdetail2/:id" component={ShopDetail2} />
+          <Route path="/review" component={Review} />
         </Switch>
         <Footer />
       </BrowserRouter>

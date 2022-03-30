@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
 import axios from "axios";
+import { useSelector } from "react-redux";
 import {
   ReviewBody,
   ReviewInputText,
@@ -21,6 +22,8 @@ export default function Review() {
   const [uploadImage, setUploadImage] = useState([]);
   const [thumbnailImage, setThumbnailImage] = useState([]);
 
+  const shopId = useSelector((state) => state.currentShopId);
+
   const handleInputText = (e) => {
     setInputText(e.target.value);
   };
@@ -37,16 +40,22 @@ export default function Review() {
     const reviewData = new FormData();
     reviewData.append("star", selectedStar);
     reviewData.append("text", inputText);
+    reviewData.append("shop_id", shopId);
     uploadImage.map((item) => {
       return reviewData.append("img", item);
     });
 
     axios
-      .post("https://localhost:4000/reviews", reviewData)
+      .post("https://localhost:4000/reviews", reviewData, {
+        headers: {
+          authorization: localStorage.getItem("accessToken"),
+        },
+      })
       .then((res) => console.log(res));
   };
 
   useEffect(() => {
+    console.log(`리뷰 남길 가게 id = ${shopId}`);
     console.log(`평점 : ${selectedStar}`);
     // for (let pair of formData.entries()) {
     //   console.log(pair[0] + ", " + pair[1]);
