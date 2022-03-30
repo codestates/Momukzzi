@@ -25,6 +25,7 @@ const initialState = {
   shopDetailInfo: dummyShopDetailInfo,
   topicShopInfo: dummyTopicShopInfo,
   topicShopDetailInfo: dummyShopPicInfo,
+  currentShopId: 0,
 };
 
 function reducer(currentState = initialState, action) {
@@ -43,6 +44,8 @@ function reducer(currentState = initialState, action) {
     newState.topicShopInfo = action.data;
   } else if (action.type === "topic_shop_detail_info") {
     newState.topicShopDetailInfo = action.data;
+  } else if (action.type === "current_shop_id") {
+    newState.currentShopId = action.payload.shopId;
   }
 
   return newState;
