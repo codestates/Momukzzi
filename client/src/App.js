@@ -111,8 +111,13 @@ function App() {
       });
   }, []);
 
+  if (localStorage.getItem("visited") === null) {
+    localStorage.setItem("visited", JSON.stringify([]));
+  }
+
   console.log("카카오로 받아온 정보", shopInfo);
   console.log("크롤링으로 받아온 정보", shopDetailInfo);
+
   return (
     <div className="App">
       <BrowserRouter>
@@ -125,7 +130,7 @@ function App() {
             <Intro />
             <SlideShop />
             <SlidePick />
-            <SlideTopic topicInfo={topicInfo} />
+            <SlideTopic />
           </Route>
           <Route path="/mypage">
             <Mypage />
