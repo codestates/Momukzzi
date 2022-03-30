@@ -38,5 +38,6 @@ module.exports = async (req, res) => {
       res.status(200).send({ data: { shopInfo, shopPicInfos } });
     }
   } else if (req.body.topic_code === "star_avg") {
+    
   }
 };

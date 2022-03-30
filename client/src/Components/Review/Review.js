@@ -54,6 +54,8 @@ export default function Review() {
       .then((res) => console.log(res));
   };
 
+
+
   useEffect(() => {
     console.log(`리뷰 남길 가게 id = ${shopId}`);
     console.log(`평점 : ${selectedStar}`);
