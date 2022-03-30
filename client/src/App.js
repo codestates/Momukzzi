@@ -25,7 +25,6 @@ import Review from "./Components/Mypage/Review";
 import Favorite from "./Components/Favorites/Favorites";
 import ShopDetail from "./Components/ShopDetail/ShopDetail";
 import ShopDetail2 from "./Components/ShopDetail/ShopDetail2";
-import Review from "./Components/Review/Review";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -113,8 +112,13 @@ function App() {
       });
   }, []);
 
+  if (localStorage.getItem("visited") === null) {
+    localStorage.setItem("visited", JSON.stringify([]));
+  }
+
   console.log("카카오로 받아온 정보", shopInfo);
   console.log("크롤링으로 받아온 정보", shopDetailInfo);
+
   return (
     <div className="App">
       <BrowserRouter>
@@ -127,7 +131,7 @@ function App() {
             <Intro />
             <SlideShop />
             <SlidePick />
-            <SlideTopic topicInfo={topicInfo} />
+            <SlideTopic />
           </Route>
           <Route path="/mypage">
             <Mypage />
@@ -136,7 +140,6 @@ function App() {
             <Signout />
           </Route>
           <Route path="/shopdetail/:id" exact component={ShopDetail} />
-          <Route path="/shopdetail1/:id" component={ShopDetail} />
           <Route path="/shopdetail2/:id" component={ShopDetail2} />
           <Route path="/review" component={Review} />
         </Switch>
