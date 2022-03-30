@@ -1,6 +1,6 @@
-import logo from './logo.svg'
-import './App.css'
-import { createStore } from 'redux'
+import logo from "./logo.svg";
+import "./App.css";
+import { createStore } from "redux";
 import {
   Provider,
   useSelector,
@@ -20,12 +20,15 @@ import SlideTopic from "./Components/Mainpage/SlideTopic";
 import Hashtag from "./Components/Mainpage/Hashtag";
 import Loginmodal from "./Components/Login/Loginmodal";
 import Mypage from "./Components/Mypage/Mypage";
-import Signout from "./Components/Mypage/Signout";
 import Review from "./Components/Mypage/Review";
 import Favorite from "./Components/Favorites/Favorites";
 import ShopDetail from "./Components/ShopDetail/ShopDetail";
-import { useEffect } from "react";
+import ShopDetail2 from "./Components/ShopDetail/ShopDetail2";
+import { useEffect, useState } from "react";
 import axios from "axios";
+
+import dummyTopicShopInfo from "./dummy/dummyTopicShopInfo";
+
 function App() {
   const isLogInOpen = useSelector((state) => state.isLogInOpen);
   const isSignUpOpen = useSelector((state) => state.isSignUpOpen);
@@ -33,6 +36,8 @@ function App() {
   const shopInfo = useSelector((state) => state.shopInfo);
   const shopDetailInfo = useSelector((state) => state.shopDetailInfo);
   const dispatch = useDispatch();
+
+  const [topicInfo, setTopicInfo] = useState(dummyTopicShopInfo);
 
   useEffect(() => {
     function getLocation() {
@@ -102,8 +107,10 @@ function App() {
           type: "topic_shop_detail_info",
           data: res.data.data.shopPicInfos,
         });
+        setTopicInfo(res.data.data.shopInfo);
       });
   }, []);
+
   console.log("카카오로 받아온 정보", shopInfo);
   console.log("크롤링으로 받아온 정보", shopDetailInfo);
   return (
@@ -118,15 +125,13 @@ function App() {
             <Intro />
             <SlideShop />
             <SlidePick />
-            <SlideTopic />
+            <SlideTopic topicInfo={topicInfo} />
           </Route>
           <Route path="/mypage">
             <Mypage />
           </Route>
-	  <Route path="/signout">
-	    <Signout />
-	  </Route>
-          <Route path="/shopdetail/:id" exact component={ShopDetail} />\
+          <Route path="/shopdetail1/:id" component={ShopDetail} />
+          <Route path="/shopdetail2/:id" component={ShopDetail2} />
         </Switch>
         <Footer />
       </BrowserRouter>
@@ -134,4 +139,4 @@ function App() {
   );
 }
 
-export default App
+export default App;

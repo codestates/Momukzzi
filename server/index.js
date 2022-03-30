@@ -75,6 +75,8 @@ app.post("/data", controllers.data);
 // 주제별 식당 추천
 app.get("/topicshop/:topic", controllers.topicshop);
 
+app.get("/shops2/:shop_id", controllers.shopinfo2);
+
 const HTTPS_PORT = process.env.HTTPS_PORT || 4000;
 
 // 인증서 파일들이 존재하는 경우에만 https 프로토콜을 사용하는 서버를 실행합니다.

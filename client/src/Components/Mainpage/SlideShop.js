@@ -79,7 +79,7 @@ function SlideShop() {
         {shopPic.map((el, i) => {
           return (
             <SwiperSlide key={i}>
-              <Link to={`/shopdetail/${shopInfo[i].id}`}>
+              <Link to={`/shopdetail1/${shopInfo[i].id}`}>
                 <img src={el[0]} className="food-picture"></img>
               </Link>
             </SwiperSlide>

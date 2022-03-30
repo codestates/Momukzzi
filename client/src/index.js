@@ -15,13 +15,15 @@ import {
 import dummyShopInfo from "./dummy/dummyShopInfo";
 import dummyShopDetailInfo from "./dummy/dummyShopDetailInfo";
 import dummyShopPicInfo from "./dummy/dummyShopPicInfo";
+import dummyTopicShopInfo from "./dummy/dummyTopicShopInfo";
+
 const initialState = {
   isLogInOpen: false,
   isSignUpOpen: false,
   isFavoriteModal: false,
   shopInfo: dummyShopInfo,
   shopDetailInfo: dummyShopDetailInfo,
-  topicShopInfo: dummyShopInfo.slice(),
+  topicShopInfo: dummyTopicShopInfo,
   topicShopDetailInfo: dummyShopPicInfo,
 };
 
