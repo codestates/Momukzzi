@@ -41,12 +41,13 @@ const SlideTopicImage = styled.img`
   border: 1px solid black;
 `;
 
-const SlideTopic = () => {
+const SlideTopic = ({ topicInfo }) => {
   const dispatch = useDispatch();
   const topicShopInfo = useSelector((state) => state.topicShopInfo);
   const topicShopDetailInfo = useSelector((state) => state.topicShopDetailInfo);
   console.log("주제별로 받아온 shop_pic 테이블", topicShopDetailInfo);
   console.log("주제별로 받아온 shop 테이블", topicShopInfo);
+
   return (
     <SlideTopicContainer>
       <div id="topic">평점이 높은 식당</div>
@@ -54,7 +55,7 @@ const SlideTopic = () => {
         {topicShopDetailInfo.map((el, i) => {
           return (
             <TopicShopList key={i}>
-              <Link to={`/shopdetail/${i}`}>
+              <Link to={`/shopdetail2/${el.shop_id}`}>
                 <SlideTopicImage
                   className="shop_pic"
                   src={el.pic_URL}

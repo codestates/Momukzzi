@@ -136,6 +136,8 @@ for (let i = 0; i < req.body.data.length; i++) {
         location: req.body.data[i].road_address_name,
         work_time: "9:00 ~ 21:00",
         map_id: req.body.data[i].id,
+        x: req.body.data[i].x,
+        y: req.body.data[i].y,
     });
 
     // 저장한 기본 정보의 음식점 id 가져오기

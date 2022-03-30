@@ -37,6 +37,9 @@
       "react-app/jest"
     ]
   },
+  "resolutions": {
+    "styled-components": "^5"
+  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -48,8 +51,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "resolutions": {
-    "styled-components": "^5"
   }
 }
