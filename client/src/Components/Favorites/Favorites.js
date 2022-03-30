@@ -67,6 +67,7 @@ const FavoriteContent = styled.div`
 `;
 
 const Favorite = () => {
+  document.body.style.overflow = "hidden";
   const dispatch = useDispatch();
   const visited = JSON.parse(localStorage.getItem("visited"));
   return (

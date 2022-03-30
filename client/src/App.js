@@ -25,12 +25,14 @@ import Review from "./Components/Mypage/Review";
 import Favorite from "./Components/Favorites/Favorites";
 import ShopDetail from "./Components/ShopDetail/ShopDetail";
 import ShopDetail2 from "./Components/ShopDetail/ShopDetail2";
+import EditorPick from "./Components/EditorPick/EditorPick";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
 import dummyTopicShopInfo from "./dummy/dummyTopicShopInfo";
 
 function App() {
+  document.body.style.overflow = "hidden";
   const isLogInOpen = useSelector((state) => state.isLogInOpen);
   const isSignUpOpen = useSelector((state) => state.isSignUpOpen);
   const isFavoriteModal = useSelector((state) => state.isFavoriteModal);
@@ -45,39 +47,7 @@ function App() {
       if (navigator.geolocation) {
         // GPS를 지원하면
         navigator.geolocation.getCurrentPosition(
-          function (position) {
-            axios
-              .get(
-                `https://dapi.kakao.com/v2/local/search/category.json?category_group_code=FD6&page=1&size=15&sort=accuracy&x=${position.coords.longitude}&y=${position.coords.latitude}&radius=2000`,
-                {
-                  headers: {
-                    Authorization: "KakaoAK 2af87592ef59bb8f2f504dc1544a0a89",
-                  },
-                }
-              )
-              .then((res) => {
-                dispatch({
-                  type: "shop_info",
-                  data: res.data.documents,
-                });
-                // console.log(res.data.documents);
-                axios
-                  .post(
-                    "https://localhost:4000/data",
-                    { data: res.data.documents },
-                    {
-                      withCredentials: true,
-                    }
-                  )
-                  .then((res) => {
-                    console.log(res.data.data.result);
-                    dispatch({
-                      type: "shop_detail_info",
-                      data: res.data.data.result,
-                    });
-                  });
-              });
-          },
+          function (position) {},
           function (error) {
             console.error(error);
           },
@@ -116,16 +86,24 @@ function App() {
     localStorage.setItem("visited", JSON.stringify([]));
   }
 
-  console.log("카카오로 받아온 정보", shopInfo);
-  console.log("크롤링으로 받아온 정보", shopDetailInfo);
+  // console.log("카카오로 받아온 정보", shopInfo);
+  // console.log("크롤링으로 받아온 정보", shopDetailInfo);
 
   return (
     <div className="App">
       <BrowserRouter>
         <Header />
-        {isLogInOpen ? <Loginmodal /> : ""}
-        {isSignUpOpen ? <Signup /> : ""}
-        {isFavoriteModal ? <Favorite /> : ""}
+        {isLogInOpen ? (
+          <Loginmodal />
+        ) : (
+          (document.body.style.overflow = "unset")
+        )}
+        {isSignUpOpen ? <Signup /> : (document.body.style.overflow = "unset")}
+        {isFavoriteModal ? (
+          <Favorite />
+        ) : (
+          (document.body.style.overflow = "unset")
+        )}
         <Switch>
           <Route exact path="/">
             <Intro />
@@ -142,9 +120,11 @@ function App() {
           <Route path="/shopdetail/:id" exact component={ShopDetail} />
           <Route path="/shopdetail2/:id" component={ShopDetail2} />
           <Route path="/review" component={Review} />
+          <Route path="/editor_pick/:code" component={EditorPick} />
         </Switch>
         <Footer />
       </BrowserRouter>
+      {/* <EditorPick /> */}
     </div>
   );
 }
