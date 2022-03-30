@@ -21,9 +21,10 @@ import Hashtag from "./Components/Mainpage/Hashtag";
 import Loginmodal from "./Components/Login/Loginmodal";
 import Mypage from "./Components/Mypage/Mypage";
 import Signout from "./Components/Mypage/Signout";
-import Review from "./Components/Mypage/Review";
+import Review from "./Components/Review/Review";
 import Favorite from "./Components/Favorites/Favorites";
 import TodaysPick from "./Components/Mainpage/TodaysPick";
+import ShopDetail from "./Components/ShopDetail/ShopDetail";
 function App() {
   const isLogInOpen = useSelector((state) => state.isLogInOpen);
   const isSignUpOpen = useSelector((state) => state.isSignUpOpen);

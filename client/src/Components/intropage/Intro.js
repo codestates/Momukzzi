@@ -178,32 +178,32 @@ const Intro = () => {
                 }
               )
               .then((res) => {
-                // dispatch({
-                //   type: "shop_info",
-                //   data: res.data.documents[1],
-                // });
-                // console.log(res.data.documents);
-                // axios
-                //   .post(
-                //     "https://localhost:4000/data",
-                //     { data: res.data.documents },
-                //     {
-                //       withCredentials: true,
-                //     }
-                //   )
-                //   .then((res) => {
-                //     // dispatch({
-                //     //   type: "shop_menu",
-                //     //   data: Object.entries(res.data.data.menu),
-                //     // });
-                //     // dispatch({
-                //     //   type: "shop_shoppic",
-                //     //   data: res.data.data.shoppic,
-                //     // });
-                //     // console.log(res.data.data.shoppic);
-                //     // console.log(Object.entries(res.data.data.menu));
-                //     console.log(res);
-                //   });
+                dispatch({
+                  type: "shop_info",
+                  data: res.data.documents[1],
+                });
+                console.log(res.data.documents);
+                axios
+                  .post(
+                    "https://localhost:4000/data",
+                    { data: res.data.documents },
+                    {
+                      withCredentials: true,
+                    }
+                  )
+                  .then((res) => {
+                    // dispatch({
+                    //   type: "shop_menu",
+                    //   data: Object.entries(res.data.data.menu),
+                    // });
+                    // dispatch({
+                    //   type: "shop_shoppic",
+                    //   data: res.data.data.shoppic,
+                    // });
+                    // console.log(res.data.data.shoppic);
+                    // console.log(Object.entries(res.data.data.menu));
+                    console.log(res);
+                  });
               });
           },
           function (error) {
