@@ -17,7 +17,7 @@ import {
   ReviewIcon,
   FavoriteButton,
 } from "./ShopDetail.style";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 /*global kakao*/
 
@@ -25,12 +25,11 @@ export default function ShopDetail({ match }) {
   const [isOpen, setOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState("");
   const [info, setInfo] = useState({ shop_pics: [], menus: [], reviews: [] });
+
   let reviewCount = 5;
 
-  const shopInfo = useSelector((state) => state.shopInfo);
-  // const shopDetailInfo = useSelector((state) => state.shopDetailInfo);
+  // const shopInfo = useSelector((state) => state.shopInfo);
 
-  // console.log(shopDetailInfo[match.params.id]);
   const handleImageClick = (item, i) => {
     setOpen(true);
     setCurrentImage(i);
@@ -41,46 +40,86 @@ export default function ShopDetail({ match }) {
     // axios.post()
     console.log("hello");
   };
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    // 카카오 map 객체 생성
-    var container = document.getElementById("map");
-    var options = {
-      center: new kakao.maps.LatLng(37.63462628004234, 126.83257800122841),
-      level: 3,
-    };
-    var map = new kakao.maps.Map(container, options);
+    // match.params.id 활용
+    axios
+      .get(`https://localhost:4000/shops/${match.params.id}`)
+      .then((res) => {
+        // 방문한페이지 추가하는 로직 추가----------------------------
+        if (
+          window.location.href.includes("https://localhost:3000/shopdetail")
+        ) {
+          const visited = JSON.parse(localStorage.getItem("visited"));
+          let alreadyVisited = false;
 
-    // TODO: 메인페이지에서 shopid를 내려주면 엔드포인트에 붙여서 get요청
+          visited.forEach((e) => {
+            if (e.id === info.id) {
+              alreadyVisited = true;
+            }
+          });
 
-    axios.get(`https://localhost:4000/shops/${match.params.id}`).then((res) => {
-      setInfo(res.data.data.targetshop);
-      console.log(res.data.data.targetshop);
-
-      // 방문한페이지 추가하는 로직 추가
-      if (window.location.href.includes("https://localhost:3000/shopdetail")) {
-        const visited = JSON.parse(localStorage.getItem("visited"));
-        let alreadyVisited = false;
-
-        visited.forEach((e) => {
-          if (e.id === info.id) {
-            alreadyVisited = true;
+          if (!alreadyVisited) {
+            visited.push({
+              shop_pic: res.data.data.targetshop.shop_pics[0].pic_URL,
+              shop_name: res.data.data.targetshop.shop_name,
+              location: res.data.data.targetshop.location,
+              genus: res.data.data.targetshop.genus,
+              id: res.data.data.targetshop.id,
+            });
+            localStorage.setItem("visited", JSON.stringify(visited));
+            console.log(JSON.stringify(visited));
           }
+        }
+        // -------------------------------------------------
+        setInfo(res.data.data.targetshop);
+        console.log(res.data.data.targetshop);
+        dispatch({
+          type: "current_shop_id",
+          payload: {
+            shopId: res.data.data.targetshop.id,
+          },
+        });
+        return res.data.data.targetshop;
+      })
+      // KAKAO map api and marker
+      .then((res) => {
+        var container = document.getElementById("map");
+        var options = {
+          center: new kakao.maps.LatLng(res.y, res.x),
+          level: 3,
+        };
+        var map = new kakao.maps.Map(container, options);
+
+        // 마커가 표시될 위치입니다
+        var markerPosition = new kakao.maps.LatLng(res.y, res.x);
+
+        // 마커를 생성합니다
+        var marker = new kakao.maps.Marker({
+          position: markerPosition,
+          clickable: true, // 마커를 클릭했을 때 지도의 클릭 이벤트가 발생하지 않도록 설정합니다
         });
 
-        if (!alreadyVisited) {
-          visited.push({
-            shop_pic: res.data.data.targetshop.shop_pics[0].pic_URL,
-            shop_name: res.data.data.targetshop.shop_name,
-            location: res.data.data.targetshop.location,
-            genus: res.data.data.targetshop.genus,
-            id: res.data.data.targetshop.id,
-          });
-          localStorage.setItem("visited", JSON.stringify(visited));
-          console.log(JSON.stringify(visited));
-        }
-      }
-    });
+        // 마커가 지도 위에 표시되도록 설정합니다
+        marker.setMap(map);
+
+        // 마커를 클릭했을 때 마커 위에 표시할 인포윈도우를 생성합니다
+        var iwContent = `<div style="padding:5px;">${res.shop_name}</div>`, // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+          iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+
+        // 인포윈도우를 생성합니다
+        var infowindow = new kakao.maps.InfoWindow({
+          content: iwContent,
+          removable: iwRemoveable,
+        });
+
+        // 마커에 클릭이벤트를 등록합니다
+        kakao.maps.event.addListener(marker, "click", function () {
+          // 마커 위에 인포윈도우를 표시합니다
+          infowindow.open(map, marker);
+        });
+      });
   }, []);
 
   return (
@@ -140,24 +179,21 @@ export default function ShopDetail({ match }) {
                   );
                 })}
               </li>
-              <li>{info.location}</li>
-              {info.menus.map((menu) => {
-                return <li>{`${menu.menu_name} : ${menu.price}`}</li>;
-              })}
             </ul>
           </ShopDetailInfo>
 
           <ShopReview>
-            {info.reviews.map((item, idx) => {
-              return (
-                <div key={idx} style={{ height: 30 }}>
-                  아이디 : {item.user_id}
-                  코멘트 : {item.comment}
-                  평점 : {item.star}
-                </div>
-              );
-            })}{" "}
-            {/* 빈 배열인 경우 아무 표시도 안됨 분기 나누어서 '리뷰 없음' 표시 해야 할듯*/}
+            {info.reviews === []
+              ? info.reviews.map((item, idx) => {
+                  return (
+                    <div key={idx} style={{ height: 30 }}>
+                      아이디 : {item.user_id}
+                      코멘트 : {item.comment}
+                      평점 : {item.star}
+                    </div>
+                  );
+                })
+              : "리뷰 없음"}
           </ShopReview>
         </ShopBasicInfo>
         <ShopLocation id="map"></ShopLocation>
