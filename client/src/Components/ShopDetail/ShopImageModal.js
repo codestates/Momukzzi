@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import dummyData from "../Mainpage/dummyData";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/zoom";
