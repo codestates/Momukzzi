@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import styled from 'styled-components'
 import { Redirect } from 'react-router-dom'
-import Review from './Review'
+import Myreview from './Myreview/Myreview'
 import Nicknamechange from './NicknameChange/Nicknamechange'
 import Passwordchange from './PasswordChange/Passwordchange'
 import Signout from './Signout/Signout'
@@ -239,7 +239,7 @@ function Mypage() {
 						<div className="Title">최근 리뷰 내역</div>
 						<div className="ReviewContainer">
 							리뷰
-							<Review />
+							<Myreview />
 						</div>
 					</div>
 				</PageContainer>
