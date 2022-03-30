@@ -35,13 +35,14 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
+  
   shop.init(
     {
       shop_name: DataTypes.STRING,
       genus: DataTypes.STRING,
       location: DataTypes.STRING,
       total_review: DataTypes.INTEGER,
-      star_avg: DataTypes.INTEGER,
+      star_avg: DataTypes.FLOAT,
       work_time: DataTypes.STRING,
       holiday: DataTypes.STRING,
       map_id: DataTypes.STRING,

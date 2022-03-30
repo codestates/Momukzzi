@@ -17,9 +17,11 @@ module.exports = async (req, res) => {
     const logininfo = req.headers.authorization;
     let data 
 
+    console.log(logininfo)
+
     if (logininfo) {
         const token = logininfo.split(" ")[1];
-        data = jwt.verify(token, "1234")
+        data = jwt.verify(logininfo, "1234")
     } else {
         res.status(400).json({
             message : "token reuired!"
