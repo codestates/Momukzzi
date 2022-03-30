@@ -10,6 +10,8 @@ const {
 } = require("../../models");
 const userinfo = require("../users/userinfo");
 
+
+
 module.exports = async (req, res) => {
   console.log("get shopinfo");
   console.log(req.params.map_id);
@@ -30,8 +32,12 @@ module.exports = async (req, res) => {
             model: user,
             attributes: ["user_id"],
           },
+          {
+            model: review_pic,
+            attributes: ["pic_URL"],
+          }
         ],
-        attributes: ["user_id", "comment", "star"],
+        attributes: ["id","user_id", "comment", "star"],
       },
     ],
 
@@ -51,7 +57,8 @@ module.exports = async (req, res) => {
   //     shop_id: req.params.shop_id,
   //   },
   // });
-  // console.log("-------------------------", targetshop);
+
+  console.log("-------------------------", targetshop);
   // console.log("-------------------------", taglist);
   res.status(200).json({
     message: "shopinfo called!",
