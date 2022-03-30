@@ -95,6 +95,39 @@ const Intro = () => {
         // GPS를 지원하면
         navigator.geolocation.getCurrentPosition(
           function (position) {
+            axios
+              .get(
+                `https://dapi.kakao.com/v2/local/search/category.json?category_group_code=FD6&page=1&size=15&sort=accuracy&x=${position.coords.longitude}&y=${position.coords.latitude}&radius=2000`,
+                {
+                  headers: {
+                    Authorization: "KakaoAK 2af87592ef59bb8f2f504dc1544a0a89",
+                  },
+                }
+              )
+              .then((res) => {
+                dispatch({
+                  type: "shop_info",
+                  data: res.data.documents,
+                });
+                // console.log(res.data.documents);
+                axios
+                  .post(
+                    "https://localhost:4000/data",
+                    { data: res.data.documents },
+                    {
+                      withCredentials: true,
+                    }
+                  )
+                  .then((res) => {
+                    console.log(res.data.data.result);
+                    dispatch({
+                      type: "shop_detail_info",
+                      data: res.data.data.result,
+                    });
+                  });
+              });
+            console.log("카카오로 받아온 정보", shopInfo);
+            console.log("크롤링으로 받아온 정보", shopDetailInfo);
             // ----------------------------------지도 생성 -----------------------------
             var mapContainer = document.getElementById("map"), // 지도를 표시할 div
               mapOption = {
