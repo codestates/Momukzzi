@@ -2,7 +2,6 @@ import logo from './logo.svg'
 import './App.css'
 import { createStore } from 'redux'
 import {
-<<<<<<< HEAD
   Provider,
   useSelector,
   useDispatch,
