@@ -46,6 +46,8 @@ export default function Review() {
       .then((res) => console.log(res));
   };
 
+
+
   useEffect(() => {
     console.log(`평점 : ${selectedStar}`);
     // for (let pair of formData.entries()) {

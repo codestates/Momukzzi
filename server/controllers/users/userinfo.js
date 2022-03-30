@@ -1,4 +1,4 @@
-const { user,review,shop } = require("../../models");
+const { user,review,shop,review_pic } = require("../../models");
 const jwt = require("jsonwebtoken");
 
 module.exports = async (req, res) => {
@@ -19,17 +19,19 @@ const logininfo = req.headers.authorization;
                     include :[{
                         //all: true, nested: true
                         model :review,
-                        include:[{
+                        include:[
+                            {
                             model : shop,
                             attributes : ['shop_name']
-                        }],
+                            },
+                            {
+                            model : review_pic,
+                            attributes : ['pic_URL']
+                            }
+                        ],
+                        
                         attributes : ['shop_id','star','comment','createdAt']
-                    },
-                    // {
-                    //     model : shop,
-                    //     attributes : ['shop_name']
-                    // }
-                    ]
+                    }]
                 });
 
                 res.status(200).json({ 

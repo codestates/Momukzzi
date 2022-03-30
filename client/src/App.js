@@ -20,6 +20,10 @@ import SlideTopic from "./Components/Mainpage/SlideTopic";
 import Hashtag from "./Components/Mainpage/Hashtag";
 import Loginmodal from "./Components/Login/Loginmodal";
 import Mypage from "./Components/Mypage/Mypage";
+<<<<<<< HEAD
+import Signout from "./Components/Mypage/Signout/Signout";
+=======
+>>>>>>> e888b97fb6a2ab3c65ced0a7b552bde456909164
 import Review from "./Components/Mypage/Review";
 import Favorite from "./Components/Favorites/Favorites";
 import ShopDetail from "./Components/ShopDetail/ShopDetail";
@@ -130,8 +134,15 @@ function App() {
           <Route path="/mypage">
             <Mypage />
           </Route>
+<<<<<<< HEAD
+          <Route path="/signout">
+            <Signout />
+          </Route>
+          <Route path="/shopdetail/:id" exact component={ShopDetail} />\
+=======
           <Route path="/shopdetail1/:id" component={ShopDetail} />
           <Route path="/shopdetail2/:id" component={ShopDetail2} />
+>>>>>>> e888b97fb6a2ab3c65ced0a7b552bde456909164
         </Switch>
         <Footer />
       </BrowserRouter>
@@ -139,4 +150,8 @@ function App() {
   );
 }
 
+<<<<<<< HEAD
+export default App
+=======
 export default App;
+>>>>>>> e888b97fb6a2ab3c65ced0a7b552bde456909164
