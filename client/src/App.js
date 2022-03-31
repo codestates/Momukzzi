@@ -65,23 +65,23 @@ function App() {
     getLocation();
   }, []);
 
-  // useEffect(() => {
-  // 	axios
-  // 		.get('https://localhost:4000/topicshop/total_review', {
-  // 			withCredentials: true,
-  // 		})
-  // 		.then(res => {
-  // 			dispatch({
-  // 				type: 'topic_shop_info',
-  // 				data: res.data.data.shopInfo,
-  // 			})
-  // 			dispatch({
-  // 				type: 'topic_shop_detail_info',
-  // 				data: res.data.data.shopPicInfos,
-  // 			})
-  // 			setTopicInfo(res.data.data.shopInfo)
-  // 		})
-  // }, [])
+  useEffect(() => {
+    axios
+      .get("https://localhost:4000/topicshop/total_review", {
+        withCredentials: true,
+      })
+      .then((res) => {
+        dispatch({
+          type: "topic_shop_info",
+          data: res.data.data.shopInfo,
+        });
+        dispatch({
+          type: "topic_shop_detail_info",
+          data: res.data.data.shopPicInfos,
+        });
+        setTopicInfo(res.data.data.shopInfo);
+      });
+  }, []);
 
   if (localStorage.getItem("visited") === null) {
     localStorage.setItem("visited", JSON.stringify([]));
