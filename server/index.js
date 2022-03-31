@@ -55,6 +55,7 @@ app.use(cookieParser());
 //로그인, 아웃
 app.post("/users/login", controllers.login); //로그인
 app.get("/users/logout", controllers.logout); //로그아웃
+app.post("/users/oauth", controllers.oauth); //oauth 로그인
 
 //신규 유저 가입, 탈퇴, 유저 정보 조회, 유저 정보 변경
 app.post("/users", controllers.signup); // 유저 정보 변경
@@ -82,7 +83,7 @@ app.get("/articles/:article_id", controllers.article);
 app.post("/reviews", storage.array("img"), controllers.createreview);
 app.delete("/reviews", controllers.delreview);
 app.patch("/reviews", controllers.patchreview);
-app.get("/reviews", controllers.review);
+app.get("/reviews/:shopid", controllers.review);
 app.post("/reviews-pics", controllers.reviewpic.post);
 app.delete("/reviews-pics", controllers.reviewpic.delete);
 

@@ -30,7 +30,7 @@ const logininfo = req.headers.authorization;
                             }
                         ],
                         
-                        attributes : ['shop_id','star','comment','createdAt']
+                        attributes : ['id','shop_id','star','comment','createdAt']
                     }]
                 });
 

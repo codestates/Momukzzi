@@ -1,6 +1,7 @@
 module.exports = {
   login: require("./users/login"),
   logout: require("./users/logout"),
+  oauth: require("./users/oauth"),
 
   signup: require("./users/signup"),
   signout: require("./users/signout"),
