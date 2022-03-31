@@ -17,11 +17,13 @@ function OauthLoading() {
     let code = new URL(window.location.href).searchParams.get('code')
 
     const sendcode = (code)=>{
+        console.log(code)
         axios
         .post(
             `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=2af87592ef59bb8f2f504dc1544a0a89&redirect_uri=https://localhost:3000/oauthloding&code=${code}`,
             {headers : { "Content-Type" : "application/x-www-form-urlencoded" }}
         ).then((result)=> {
+            console.log("서버로 데이터 전송 시작")
             localStorage.setItem("accessToken", result.data.access_token);
             
             axios
@@ -32,15 +34,21 @@ function OauthLoading() {
                     code : result.data.access_token,
                 }
         ).then((res)=>{
-            console.log(res.data.nickname)
+            console.log("응답 나가는 중")
+            console.log(res)
+            localStorage.setItem('accessToken', res.data.data.accessToken)
+				localStorage.setItem('email', res.data.data.email)
+				if (res.data.data.accessToken) {
+					localStorage.setItem('accessToken', res.data.data.accessToken)
+				}
+				return window.location.replace('/')
             }
-        )}
         )
+        })
     }
     
-    sendcode(code)
 
-    //React.useEffect(sendcode(code),[])
+    React.useEffect(sendcode(code),[])
 
 
 return (

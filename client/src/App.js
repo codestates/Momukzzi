@@ -26,6 +26,7 @@ import Favorite from "./Components/Favorites/Favorites";
 import ShopDetail from "./Components/ShopDetail/ShopDetail";
 import ShopDetail2 from "./Components/ShopDetail/ShopDetail2";
 import EditorPick from "./Components/EditorPick/EditorPick";
+import OauthLoding from "./Components/Login/OauthLoading";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -122,6 +123,7 @@ function App() {
           <Route path="/shopdetail2/:id" component={ShopDetail2} />
           <Route path="/review" component={Review} />
           <Route path="/editor_pick/:code" component={EditorPick} />
+          <Route path="/oauthloding" component={OauthLoding} />
         </Switch>
         <Footer />
       </BrowserRouter>
