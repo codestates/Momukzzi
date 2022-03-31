@@ -12,6 +12,7 @@ const PageContainer = styled.div`
 	font-size: 14px;
 	word-break: keep-all;
 	min-height: 81vh;
+
 	@media only screen and (min-width: 1024px) {
 		display: -webkit-box;
 		display: -ms-flexbox;
@@ -28,9 +29,10 @@ const PageContainer = styled.div`
 		-webkit-box-direction: normal;
 		-ms-flex-direction: column;
 		flex-direction: column;
-		width: 50%;
 		margin-right: 30px;
+		width: 50%;
 	}
+
 	.RightContainer {
 		width: 50%;
 	}
@@ -62,6 +64,7 @@ const PageContainer = styled.div`
 		border-radius: 10px;
 		padding: 5px;
 		overflow: auto;
+		height: 90%;
 	}
 	.Fix-toggle-container {
 		padding: 5px;
@@ -89,6 +92,7 @@ const PageContainer = styled.div`
 		outline: none;
 	}
 `
+
 const SignoutBtn = styled.div`
 	padding-top: 3px;
 	width: 100px;
@@ -137,6 +141,7 @@ const MyinfoContainer = styled.div`
 	border-radius: 10px;
 	padding: 15px;
 	margin-bottom: 15px;
+	height: 100%;
 `
 
 function Mypage() {
@@ -219,8 +224,7 @@ function Mypage() {
 									className="Fix-toggle-container"
 									onSubmit={e => e.preventDefault()}
 								>
-									<div className="password-container">
-										<div className="Fix-toggle-title">비밀번호</div>
+									<div>
 										<Passwordchange />
 									</div>
 								</form>
@@ -238,7 +242,6 @@ function Mypage() {
 					<div className="RightContainer">
 						<div className="Title">최근 리뷰 내역</div>
 						<div className="ReviewContainer">
-							리뷰
 							<Myreview />
 						</div>
 					</div>

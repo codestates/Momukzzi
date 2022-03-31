@@ -123,23 +123,22 @@ function Passwordchange() {
 	}
 
 	return (
-		<div className="row">
-			<div className="col-sm-4">
-				<Passwordinput
-					handlePasswordChange={handlePasswordChange}
-					handleValidation={handleValidation}
-					passwordValue={passwordInput.password}
-					passwordError={passwordError}
-				/>
-				<Confirmpassword
-					handlePasswordChange={handlePasswordChange}
-					handleValidation={handleValidation}
-					confirmPasswordValue={passwordInput.confirmPassword}
-					confirmPasswordError={confirmPasswordError}
-				/>
-				<div>
-					<button onClick={fixPasswordHandler}>수정</button>
-				</div>
+		<div>
+			<div className="Fix-toggle-title">비밀번호</div>
+			<Passwordinput
+				handlePasswordChange={handlePasswordChange}
+				handleValidation={handleValidation}
+				passwordValue={passwordInput.password}
+				passwordError={passwordError}
+			/>
+			<Confirmpassword
+				handlePasswordChange={handlePasswordChange}
+				handleValidation={handleValidation}
+				confirmPasswordValue={passwordInput.confirmPassword}
+				confirmPasswordError={confirmPasswordError}
+			/>
+			<div>
+				<button onClick={fixPasswordHandler}>수정</button>
 			</div>
 		</div>
 	)

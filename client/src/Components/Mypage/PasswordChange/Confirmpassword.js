@@ -6,7 +6,7 @@ function ConfirmPasswordInputField({
 }) {
 	return (
 		<>
-			<div className="form-group my-3">
+			<div className="Fix-toggle-container">
 				<input
 					type="password"
 					value={confirmPasswordValue}
@@ -14,7 +14,7 @@ function ConfirmPasswordInputField({
 					onKeyUp={handleValidation}
 					name="confirmPassword"
 					placeholder="Password"
-					className="form-control"
+					className="Fix-toggle-input"
 				/>
 				<p className="text-danger">{confirmPasswordError}</p>
 			</div>
