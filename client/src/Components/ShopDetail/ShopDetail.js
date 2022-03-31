@@ -47,6 +47,32 @@ export default function ShopDetail({ match }) {
     axios
       .get(`https://localhost:4000/shops/${match.params.id}`)
       .then((res) => {
+        // 방문한페이지 추가하는 로직 추가----------------------------
+        if (
+          window.location.href.includes("https://localhost:3000/shopdetail")
+        ) {
+          const visited = JSON.parse(localStorage.getItem("visited"));
+          let alreadyVisited = false;
+
+          visited.forEach((e) => {
+            if (e.id === info.id) {
+              alreadyVisited = true;
+            }
+          });
+
+          if (!alreadyVisited) {
+            visited.push({
+              shop_pic: res.data.data.targetshop.shop_pics[0].pic_URL,
+              shop_name: res.data.data.targetshop.shop_name,
+              location: res.data.data.targetshop.location,
+              genus: res.data.data.targetshop.genus,
+              id: res.data.data.targetshop.id,
+            });
+            localStorage.setItem("visited", JSON.stringify(visited));
+            console.log(JSON.stringify(visited));
+          }
+        }
+        // -------------------------------------------------
         setInfo(res.data.data.targetshop);
         console.log(res.data.data.targetshop);
         dispatch({

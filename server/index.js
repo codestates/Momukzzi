@@ -11,27 +11,27 @@ const multer = require("multer");
 const form_data = multer();
 
 const upload = multer({ dest: "uploads/" });
-const multerS3 = require('multer-s3'); 
-const AWS = require("aws-sdk"); 
+const multerS3 = require("multer-s3");
+const AWS = require("aws-sdk");
 
-const s3 = new AWS.S3({ //AWS SDK 설정 항목 
-  accessKeyId: process.env.AWS_S3_ACCESS_KEYID, 
-  secretAccessKey: process.env.AWS_S3_SECRET_KEY, 
+const s3 = new AWS.S3({
+  //AWS SDK 설정 항목
+  accessKeyId: process.env.AWS_S3_ACCESS_KEYID,
+  secretAccessKey: process.env.AWS_S3_SECRET_KEY,
   region: "us-east-1",
-}); 
-
+});
 
 const storage = multer({
-  storage : multerS3({ 
+  storage: multerS3({
     s3: s3,
-    bucket: 'euilimchoibucket', //bucket 이름 
-    contentType: multerS3.AUTO_CONTENT_TYPE, 
-    key: function (req, file, cb) { 
-      let extension = path.extname(file.originalname); 
-      cb(null, Date.now().toString() + extension) 
-  }, 
-}) 
-})
+    bucket: "euilimchoibucket", //bucket 이름
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    key: function (req, file, cb) {
+      let extension = path.extname(file.originalname);
+      cb(null, Date.now().toString() + extension);
+    },
+  }),
+});
 
 const controllers = require("./controllers");
 
@@ -97,6 +97,8 @@ app.post("/data", controllers.data);
 // 주제별 식당 추천
 app.get("/topicshop/:topic", controllers.topicshop);
 app.get("/shops2/:shop_id", controllers.shopinfo2);
+// 지역별 식당 추천(칼럼)
+app.get("/local_shop/:code", controllers.localshop);
 
 const HTTPS_PORT = process.env.HTTPS_PORT || 4000;
 

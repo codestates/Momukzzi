@@ -67,7 +67,9 @@ const FavoriteContent = styled.div`
 `;
 
 const Favorite = () => {
+  document.body.style.overflow = "hidden";
   const dispatch = useDispatch();
+  const visited = JSON.parse(localStorage.getItem("visited"));
   return (
     <BackDropModal
       onClick={() => {
@@ -80,66 +82,24 @@ const Favorite = () => {
           <div>가고 싶다</div>
         </FavoriteHeader>
         <FavoriteBody>
-          <FavoriteContent>
-            <div>
-              <img src="https://src.hidoc.co.kr/image/lib/2019/6/12/20190612112121719_0.jpg"></img>
-            </div>
-            <div>
-              <div className="favorite-shopinfo">설빙 서울중앙대점</div>
-              <div className="favorite-shopinfo">서대문구 - 디저트</div>
-            </div>
-            <div id="icon-container">
-              <AiOutlineStar className="staricon" />
-            </div>
-          </FavoriteContent>
-          <FavoriteContent>
-            <div>
-              <img src="https://src.hidoc.co.kr/image/lib/2019/6/12/20190612112121719_0.jpg"></img>
-            </div>
-            <div>
-              <div className="favorite-shopinfo">설빙 서울중앙대점</div>
-              <div className="favorite-shopinfo">서대문구 - 디저트</div>
-            </div>
-            <div id="icon-container">
-              <AiOutlineStar className="staricon" />
-            </div>
-          </FavoriteContent>
-          <FavoriteContent>
-            <div>
-              <img src="https://src.hidoc.co.kr/image/lib/2019/6/12/20190612112121719_0.jpg"></img>
-            </div>
-            <div>
-              <div className="favorite-shopinfo">설빙 서울중앙대점</div>
-              <div className="favorite-shopinfo">서대문구 - 디저트</div>
-            </div>
-            <div id="icon-container">
-              <AiOutlineStar className="staricon" />
-            </div>
-          </FavoriteContent>
-          <FavoriteContent>
-            <div>
-              <img src="https://src.hidoc.co.kr/image/lib/2019/6/12/20190612112121719_0.jpg"></img>
-            </div>
-            <div>
-              <div className="favorite-shopinfo">설빙 서울중앙대점</div>
-              <div className="favorite-shopinfo">서대문구 - 디저트</div>
-            </div>
-            <div id="icon-container">
-              <AiOutlineStar className="staricon" />
-            </div>
-          </FavoriteContent>
-          <FavoriteContent>
-            <div>
-              <img src="https://src.hidoc.co.kr/image/lib/2019/6/12/20190612112121719_0.jpg"></img>
-            </div>
-            <div>
-              <div className="favorite-shopinfo">설빙 서울중앙대점</div>
-              <div className="favorite-shopinfo">서대문구 - 디저트</div>
-            </div>
-            <div id="icon-container">
-              <AiOutlineStar className="staricon" />
-            </div>
-          </FavoriteContent>
+          {visited.map((obj, i) => {
+            return (
+              <FavoriteContent key={i}>
+                <div>
+                  <img src={obj.shop_pic}></img>
+                </div>
+                <div>
+                  <div className="favorite-shopinfo">
+                    {obj.shop_name} - {obj.genus}
+                  </div>
+                  <div className="favorite-shopinfo">{obj.location}</div>
+                </div>
+                <div id="icon-container">
+                  <AiOutlineStar className="staricon" />
+                </div>
+              </FavoriteContent>
+            );
+          })}
         </FavoriteBody>
       </FavoriteContainer>
     </BackDropModal>
