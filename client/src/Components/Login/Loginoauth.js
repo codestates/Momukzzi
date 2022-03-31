@@ -37,20 +37,24 @@ const IconBox = styled.span`
 	}
 `
 
-function Loginoauth() {
-	// const REST_API_KEY = process.env.REACT_APP_REST_API_KEY
-	// const REDIRECT_URI = 'https://localhost:3000/oauth/kakao/callback'
-	// const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`
+function OauthLoading() {
+	const REST_API_KEY = '2af87592ef59bb8f2f504dc1544a0a89';
+	const REDIRECT_URI = 'https://localhost:3000/oauthloding';
+	const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`
+
+	// const kakaologin = async () ={
+		// result = await axios.get(KAKAO_AUTH_URL)
+	// }
 
 	return (
 		<OauthContainer>
 			<IconBox>
 				{/* <a href={KAKAO_AUTH_URL}> */}
-				<a id="kakao" href="/auth/kakao">
+				<a id="kakao" href={KAKAO_AUTH_URL}>
 					<img src={kakao_oauth} />
 				</a>
 			</IconBox>
 		</OauthContainer>
 	)
 }
-export default Loginoauth
+export default OauthLoading
