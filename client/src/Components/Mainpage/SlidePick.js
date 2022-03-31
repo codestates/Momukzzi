@@ -77,9 +77,9 @@ function SlidePick() {
         modules={[Pagination, Navigation]}
         className="mySwiper"
       >
-        {localShopInfo.map((obj, i) => {
+        {localShopInfo.map((obj) => {
           return (
-            <SwiperSlide className="slide" key={i}>
+            <SwiperSlide className="slide">
               <Link
                 to={`/editor_pick/${obj.code},${obj.name},${obj.description}`}
               >
