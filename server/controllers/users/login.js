@@ -19,7 +19,7 @@ module.exports = async (req, res) => {
         user_id: userInfo.dataValues.user_id,
         email: userInfo.dataValues.email,
         };
-
+        
         const access_Token = jwt.sign(payload, "1234", { expiresIn: "10h" });
         const refresh_Token = jwt.sign(payload, "5678", { expiresIn: "2days" });
 

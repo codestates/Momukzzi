@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import { BsTrash } from 'react-icons/bs'
 
 const Myreviewdelete = () => {
 	const accessToken = localStorage.getItem('accessToken')
 
 	const [changeInfo, setchangeInfo] = useState({
+		id: '',
 		review_id: '',
 	})
 	const userInfoHandler = () => {
@@ -17,7 +19,7 @@ const Myreviewdelete = () => {
 					'Content-Type': 'application/json',
 				})
 				.then(res => {
-					setchangeInfo(res.data.data.userInfo.reviews[0].id)
+					setchangeInfo(res.data.data.userInfo.reviews[0])
 					console.log(
 						'개인정보가져오기 성공',
 						res.data.data.userInfo.reviews[0]
@@ -40,7 +42,7 @@ const Myreviewdelete = () => {
 		}
 	}
 	const deleteHandler = () => {
-		const { review_id } = changeInfo
+		const { id } = changeInfo
 
 		if (!accessToken) {
 			return
@@ -49,7 +51,9 @@ const Myreviewdelete = () => {
 				.delete(
 					'https://localhost:4000/reviews',
 					{
-						review_id,
+						data: {
+							review_id: id,
+						},
 					},
 					{
 						headers: { authorization: `Bearer ${accessToken}` },
@@ -59,6 +63,7 @@ const Myreviewdelete = () => {
 				.then(res => {
 					console.log('리뷰삭제')
 					alert('리뷰가 삭제됐습니다.')
+					return window.location.replace('/mypage')
 				})
 				.catch(err => {
 					console.log('리뷰삭제 에러', err)
@@ -66,11 +71,7 @@ const Myreviewdelete = () => {
 				})
 		}
 	}
-	return (
-		<div className="deleteBtn">
-			<button onClick={deleteModal}>x</button>
-		</div>
-	)
+	return <BsTrash onClick={deleteModal} />
 }
 
 export default Myreviewdelete
