@@ -62,6 +62,7 @@ const Input = styled.input`
 `
 
 function Loginmodal({ setOpenModal, close }) {
+	document.body.style.overflow = 'hidden'
 	const [loginInfo, setLoginInfo] = useState({
 		user_id: '',
 		password: '',

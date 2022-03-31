@@ -41,7 +41,7 @@ const SlideTopicImage = styled.img`
   border: 1px solid black;
 `;
 
-const SlideTopic = ({ topicInfo }) => {
+const SlideTopic = () => {
   const dispatch = useDispatch();
   const topicShopInfo = useSelector((state) => state.topicShopInfo);
   const topicShopDetailInfo = useSelector((state) => state.topicShopDetailInfo);

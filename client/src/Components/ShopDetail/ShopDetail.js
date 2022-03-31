@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { memo, useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { BsStar } from "react-icons/bs";
-import Review from "../Review/Review";
+import { BiMessageDetail } from "react-icons/bi";
 import ShopImageModal from "./ShopImageModal";
+import ReviewPhotoModal from "./ReviewPhotoModal";
+import Loader from "./Loader";
 import {
   ShopImages,
   ShopBody,
@@ -11,28 +13,36 @@ import {
   ShopBasicInfoHeader,
   ShopDetailInfo,
   ShopReview,
+  ShopEachReview,
+  ShopReviewPlusButton,
   ShopLocation,
   Buttons,
   ReviewButton,
-  ReviewIcon,
-  FavoriteButton,
 } from "./ShopDetail.style";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 /*global kakao*/
 
 export default function ShopDetail({ match }) {
-  const [isOpen, setOpen] = useState(false);
+  const [isOpen, setOpen] = useState(false); // 음식점 이미지 Modal
+  const [isReviewOpen, setReviewOpen] = useState(false); // 리뷰 업로드 사진 Modal
   const [currentImage, setCurrentImage] = useState("");
+  const [currentReview, setCurrentReview] = useState(0);
   const [info, setInfo] = useState({ shop_pics: [], menus: [], reviews: [] });
 
-  let reviewCount = 5;
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [reviewCount, setReviewCount] = useState(4);
 
-  // const shopInfo = useSelector((state) => state.shopInfo);
+  const dispatch = useDispatch();
 
-  const handleImageClick = (item, i) => {
+  const handleImageClick = (idx) => {
     setOpen(true);
-    setCurrentImage(i);
+    setCurrentImage(idx);
+  };
+
+  const handleReviewClick = (idx) => {
+    setReviewOpen(true);
+    setCurrentReview(idx);
   };
 
   const handleStar = () => {
@@ -40,13 +50,49 @@ export default function ShopDetail({ match }) {
     // axios.post()
     console.log("hello");
   };
-  const dispatch = useDispatch();
+
+  const handleReviewPlus = async () => {
+    setIsLoaded(true);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    setReviewCount(reviewCount + 4);
+    setIsLoaded(false);
+  };
+
+  useEffect(() => {
+    console.log(reviewCount);
+  }, [reviewCount]);
 
   useEffect(() => {
     // match.params.id 활용
     axios
       .get(`https://localhost:4000/shops/${match.params.id}`)
       .then((res) => {
+        // 방문한페이지 추가하는 로직 추가----------------------------
+        if (
+          window.location.href.includes("https://localhost:3000/shopdetail")
+        ) {
+          const visited = JSON.parse(localStorage.getItem("visited"));
+          let alreadyVisited = false;
+
+          visited.forEach((e) => {
+            if (e.id === info.id) {
+              alreadyVisited = true;
+            }
+          });
+
+          if (!alreadyVisited) {
+            visited.push({
+              shop_pic: res.data.data.targetshop.shop_pics[0].pic_URL,
+              shop_name: res.data.data.targetshop.shop_name,
+              location: res.data.data.targetshop.location,
+              genus: res.data.data.targetshop.genus,
+              id: res.data.data.targetshop.id,
+            });
+            localStorage.setItem("visited", JSON.stringify(visited));
+            console.log(JSON.stringify(visited));
+          }
+        }
+        // -------------------------------------------------
         setInfo(res.data.data.targetshop);
         console.log(res.data.data.targetshop);
         dispatch({
@@ -107,13 +153,21 @@ export default function ShopDetail({ match }) {
       ) : (
         <></>
       )}
+      {isReviewOpen ? (
+        <ReviewPhotoModal
+          setReviewOpen={setReviewOpen}
+          imageSet={info.reviews[currentReview].review_pics}
+        />
+      ) : (
+        <></>
+      )}
       <ShopImages>
-        {info.shop_pics.map((item, i) => {
+        {info.shop_pics.map((item, idx) => {
           return (
             <img
-              key={i}
+              key={idx}
               src={item.pic_URL}
-              onClick={() => handleImageClick(item, i)}
+              onClick={() => handleImageClick(idx)}
             />
           );
         })}
@@ -126,7 +180,7 @@ export default function ShopDetail({ match }) {
             <Buttons>
               <Link to="/review">
                 <ReviewButton>
-                  <ReviewIcon />
+                  <BiMessageDetail className="reviewButton" />
                   <span>리뷰</span>
                 </ReviewButton>
               </Link>
@@ -157,17 +211,28 @@ export default function ShopDetail({ match }) {
           </ShopDetailInfo>
 
           <ShopReview>
-            {info.reviews === []
-              ? info.reviews.map((item, idx) => {
+            {info.reviews.length !== 0
+              ? info.reviews.slice(0, reviewCount).map((item, idx) => {
                   return (
-                    <div key={idx} style={{ height: 30 }}>
+                    <ShopEachReview
+                      key={idx}
+                      style={{ height: 30 }}
+                      onClick={() => handleReviewClick(idx)}
+                    >
                       아이디 : {item.user_id}
                       코멘트 : {item.comment}
                       평점 : {item.star}
-                    </div>
+                    </ShopEachReview>
                   );
                 })
               : "리뷰 없음"}
+            {isLoaded ? (
+              <Loader />
+            ) : (
+              <ShopReviewPlusButton onClick={handleReviewPlus}>
+                더 보기
+              </ShopReviewPlusButton>
+            )}
           </ShopReview>
         </ShopBasicInfo>
         <ShopLocation id="map"></ShopLocation>
