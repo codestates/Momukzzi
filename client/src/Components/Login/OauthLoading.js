@@ -15,12 +15,17 @@ const Div = styled.div`
 
 function OauthLoading() {
     let code = new URL(window.location.href).searchParams.get('code')
-
-    const sendcode = (code)=>{
-        console.log(code)
+    
+    const REACT_APP_REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
+	const REDIRECT_URI = 'https://localhost:3000/oauthloding';
+	const REACT_APP_GITHUB_CLIENT_ID = process.env.REACT_APP_GITHUB_CLIENT_ID;
+    const REACT_APP_GITHUB_CLIENT_SECRET = process.env.REACT_APP_GITHUB_CLIENT_SECRET;
+    
+    const kakaocode = (code) =>{
+        console.log("kakao", code)
         axios
         .post(
-            `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=2af87592ef59bb8f2f504dc1544a0a89&redirect_uri=https://localhost:3000/oauthloding&code=${code}`,
+            `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${REACT_APP_REST_API_KEY}&redirect_uri=${REDIRECT_URI}&code=${code}`,
             {headers : { "Content-Type" : "application/x-www-form-urlencoded" }}
         ).then((result)=> {
             console.log("서버로 데이터 전송 시작")
@@ -47,9 +52,21 @@ function OauthLoading() {
         })
     }
     
+    const githubcode = (code) =>{
+        console.log("github", code)
 
-    React.useEffect(sendcode(code),[])
+        axios
+            .post(
+                "https://localhost:4000/users/oauth",
+                {
+                    oauth : "github",
+                    code : code,
+                }
+            ).then((e) => console.log(e))
+    }
 
+    React.useEffect(kakaocode(code),[])
+    
 
 return (
     

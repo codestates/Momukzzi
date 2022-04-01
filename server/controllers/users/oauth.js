@@ -37,7 +37,7 @@ module.exports = async (req, res) => {
                     user_id: userInfo.dataValues.user_id,
                     email: userInfo.dataValues.email,
                 }
-                
+
                 const access_Token = jwt.sign(payload, "1234", { expiresIn: "10h" });
                 const refresh_Token = jwt.sign(payload, "5678", { expiresIn: "2days" });
                 
@@ -99,6 +99,25 @@ module.exports = async (req, res) => {
                 });
             }
         })
-        
+    
+    // axios
+    // .post(
+    //     "https://github.com/login/oauth/access_token",
+    //     {
+    //         client_id: "3e13dcd314570e792c58",
+    //         client_secret: "5c84df451bd83eff205c8b10c85a69206cbaabab",
+    //         code: code
+    //     },{headers: {
+    //         accept: 'application/json',
+    //     }}
+    // ).then((res) => {
+    //     console.log(res.data.access_token);
+    //     axios
+    //     .get(
+    //         "https://api.github.com/user",
+    //         {headers: {
+    //             Authorization: `Token ${res.data.access_token}`,
+    //         }}).then(e=>console.log(e)).catch(e=>console.log(e))
+    // })
 
 };
