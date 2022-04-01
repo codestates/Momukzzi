@@ -300,9 +300,9 @@ const Intro = () => {
           modules={[Pagination, Navigation]}
           className="mySwiper"
         >
-          {shopDetailInfo[randomInt].shoppic.map((img, i) => {
+          {shopDetailInfo[randomInt].shoppic.map((img) => {
             return (
-              <SwiperSlide key={i}>
+              <SwiperSlide>
                 <img src={img}></img>
               </SwiperSlide>
             );

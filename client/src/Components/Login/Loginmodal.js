@@ -155,7 +155,7 @@ function Loginmodal({ setOpenModal, close }) {
 							setOpenModal(false)
 						}}
 						id="cancelBtn"
-					>
+					>∂
 						Cancel
 					</button> */}
         </Div>

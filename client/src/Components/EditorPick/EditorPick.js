@@ -90,6 +90,12 @@ const EditorPick = ({ match }) => {
     { shoppic: [], menulist: [] },
   ]);
   const [shopInfo, setShopInfo] = useState(dummyKakaoShops);
+  const currentLocationShops = useSelector(
+    (state) => state.currentLocationShops
+  );
+  const currentLocationShopPics = useSelector(
+    (state) => state.currentLocationShopPics
+  );
 
   useEffect(() => {
     axios
@@ -114,6 +120,51 @@ const EditorPick = ({ match }) => {
           )
           .then((res) => {
             setShopDetailInfo(res.data.data.result);
+            const shopMapIds = res.data.documents.map((obj) => {
+              return obj.id;
+            });
+            axios
+              .post(
+                "https://localhost:4000/shopmanyinfo",
+                {
+                  map_ids: shopMapIds,
+                },
+                {
+                  withCredentials: true,
+                }
+              )
+              .then((res) => {
+                // console.log(res.data.data);
+                const shopData = res.data.data.filter((obj) => {
+                  if (obj !== null) {
+                    return obj;
+                  }
+                });
+                // console.log(shopData);
+                dispatch({
+                  type: "current_location_shops",
+                  data: shopData,
+                });
+                const shopIds = shopData.map((obj) => {
+                  return obj.id;
+                });
+                // console.log(shopIds);
+                axios
+                  .post(
+                    "https://localhost:4000/shopmanypics",
+                    {
+                      shop_ids: shopIds,
+                    },
+                    { withCredentials: true }
+                  )
+                  .then((res) => {
+                    // console.log(res.data.data);
+                    dispatch({
+                      type: "current_location_shop_pics",
+                      data: res.data.data,
+                    });
+                  });
+              });
           });
       });
   }, []);
@@ -152,7 +203,9 @@ const EditorPick = ({ match }) => {
                   간고기가 올라간 매콤한 화덕 피자인데 입에 쫙쫙 붙는 맛이고
                   도우도 쫀득하고..
                   <div>
-                    <Link to={`/shopdetail/${shopInfo[i].id}`}>더보기</Link>
+                    <Link to={`/shopdetail/${currentLocationShops[i]?.id}`}>
+                      더보기
+                    </Link>
                   </div>
                 </div>
               </div>

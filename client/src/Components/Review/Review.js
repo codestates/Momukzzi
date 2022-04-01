@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -16,7 +15,7 @@ const Star = ({ selected = false, handleSelect = (f) => f }) => {
   return <FaStar color={selected ? "orange" : "grey"} onClick={handleSelect} />;
 };
 
-export default function Review() {
+export default function Review({ history }) {
   const [selectedStar, setSelectedStar] = useState(0);
   const [inputText, setInputText] = useState("");
   const [uploadImage, setUploadImage] = useState([]);
@@ -39,7 +38,7 @@ export default function Review() {
   const uploadReview = () => {
     const reviewData = new FormData();
     reviewData.append("star", selectedStar);
-    reviewData.append("text", inputText);
+    reviewData.append("comment", inputText);
     reviewData.append("shop_id", shopId);
     uploadImage.map((item) => {
       return reviewData.append("img", item);
@@ -51,10 +50,12 @@ export default function Review() {
           authorization: localStorage.getItem("accessToken"),
         },
       })
-      .then((res) => console.log(res));
+      .then((res) => {
+        console.log(res);
+        alert("리뷰 작성이 완료되었습니다.");
+        history.goBack();
+      });
   };
-
-
 
   useEffect(() => {
     console.log(`리뷰 남길 가게 id = ${shopId}`);
@@ -97,9 +98,16 @@ export default function Review() {
         />
       </ReviewThumbnail>
       <div>
-        <Link to="/">
-          <button>취소</button>
-        </Link>
+        <button
+          onClick={() => {
+            if (window.confirm("리뷰 작성을 취소하시겠습니까?")) {
+              history.goBack();
+            }
+          }}
+        >
+          취소
+        </button>
+
         <button onClick={uploadReview}>리뷰 올리기</button>
       </div>
     </ReviewBody>
