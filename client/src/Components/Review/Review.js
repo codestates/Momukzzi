@@ -39,7 +39,7 @@ export default function Review() {
   const uploadReview = () => {
     const reviewData = new FormData();
     reviewData.append("star", selectedStar);
-    reviewData.append("text", inputText);
+    reviewData.append("comment", inputText);
     reviewData.append("shop_id", shopId);
     uploadImage.map((item) => {
       return reviewData.append("img", item);
