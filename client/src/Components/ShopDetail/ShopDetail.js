@@ -200,7 +200,7 @@ export default function ShopDetail({ match }) {
             <span>가게 이름 : {info.shop_name}</span>
             <span>평점 : {info.star_avg}</span>
             <Buttons>
-              <Link to="/review">
+              <Link to={`/review/${match.params.id}`}>
                 <ReviewButton>
                   <BiMessageDetail className="reviewButton" />
                   <span>리뷰</span>
