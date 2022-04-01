@@ -67,9 +67,10 @@ const FavoriteContent = styled.div`
 `;
 
 const Favorite = () => {
-  document.body.style.overflow = "hidden";
+  // document.body.style.overflow = "hidden";
   const dispatch = useDispatch();
   const visited = JSON.parse(localStorage.getItem("visited"));
+  const [switcher, setSwitcher ] = useState()
   return (
     <BackDropModal
       onClick={() => {
@@ -78,8 +79,8 @@ const Favorite = () => {
     >
       <FavoriteContainer onClick={(e) => e.stopPropagation()}>
         <FavoriteHeader>
-          <div>최근 본 맛집</div>
-          <div>가고 싶다</div>
+          <div onClick={() => {}}>최근 본 맛집</div>
+          <div onClick={() => {}}>가고 싶다</div>
         </FavoriteHeader>
         <FavoriteBody>
           {visited.map((obj, i) => {

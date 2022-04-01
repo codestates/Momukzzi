@@ -33,6 +33,8 @@ export default function ShopDetail({ match }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [reviewCount, setReviewCount] = useState(4);
 
+  const [favorites, setFavorites] = useState(true);
+
   const dispatch = useDispatch();
 
   const handleImageClick = (idx) => {
@@ -49,6 +51,27 @@ export default function ShopDetail({ match }) {
     // 즐겨찾기 true or false, 별모양 빈거/채워진거
     // axios.post()
     console.log("hello");
+
+    // axios
+    //   .post(
+    //     "https://localhost:4000/favorites",
+    //     {
+    //       headers: {
+    //         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    //       },
+    //       shop_id: match.params.id,
+    //       add: favorites,
+    //     },
+    //     {
+    //       withCredentials: true,
+    //     }
+    //   )
+    //   .then((res) => {
+    //     setFavorites(favorites);
+    //     console.log("즐겨찾기 응답", res);
+    //     console.log(document.cookie);
+
+    //   });
   };
 
   const handleReviewPlus = async () => {

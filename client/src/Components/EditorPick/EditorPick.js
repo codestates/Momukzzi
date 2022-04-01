@@ -1,10 +1,11 @@
-import react, { useEffect } from "react";
+import react, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { AiOutlineConsoleSql, AiOutlineStar } from "react-icons/ai";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import localShopInfo from "../../dummy/localShopInfo";
+import dummyKakaoShops from "../../dummy/dummyKakaoShops";
 const Container = styled.div``;
 
 const EditorPickHeader = styled.div`
@@ -71,8 +72,24 @@ const EditorPick = ({ match }) => {
   const x = match.params.code.split(",")[1];
   const name = match.params.code.split(",")[2];
   const description = match.params.code.split(",")[3];
-  const shopInfo = useSelector((state) => state.shopInfo);
-  const shopDetailInfo = useSelector((state) => state.shopDetailInfo);
+  const [shopDetailInfo, setShopDetailInfo] = useState([
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+  ]);
+  const [shopInfo, setShopInfo] = useState(dummyKakaoShops);
 
   useEffect(() => {
     axios
@@ -85,11 +102,8 @@ const EditorPick = ({ match }) => {
         }
       )
       .then((res) => {
-        dispatch({
-          type: "shop_info",
-          data: res.data.documents,
-        });
-        // console.log(res.data.documents);
+        setShopInfo(res.data.documents);
+
         axios
           .post(
             "https://localhost:4000/data",
@@ -99,16 +113,12 @@ const EditorPick = ({ match }) => {
             }
           )
           .then((res) => {
-            console.log(res.data.data.result);
-            dispatch({
-              type: "shop_detail_info",
-              data: res.data.data.result,
-            });
+            setShopDetailInfo(res.data.data.result);
           });
       });
   }, []);
-  console.log(shopInfo);
-  console.log(shopDetailInfo);
+  // console.log(shopInfo);
+  // console.log(shopDetailInfo);
   return (
     <Container>
       <EditorPickHeader>

@@ -72,7 +72,7 @@ const SignUpButton = styled.div`
 `;
 
 function Signup() {
-  document.body.style.overflow = "hidden";
+  // document.body.style.overflow = "hidden";
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [passwordRetype, setPasswordRetype] = useState("");
