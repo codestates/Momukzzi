@@ -58,10 +58,10 @@ function Myreview() {
 									createdAt={el.createdAt.slice(0, 10)}
 									shop_name={el.shop.shop_name}
 									star={el.star}
-									pic={el.review_pics[1].pic_URL}
+									pic={el.review_pics[1]?.pic_URL}
 								/>
 							)
-					  })
+					})
 					: '리뷰 없음'}
 				{isLoaded ? (
 					<Loader />
