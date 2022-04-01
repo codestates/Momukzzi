@@ -54,11 +54,18 @@ const SlideShopContainer = styled.div`
 `;
 
 function SlideShop() {
-  const shopDetailInfo = useSelector((state) => state.shopDetailInfo);
-  const shopInfo = useSelector((state) => state.shopInfo);
-  const shopPic = shopDetailInfo.map((el) => {
-    return el.shoppic;
-  });
+  // const shopDetailInfo = useSelector((state) => state.shopDetailInfo);
+  // const shopInfo = useSelector((state) => state.shopInfo);
+  // const shopPic = shopDetailInfo.map((el) => {
+  //   return el.shoppic;
+  // });
+
+  const currentLocationShops = useSelector(
+    (state) => state.currentLocationShops
+  );
+  const currentLocationShopPics = useSelector(
+    (state) => state.currentLocationShopPics
+  );
 
   return (
     <SlideShopContainer>
@@ -76,11 +83,11 @@ function SlideShop() {
         modules={[Grid, Pagination, Navigation]}
         className="mySwiper"
       >
-        {shopPic.map((el, i) => {
+        {currentLocationShopPics.map((obj, i) => {
           return (
             <SwiperSlide key={i}>
-              <Link to={`/shopdetail/${shopInfo[i].id}`}>
-                <img src={el[0]} className="food-picture"></img>
+              <Link to={`/shopdetail/${currentLocationShops[i]?.id}`}>
+                <img src={obj.pic_URL} className="food-picture"></img>
               </Link>
             </SwiperSlide>
           );

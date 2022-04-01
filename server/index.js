@@ -65,7 +65,7 @@ app.patch("/users", controllers.changeinfo); // 유저 정보 변경
 app.post("/users/check", controllers.checkinfo); // 중복 조회
 
 //음식점 정보 조회, 사진업로드, 사진 업로드, 사진 삭제
-app.get("/shops/:map_id", controllers.shopinfo); // 음식점 정보 조회
+app.get("/shops/:shop_id", controllers.shopinfo); // 음식점 정보 조회
 app.post("/shops-pics", controllers.shoppic.post); //
 app.delete("/shops-pics", controllers.shoppic.delete);
 app.get("/shops-tags", controllers.shoptag.get);
@@ -97,9 +97,14 @@ app.post("/data", controllers.data);
 
 // 주제별 식당 추천
 app.get("/topicshop/:topic", controllers.topicshop);
-app.get("/shops2/:shop_id", controllers.shopinfo2);
-// 지역별 식당 추천(칼럼)
-app.get("/local_shop/:code", controllers.localshop);
+
+// shop 테이블 정보 여러개 가져오기
+app.post("/shopmanyinfo", controllers.shopmanyinfo);
+// shop_pic 테이블 정보 여러개 가져오기
+app.post("/shopmanypics", controllers.shopmanypics);
+
+// 즐겨찾기 추가/제거
+app.post("/favorites", controllers.favorites);
 
 const HTTPS_PORT = process.env.HTTPS_PORT || 4000;
 

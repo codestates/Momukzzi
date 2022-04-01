@@ -28,7 +28,7 @@ module.exports = {
   data: require("./getdata/getdatas"),
 
   topicshop: require("./shop/topicshop"),
-  shopinfo2: require("./shop/shopinfo2"),
-
-  localshop: require("./localshop/localshop"),
+  shopmanyinfo: require("./shop/shopmanyinfo"),
+  shopmanypics: require("./shop/shopmanypics"),
+  favorites: require("./favorites/favorites"),
 };
