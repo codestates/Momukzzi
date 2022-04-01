@@ -15,13 +15,13 @@ const Star = ({ selected = false, handleSelect = (f) => f }) => {
   return <FaStar color={selected ? "orange" : "grey"} onClick={handleSelect} />;
 };
 
-export default function Review({ history }) {
+export default function Review({ history, match }) {
   const [selectedStar, setSelectedStar] = useState(0);
   const [inputText, setInputText] = useState("");
   const [uploadImage, setUploadImage] = useState([]);
   const [thumbnailImage, setThumbnailImage] = useState([]);
 
-  const shopId = useSelector((state) => state.currentShopId);
+  // const shopId = useSelector((state) => state.currentShopId);
 
   const handleInputText = (e) => {
     setInputText(e.target.value);
@@ -39,7 +39,7 @@ export default function Review({ history }) {
     const reviewData = new FormData();
     reviewData.append("star", selectedStar);
     reviewData.append("comment", inputText);
-    reviewData.append("shop_id", shopId);
+    reviewData.append("shop_id", match.params.shop_id);
     uploadImage.map((item) => {
       return reviewData.append("img", item);
     });
@@ -58,7 +58,7 @@ export default function Review({ history }) {
   };
 
   useEffect(() => {
-    console.log(`리뷰 남길 가게 id = ${shopId}`);
+    console.log(`리뷰 남길 가게 id = ${match.params.shop_id}`);
     console.log(`평점 : ${selectedStar}`);
     // for (let pair of formData.entries()) {
     //   console.log(pair[0] + ", " + pair[1]);

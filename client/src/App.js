@@ -86,7 +86,7 @@ function App() {
           </Route>
           <Route path="/shopdetail/:id" component={ShopDetail} />
           <Route path="/editor_pick/:code" component={EditorPick} />
-          <Route path="/review" component={Review} />
+          <Route path={"/review/:shop_id"} component={Review} />
           <Route path="/oauthloding" component={OauthLoding} />
         </Switch>
         <Footer />
