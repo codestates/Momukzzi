@@ -6,6 +6,7 @@ import { BiMessageDetail } from "react-icons/bi";
 import ShopImageModal from "./ShopImageModal";
 import ReviewPhotoModal from "./ReviewPhotoModal";
 import Loader from "./Loader";
+import Review from "../Review/Review";
 import {
   ShopImages,
   ShopBody,
@@ -216,7 +217,7 @@ export default function ShopDetail({ match }) {
                   return (
                     <ShopEachReview
                       key={idx}
-                      style={{ height: 30 }}
+                      // style={{ height: 30 }}
                       onClick={() => handleReviewClick(idx)}
                     >
                       아이디 : {item.user_id}
