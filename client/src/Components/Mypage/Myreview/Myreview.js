@@ -61,7 +61,7 @@ function Myreview() {
 									pic={el.review_pics[0]?.pic_URL}
 								/>
 							)
-					  })
+					})
 					: '리뷰 없음'}
 				{isLoaded ? (
 					<Loader />
