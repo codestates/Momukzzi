@@ -1,4 +1,4 @@
-const dummyShopPicInfo = [
+const dummyShopPics = [
   {
     createdAt: null,
     id: null,
@@ -183,4 +183,4 @@ const dummyShopPicInfo = [
   },
 ];
 
-export default dummyShopPicInfo;
+export default dummyShopPics;

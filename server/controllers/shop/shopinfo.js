@@ -10,11 +10,9 @@ const {
 } = require("../../models");
 const userinfo = require("../users/userinfo");
 
-
-
 module.exports = async (req, res) => {
-  console.log("get shopinfo");
-  console.log(req.params.map_id);
+  // console.log("get shopinfo");
+  // console.log(req.params.map_id);
   const targetshop = await shop.findOne({
     include: [
       {
@@ -35,31 +33,17 @@ module.exports = async (req, res) => {
           {
             model: review_pic,
             attributes: ["pic_URL"],
-          }
+          },
         ],
-        attributes: ["id","user_id", "comment", "star"],
+        attributes: ["id", "user_id", "comment", "star"],
       },
     ],
 
     where: {
-      map_id: req.params.map_id,
+      id: req.params.shop_id,
     },
   });
 
-  // const taglist = await shop_tag.findAll({
-  //   include: [
-  //     {
-  //       model: tag,
-  //       attributes: ["tag"],
-  //     },
-  //   ],
-  //   where: {
-  //     shop_id: req.params.shop_id,
-  //   },
-  // });
-
-  console.log("-------------------------", targetshop);
-  // console.log("-------------------------", taglist);
   res.status(200).json({
     message: "shopinfo called!",
     data: { targetshop },

@@ -1,10 +1,11 @@
-import react, { useEffect } from "react";
+import react, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { AiOutlineConsoleSql, AiOutlineStar } from "react-icons/ai";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import localShopInfo from "../../dummy/localShopInfo";
+import dummyKakaoShops from "../../dummy/dummyKakaoShops";
 const Container = styled.div``;
 
 const EditorPickHeader = styled.div`
@@ -71,8 +72,30 @@ const EditorPick = ({ match }) => {
   const x = match.params.code.split(",")[1];
   const name = match.params.code.split(",")[2];
   const description = match.params.code.split(",")[3];
-  const shopInfo = useSelector((state) => state.shopInfo);
-  const shopDetailInfo = useSelector((state) => state.shopDetailInfo);
+  const [shopDetailInfo, setShopDetailInfo] = useState([
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+  ]);
+  const [shopInfo, setShopInfo] = useState(dummyKakaoShops);
+  const currentLocationShops = useSelector(
+    (state) => state.currentLocationShops
+  );
+  const currentLocationShopPics = useSelector(
+    (state) => state.currentLocationShopPics
+  );
 
   useEffect(() => {
     axios
@@ -85,11 +108,8 @@ const EditorPick = ({ match }) => {
         }
       )
       .then((res) => {
-        dispatch({
-          type: "shop_info",
-          data: res.data.documents,
-        });
-        // console.log(res.data.documents);
+        setShopInfo(res.data.documents);
+
         axios
           .post(
             "https://localhost:4000/data",
@@ -99,16 +119,57 @@ const EditorPick = ({ match }) => {
             }
           )
           .then((res) => {
-            console.log(res.data.data.result);
-            dispatch({
-              type: "shop_detail_info",
-              data: res.data.data.result,
+            setShopDetailInfo(res.data.data.result);
+            const shopMapIds = res.data.documents.map((obj) => {
+              return obj.id;
             });
+            axios
+              .post(
+                "https://localhost:4000/shopmanyinfo",
+                {
+                  map_ids: shopMapIds,
+                },
+                {
+                  withCredentials: true,
+                }
+              )
+              .then((res) => {
+                // console.log(res.data.data);
+                const shopData = res.data.data.filter((obj) => {
+                  if (obj !== null) {
+                    return obj;
+                  }
+                });
+                // console.log(shopData);
+                dispatch({
+                  type: "current_location_shops",
+                  data: shopData,
+                });
+                const shopIds = shopData.map((obj) => {
+                  return obj.id;
+                });
+                // console.log(shopIds);
+                axios
+                  .post(
+                    "https://localhost:4000/shopmanypics",
+                    {
+                      shop_ids: shopIds,
+                    },
+                    { withCredentials: true }
+                  )
+                  .then((res) => {
+                    // console.log(res.data.data);
+                    dispatch({
+                      type: "current_location_shop_pics",
+                      data: res.data.data,
+                    });
+                  });
+              });
           });
       });
   }, []);
-  console.log(shopInfo);
-  console.log(shopDetailInfo);
+  // console.log(shopInfo);
+  // console.log(shopDetailInfo);
   return (
     <Container>
       <EditorPickHeader>
@@ -142,7 +203,9 @@ const EditorPick = ({ match }) => {
                   간고기가 올라간 매콤한 화덕 피자인데 입에 쫙쫙 붙는 맛이고
                   도우도 쫀득하고..
                   <div>
-                    <Link to={`/shopdetail/${shopInfo[i].id}`}>더보기</Link>
+                    <Link to={`/shopdetail/${currentLocationShops[i]?.id}`}>
+                      더보기
+                    </Link>
                   </div>
                 </div>
               </div>

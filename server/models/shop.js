@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
-  
+
   shop.init(
     {
       shop_name: DataTypes.STRING,

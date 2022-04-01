@@ -43,22 +43,40 @@ const SlideTopicImage = styled.img`
 
 const SlideTopic = () => {
   const dispatch = useDispatch();
-  const topicShopInfo = useSelector((state) => state.topicShopInfo);
-  const topicShopDetailInfo = useSelector((state) => state.topicShopDetailInfo);
-  console.log("주제별로 받아온 shop_pic 테이블", topicShopDetailInfo);
-  console.log("주제별로 받아온 shop 테이블", topicShopInfo);
+  const topicShops = useSelector((state) => state.topicShops);
+  const topicShopPics = useSelector((state) => state.topicShopPics);
+  // console.log("주제별로 받아온 shop 테이블", topicShops);
+  // console.log("주제별로 받아온 shop_pic 테이블", topicShopPics);
+
+  useEffect(() => {
+    axios
+      .get("https://localhost:4000/topicshop/total_review", {
+        withCredentials: true,
+      })
+      .then((res) => {
+        dispatch({
+          type: "topic_shops",
+          data: res.data.data.shopInfo,
+        });
+        dispatch({
+          type: "topic_shop_pics",
+          data: res.data.data.shopPicInfos,
+        });
+        // setTopicInfo(res.data.data.shopInfo);
+      });
+  }, []);
 
   return (
     <SlideTopicContainer>
       <div id="topic">평점이 높은 식당</div>
       <div className="shop_list">
-        {topicShopDetailInfo.map((el, i) => {
+        {topicShopPics.map((obj, i) => {
           return (
             <TopicShopList key={i}>
-              <Link to={`/shopdetail2/${el.shop_id}`}>
+              <Link to={`/shopdetail/${obj?.shop_id}`}>
                 <SlideTopicImage
                   className="shop_pic"
-                  src={el.pic_URL}
+                  src={obj?.pic_URL}
                 ></SlideTopicImage>
               </Link>
             </TopicShopList>

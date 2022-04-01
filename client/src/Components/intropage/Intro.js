@@ -24,6 +24,8 @@ import {
 import { put } from "redux-saga/effects";
 import { AiOutlineConsoleSql } from "react-icons/ai";
 import { type } from "@testing-library/user-event/dist/type";
+import dummyKakaoShops from "../../dummy/dummyKakaoShops";
+import SlideShop from "../Mainpage/SlideShop";
 const TodaysPickContainer = styled.div`
   border: 1px solid black;
   width: 800px;
@@ -73,10 +75,32 @@ const ShopMenu = styled.div`
 
 const Intro = () => {
   const [randomInt, setRandomInt] = useState(0);
-  const [mapList, setMapList] = useState([]);
+  const [shopDetailInfo, setShopDetailInfo] = useState([
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+    { shoppic: [], menulist: [] },
+  ]);
+  const [shopInfo, setShopInfo] = useState(dummyKakaoShops);
   const dispatch = useDispatch();
-  const shopInfo = useSelector((state) => state.shopInfo);
-  const shopDetailInfo = useSelector((state) => state.shopDetailInfo);
+
+  const currentLocationShops = useSelector(
+    (state) => state.currentLocationShops
+  );
+  const currentLocationShopPics = useSelector(
+    (state) => state.currentLocationShopPics
+  );
 
   useEffect(() => {
     // 0 ~ 44 랜덤 정수 생성
@@ -105,11 +129,8 @@ const Intro = () => {
                 }
               )
               .then((res) => {
-                dispatch({
-                  type: "shop_info",
-                  data: res.data.documents,
-                });
                 // console.log(res.data.documents);
+                setShopInfo(res.data.documents);
                 axios
                   .post(
                     "https://localhost:4000/data",
@@ -119,15 +140,57 @@ const Intro = () => {
                     }
                   )
                   .then((res) => {
-                    console.log(res.data.data.result);
-                    dispatch({
-                      type: "shop_detail_info",
-                      data: res.data.data.result,
+                    // console.log(res.data.data.result);
+                    setShopDetailInfo(res.data.data.result);
+                  });
+
+                const shopMapIds = res.data.documents.map((obj) => {
+                  return obj.id;
+                });
+                // console.log(shopMapIds);
+                axios
+                  .post(
+                    "https://localhost:4000/shopmanyinfo",
+                    {
+                      map_ids: shopMapIds,
+                    },
+                    {
+                      withCredentials: true,
+                    }
+                  )
+                  .then((res) => {
+                    // console.log(res.data.data);
+                    const shopData = res.data.data.filter((obj) => {
+                      if (obj !== null) {
+                        return obj;
+                      }
                     });
+                    // console.log(shopData);
+                    dispatch({
+                      type: "current_location_shops",
+                      data: shopData,
+                    });
+                    const shopIds = shopData.map((obj) => {
+                      return obj.id;
+                    });
+                    // console.log(shopIds);
+                    axios
+                      .post(
+                        "https://localhost:4000/shopmanypics",
+                        {
+                          shop_ids: shopIds,
+                        },
+                        { withCredentials: true }
+                      )
+                      .then((res) => {
+                        // console.log(res.data.data);
+                        dispatch({
+                          type: "current_location_shop_pics",
+                          data: res.data.data,
+                        });
+                      });
                   });
               });
-            console.log("카카오로 받아온 정보", shopInfo);
-            console.log("크롤링으로 받아온 정보", shopDetailInfo);
             // ----------------------------------지도 생성 -----------------------------
             var mapContainer = document.getElementById("map"), // 지도를 표시할 div
               mapOption = {
@@ -216,6 +279,11 @@ const Intro = () => {
     }
     getLocation();
   }, []);
+
+  // console.log("currentLocationShops", currentLocationShops);
+  // console.log("currnetLocationShopPics", currentLocationShopPics);
+  // console.log(shopDetailInfo);
+
   return (
     <TodaysPickContainer>
       <Section>
@@ -253,8 +321,8 @@ const Intro = () => {
         <ShopMenu className="test">
           <ul>
             <h3>메뉴</h3>
-            {shopDetailInfo[randomInt].menulist.map((el, i) => {
-              return <li key={i}>{`${el[0]} : ${el[1]}`}</li>;
+            {shopDetailInfo[randomInt].menulist.map((menu, i) => {
+              return <li key={i}>{`${menu[0]} : ${menu[1]}`}</li>;
             })}
           </ul>
         </ShopMenu>
