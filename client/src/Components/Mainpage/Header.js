@@ -77,12 +77,6 @@ const HeaderContainer = styled.div`
 `;
 
 const Header = () => {
-  const [active, setActive] = useState(false);
-
-  const clickToggleBtn = () => {
-    setActive(!active);
-  };
-
   const dispatch = useDispatch();
   return (
     <HeaderContainer>
@@ -106,6 +100,10 @@ const Header = () => {
               onClick={() => {
                 localStorage.removeItem("accessToken");
                 localStorage.removeItem("nickname");
+                axios.get("https://localhost:4000/users/logout", {
+                  withCredentials: true,
+                });
+
                 window.location.replace(window.location.pathname);
               }}
             >

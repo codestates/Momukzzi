@@ -30,5 +30,6 @@ module.exports = {
   topicshop: require("./shop/topicshop"),
   shopmanyinfo: require("./shop/shopmanyinfo"),
   shopmanypics: require("./shop/shopmanypics"),
-  favorites: require("./favorites/favorites"),
+  shopmanyreviews: require("./shop/shopmanyreviews"),
+  bookmark: require("./bookmark/bookmark"),
 };

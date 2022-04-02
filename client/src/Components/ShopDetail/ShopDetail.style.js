@@ -85,6 +85,9 @@ export const ReviewButton = styled.button`
   & > span {
     font-size: 12px;
   }
+  .on {
+    color: yellow;
+  }
 `;
 
 export const ShopDetailInfo = styled.div`
