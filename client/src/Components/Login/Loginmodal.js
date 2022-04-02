@@ -100,6 +100,7 @@ function Loginmodal({ setOpenModal, close }) {
         if (res.data.data.accessToken) {
           localStorage.setItem("accessToken", res.data.data.accessToken);
         }
+        
         return window.location.replace(window.location.pathname);
       })
       .catch((err) => {
