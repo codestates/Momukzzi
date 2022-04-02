@@ -34,7 +34,7 @@ export default function ShopDetail({ match }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [reviewCount, setReviewCount] = useState(4);
 
-  const [favorites, setFavorites] = useState(true);
+  const [bookmark, setBookmark] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -48,29 +48,42 @@ export default function ShopDetail({ match }) {
     setCurrentReview(idx);
   };
 
+  const getCookie = function (name) {
+    var value = document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
+    return value ? decodeURIComponent(value[2]) : null;
+  };
+
   const handleStar = () => {
-    // 즐겨찾기 true or false, 별모양 빈거/채워진거
-    // axios.post()
-    // console.log("hello");
-    // axios
-    //   .post(
-    //     "https://localhost:4000/favorites",
-    //     {
-    //       headers: {
-    //         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-    //       },
-    //       shop_id: match.params.id,
-    //       add: favorites,
-    //     },
-    //     {
-    //       withCredentials: true,
-    //     }
-    //   )
-    //   .then((res) => {
-    //     setFavorites(favorites);
-    //     console.log("즐겨찾기 응답", res);
-    //     console.log(document.cookie);
-    //   });
+    // 즐겨찾기 bookmark 상태변수 true or false, 별모양 빈거/채워진거
+
+    console.log("hello");
+    axios
+      .post(
+        "https://localhost:4000/bookmark",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+          shop_id: match.params.id,
+          bookmark: bookmark,
+        },
+        {
+          withCredentials: true,
+        }
+      )
+      .then((res) => {
+        if (
+          res.data.message === "add success" ||
+          res.data.message === "remove success"
+        ) {
+          setBookmark(!bookmark);
+        } else if (res.data.message === "not authorized") {
+          dispatch({ type: "login modal" });
+        }
+
+        console.log("즐겨찾기 응답", res);
+        console.log(JSON.parse(getCookie("bookmark")));
+      });
   };
 
   const handleReviewPlus = async () => {
@@ -85,6 +98,16 @@ export default function ShopDetail({ match }) {
   }, [reviewCount]);
 
   useEffect(() => {
+    const cookie = JSON.parse(getCookie("bookmark"));
+    if (cookie) {
+      for (let i = 0; i < cookie.length; i++) {
+        if (cookie[i].id === Number(match.params.id)) {
+          setBookmark(true);
+        }
+      }
+    }
+    console.log(cookie);
+
     // match.params.id 활용
     axios
       .get(`https://localhost:4000/shops/${match.params.id}`)
@@ -97,7 +120,7 @@ export default function ShopDetail({ match }) {
           let alreadyVisited = false;
 
           visited.forEach((e) => {
-            if (e.id === info.id) {
+            if (e.id === Number(match.params.id)) {
               alreadyVisited = true;
             }
           });
@@ -117,12 +140,7 @@ export default function ShopDetail({ match }) {
         // -------------------------------------------------
         setInfo(res.data.data.targetshop);
         // console.log(res.data.data.targetshop);
-        dispatch({
-          type: "current_shop_id",
-          payload: {
-            shopId: res.data.data.targetshop.id,
-          },
-        });
+
         return res.data.data.targetshop;
       })
       // KAKAO map api and marker
@@ -209,7 +227,10 @@ export default function ShopDetail({ match }) {
 
               {/*클릭 시 즐겨찾기 등록 or 해제 */}
               <ReviewButton>
-                <BsStar className="favoriteButton" onClick={handleStar} />
+                <BsStar
+                  className={bookmark ? "favoriteButton on" : "favoriteButton"}
+                  onClick={handleStar}
+                />
                 <span>즐겨찾기</span>
               </ReviewButton>
             </Buttons>

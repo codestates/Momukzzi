@@ -31,6 +31,7 @@ const ShopComponent = styled.div`
   }
   .shop_info2{
     border: 1px solid black;
+    width: 500px;
   }
   img {
     width: 300px;
@@ -57,12 +58,15 @@ const ShopComponent = styled.div`
   #favorite {
     text-align: right ;
     border:1px solid black ;
-
+    cursor: pointer;
   }
   .staricon {
      font-size:40px;
      color:gainsboro;
      margin: 10px;
+  }
+  .on {
+    color: yellow;
   }
 }
 `;
@@ -90,6 +94,7 @@ const EditorPick = ({ match }) => {
     { shoppic: [], menulist: [] },
   ]);
   const [shopInfo, setShopInfo] = useState(dummyKakaoShops);
+  const [shopManyReviews, setShopManyReviews] = useState([]);
   const currentLocationShops = useSelector(
     (state) => state.currentLocationShops
   );
@@ -119,57 +124,155 @@ const EditorPick = ({ match }) => {
             }
           )
           .then((res) => {
+            // console.log(res);
+
             setShopDetailInfo(res.data.data.result);
-            const shopMapIds = res.data.documents.map((obj) => {
+          });
+
+        const shopMapIds = res.data.documents.map((obj) => {
+          return obj.id;
+        });
+        axios
+          .post(
+            "https://localhost:4000/shopmanyinfo",
+            {
+              map_ids: shopMapIds,
+            },
+            {
+              withCredentials: true,
+            }
+          )
+          .then((res) => {
+            // console.log("응답", res.data.data);
+            const shopData = res.data.data.filter((obj) => {
+              if (obj !== null) {
+                return obj;
+              }
+            });
+            // console.log(shopData);
+            dispatch({
+              type: "current_location_shops",
+              data: shopData,
+            });
+            const shopIds = shopData.map((obj) => {
               return obj.id;
             });
+            console.log(shopIds);
             axios
               .post(
-                "https://localhost:4000/shopmanyinfo",
+                "https://localhost:4000/shopmanypics",
                 {
-                  map_ids: shopMapIds,
+                  shop_ids: shopIds,
+                },
+                { withCredentials: true }
+              )
+              .then((res) => {
+                // console.log(res.data.data);
+                dispatch({
+                  type: "current_location_shop_pics",
+                  data: res.data.data,
+                });
+              });
+            axios
+              .post(
+                "https://localhost:4000/shopmanyreviews",
+                {
+                  shop_ids: shopIds,
                 },
                 {
                   withCredentials: true,
                 }
               )
               .then((res) => {
-                // console.log(res.data.data);
-                const shopData = res.data.data.filter((obj) => {
-                  if (obj !== null) {
-                    return obj;
-                  }
-                });
-                // console.log(shopData);
-                dispatch({
-                  type: "current_location_shops",
-                  data: shopData,
-                });
-                const shopIds = shopData.map((obj) => {
-                  return obj.id;
-                });
-                // console.log(shopIds);
-                axios
-                  .post(
-                    "https://localhost:4000/shopmanypics",
-                    {
-                      shop_ids: shopIds,
-                    },
-                    { withCredentials: true }
-                  )
-                  .then((res) => {
-                    // console.log(res.data.data);
-                    dispatch({
-                      type: "current_location_shop_pics",
-                      data: res.data.data,
-                    });
-                  });
+                console.log(res.data.data);
+                setShopManyReviews(res.data.data);
               });
           });
       });
   }, []);
+
   // console.log(shopInfo);
   // console.log(shopDetailInfo);
+
+  const getCookie = function (name) {
+    var value = document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
+    return value ? decodeURIComponent(value[2]) : null;
+  };
+  const [cookie, setCookie] = useState(JSON.parse(getCookie("bookmark")));
+  const isAddedBookmark = (id) => {
+    let result = false;
+    if (!cookie) {
+      return;
+    }
+    for (let i = 0; i < cookie.length; i++) {
+      if (id === cookie[i].id) {
+        result = true;
+      }
+    }
+    return result;
+  };
+  const handleStar = (id, e) => {
+    console.log(cookie);
+    const filteredCookie = cookie.filter((shop) => {
+      console.log(shop.id, id);
+      return shop.id === id;
+    });
+    console.log(filteredCookie);
+    if (filteredCookie.length === 0) {
+      console.log("hello");
+      axios
+        .post(
+          "https://localhost:4000/bookmark",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+            shop_id: id,
+            bookmark: false,
+          },
+          {
+            withCredentials: true,
+          }
+        )
+        .then((res) => {
+          if (res.data.message === "add success") {
+            setCookie(JSON.parse(getCookie("bookmark")));
+          } else if (res.data.message === "not authorized") {
+            dispatch({ type: "login modal" });
+          }
+
+          console.log("즐겨찾기 응답", res);
+          console.log(JSON.parse(getCookie("bookmark")));
+        });
+    } else {
+      console.log("hello");
+      axios
+        .post(
+          "https://localhost:4000/bookmark",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+            shop_id: id,
+            bookmark: true,
+          },
+          {
+            withCredentials: true,
+          }
+        )
+        .then((res) => {
+          if (res.data.message === "remove success") {
+            setCookie(JSON.parse(getCookie("bookmark")));
+          } else if (res.data.message === "not authorized") {
+            dispatch({ type: "login modal" });
+          }
+
+          console.log("즐겨찾기 응답", res);
+          console.log(JSON.parse(getCookie("bookmark")));
+        });
+    }
+  };
+  console.log("current", currentLocationShops);
   return (
     <Container>
       <EditorPickHeader>
@@ -177,21 +280,35 @@ const EditorPick = ({ match }) => {
         <div>{description}</div>
       </EditorPickHeader>
 
-      {shopInfo.map((obj, i) => {
+      {currentLocationShops.map((obj, i) => {
         return (
           <ShopComponent>
             <div className="shop_info1">
-              <img src={shopDetailInfo[i].shoppic[0]}></img>
+              <img src={shopDetailInfo[i]?.shoppic[0]}></img>
             </div>
             <div className="shop_info2">
               <div className="shop_name">
                 <div>
-                  <div>{`${i + 1}. ${obj.place_name}`}</div>
-                  <div>{obj.road_address_name}</div>
+                  <div>{`${i + 1}. ${obj.shop_name}`}</div>
+                  <div>{obj.location}</div>
                 </div>
 
-                <div id="favorite">
-                  <AiOutlineStar className="staricon" />
+                <div
+                  id="favorite"
+                  onClick={(e) => {
+                    if (!localStorage.getItem("accessToken")) {
+                      dispatch({ type: "login modal" });
+                    } else {
+                      console.log("id값", obj.id);
+                      handleStar(obj.id, e);
+                    }
+                  }}
+                >
+                  <AiOutlineStar
+                    className={
+                      isAddedBookmark(obj.id) ? "staricon on" : "staricon"
+                    }
+                  />
                 </div>
               </div>
               <div className="review">
@@ -199,9 +316,7 @@ const EditorPick = ({ match }) => {
                   <img src="http://cdn.tgdaily.co.kr/news/photo/202007/301112_61338_3647.png" />
                 </div>
                 <div>
-                  코랄 여기를 가면 피칸테 피자를 먹어야 합니다.! 자신있게 추천
-                  간고기가 올라간 매콤한 화덕 피자인데 입에 쫙쫙 붙는 맛이고
-                  도우도 쫀득하고..
+                  {shopManyReviews[i]?.comment}
                   <div>
                     <Link to={`/shopdetail/${currentLocationShops[i]?.id}`}>
                       더보기
