@@ -23,7 +23,7 @@ const initialState = {
   currentLocationShopPics: dummyShopPics,
   topicShops: dummyShops,
   topicShopPics: dummyShopPics,
-  currentShopId: 0,
+  currentShopName: 0,
 };
 
 function reducer(currentState = initialState, action) {
@@ -42,6 +42,8 @@ function reducer(currentState = initialState, action) {
     newState.topicShops = action.data;
   } else if (action.type === "topic_shop_pics") {
     newState.topicShopPics = action.data;
+  } else if (action.type === "current_shop_name") {
+    newState.currentShopName = action.payload.shop_name;
   }
 
   return newState;

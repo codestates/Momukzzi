@@ -1,8 +1,9 @@
 import React, { memo, useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { BsStar } from "react-icons/bs";
+import { BsStar, BsPersonCircle } from "react-icons/bs";
 import { BiMessageDetail } from "react-icons/bi";
+import { FaStar } from "react-icons/fa";
 import ShopImageModal from "./ShopImageModal";
 import ReviewPhotoModal from "./ReviewPhotoModal";
 import Loader from "./Loader";
@@ -19,10 +20,23 @@ import {
   ShopLocation,
   Buttons,
   ReviewButton,
+  ShopReviewUserPart,
+  ShopReviewCommentPart,
 } from "./ShopDetail.style";
 import { useDispatch } from "react-redux";
 
 /*global kakao*/
+
+const createArray = (length) => [...Array(length)];
+
+const Star = ({ selected = false }) => {
+  return (
+    <FaStar
+      color={selected ? "orange" : "grey"}
+      style={{ width: 20, height: 20 }}
+    />
+  );
+};
 
 export default function ShopDetail({ match }) {
   const [isOpen, setOpen] = useState(false); // 음식점 이미지 Modal
@@ -139,8 +153,13 @@ export default function ShopDetail({ match }) {
         }
         // -------------------------------------------------
         setInfo(res.data.data.targetshop);
-        // console.log(res.data.data.targetshop);
-
+        console.log(res.data.data.targetshop);
+        dispatch({
+          type: "current_shop_name",
+          payload: {
+            shop_name: res.data.data.targetshop.shop_name,
+          },
+        });
         return res.data.data.targetshop;
       })
       // KAKAO map api and marker
@@ -148,7 +167,7 @@ export default function ShopDetail({ match }) {
         var container = document.getElementById("map");
         var options = {
           center: new kakao.maps.LatLng(res.y, res.x),
-          level: 3,
+          level: 4,
         };
         var map = new kakao.maps.Map(container, options);
 
@@ -213,11 +232,21 @@ export default function ShopDetail({ match }) {
         })}
       </ShopImages>
       <ShopBody>
-        <ShopBasicInfo>
-          <ShopBasicInfoHeader>
-            <span>가게 이름 : {info.shop_name}</span>
-            <span>평점 : {info.star_avg}</span>
-            <Buttons>
+        <ShopBasicInfoHeader>
+          <span
+            style={{
+              marginLeft: 30,
+              marginRight: 15,
+              fontSize: 24,
+              fontWeight: "bold",
+            }}
+          >
+            {info.shop_name}
+          </span>
+          <span style={{ fontSize: 24, fontWeight: "bold", color: "red" }}>
+            {info.star_avg}
+          </span>
+          <Buttons>
               <Link to={`/review/${match.params.id}`}>
                 <ReviewButton>
                   <BiMessageDetail className="reviewButton" />
@@ -234,51 +263,99 @@ export default function ShopDetail({ match }) {
                 <span>즐겨찾기</span>
               </ReviewButton>
             </Buttons>
-          </ShopBasicInfoHeader>
+        </ShopBasicInfoHeader>
+        
+        <ShopBasicInfo>
           <ShopDetailInfo>
-            <ul>
-              <li>주소 : {info.location}</li>
-              <li>음식 종류 : {info.genus}</li>
-              <li>영업시간 : {info.work_time}</li>
-              <li>휴일 : {info.holiday}</li>
-              <li>
-                {info.menus.map((item) => {
-                  return (
-                    <div>
-                      {item.menu_name} 가격은 {item.price}
-                    </div>
-                  );
-                })}
-              </li>
-            </ul>
+            <table>
+              <tbody>
+                <tr>
+                  <th>주소</th>
+                  <td>{info.location}</td>
+                </tr>
+                <tr>
+                  <th>음식 종류</th>
+                  <td> {info.genus}</td>
+                </tr>
+                <tr>
+                  <th>영업시간</th>
+                  <td>{info.work_time}</td>
+                </tr>
+                <tr>
+                  <th>휴일</th>
+                  {info.holiday ? <td>{info.holiday}</td> : <td>정보 없음</td>}
+                </tr>
+                <tr>
+                  <th>메뉴</th>
+                  <td>
+                    <ul style={{ margin: 0, padding: 0 }}>
+                      {info.menus.map((item) => {
+                        return (
+                          <li>
+                            {item.menu_name} : {item.price}원
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </ShopDetailInfo>
-
-          <ShopReview>
-            {info.reviews.length !== 0
-              ? info.reviews.slice(0, reviewCount).map((item, idx) => {
-                  return (
-                    <ShopEachReview
-                      key={idx}
-                      // style={{ height: 30 }}
-                      onClick={() => handleReviewClick(idx)}
-                    >
-                      아이디 : {item.user_id}
-                      코멘트 : {item.comment}
-                      평점 : {item.star}
-                    </ShopEachReview>
-                  );
-                })
-              : "리뷰 없음"}
-            {isLoaded ? (
-              <Loader />
-            ) : (
-              <ShopReviewPlusButton onClick={handleReviewPlus}>
-                더 보기
-              </ShopReviewPlusButton>
-            )}
-          </ShopReview>
+          <ShopLocation id="map"></ShopLocation>
         </ShopBasicInfo>
-        <ShopLocation id="map"></ShopLocation>
+        <ShopReview>
+          {info.reviews.length !== 0
+            ? info.reviews.slice(0, reviewCount).map((el, idx) => {
+                return (
+                  <ShopEachReview
+                    key={idx}
+                    onClick={() => handleReviewClick(idx)}
+                  >
+                    <ShopReviewUserPart>
+                      <BsPersonCircle className="userIcon" />
+                      <span>{el.user_id}</span>
+                    </ShopReviewUserPart>
+
+                    <ShopReviewCommentPart>
+                      <div>
+                        {createArray(5).map((item, idx) => {
+                          return <Star key={idx} selected={el.star > idx} />;
+                        })}
+                      </div>
+                      <div style={{ marginTop: 15, minHeight: 100 }}>
+                        {el.comment}
+                      </div>
+                      <div>
+                        {el.review_pics.map((picArr, idx) => {
+                          return (
+                            <img
+                              key={idx}
+                              src={picArr.pic_URL}
+                              style={{
+                                width: 80,
+                                height: 80,
+                                borderStyle: "solid",
+                                borderWidth: 1,
+                                marginBottom: 5,
+                              }}
+                            />
+                          );
+                        })}
+                      </div>
+                    </ShopReviewCommentPart>
+                  </ShopEachReview>
+                );
+              })
+            : "리뷰 없음"}
+          {isLoaded ? (
+            <Loader />
+          ) : (
+            <ShopReviewPlusButton onClick={handleReviewPlus}>
+              {reviewCount < info.total_review ? "더 보기" : " "}
+            </ShopReviewPlusButton>
+          )}
+        </ShopReview>
       </ShopBody>
     </>
   );
