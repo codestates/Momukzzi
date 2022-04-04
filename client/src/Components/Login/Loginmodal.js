@@ -96,11 +96,11 @@ function Loginmodal({ setOpenModal, close }) {
         console.log(res);
         console.log(res.data.data.accessToken);
         localStorage.setItem("accessToken", res.data.data.accessToken);
-        localStorage.setItem("email", res.data.data.email);
+        localStorage.setItem("nickname", res.data.data.nickname);
         if (res.data.data.accessToken) {
           localStorage.setItem("accessToken", res.data.data.accessToken);
         }
-        
+
         return window.location.replace(window.location.pathname);
       })
       .catch((err) => {
