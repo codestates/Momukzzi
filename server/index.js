@@ -102,9 +102,12 @@ app.get("/topicshop/:topic", controllers.topicshop);
 app.post("/shopmanyinfo", controllers.shopmanyinfo);
 // shop_pic 테이블 정보 여러개 가져오기
 app.post("/shopmanypics", controllers.shopmanypics);
-
+// review 테이블 정보 여러개 가져오기
+app.post("/shopmanyreviews", controllers.shopmanyreviews);
 // 즐겨찾기 추가/제거
-app.post("/favorites", controllers.favorites);
+app.post("/bookmark", controllers.bookmark);
+
+//
 
 const HTTPS_PORT = process.env.HTTPS_PORT || 4000;
 

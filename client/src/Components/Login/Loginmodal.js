@@ -90,7 +90,7 @@ function Loginmodal({ setOpenModal, close }) {
           user_id,
           password,
         },
-        { "Content-Type": "application/json" }
+        { "Content-Type": "application/json", withCredentials: true }
       )
       .then((res) => {
         console.log(res);
@@ -100,7 +100,8 @@ function Loginmodal({ setOpenModal, close }) {
         if (res.data.data.accessToken) {
           localStorage.setItem("accessToken", res.data.data.accessToken);
         }
-        return window.location.replace("/");
+        
+        return window.location.replace(window.location.pathname);
       })
       .catch((err) => {
         console.log(err);

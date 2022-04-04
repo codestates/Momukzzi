@@ -8,7 +8,7 @@ module.exports = async (req, res) => {
 	await user
 		.update(newuserinfo, { where: { user_id: newuserinfo.user_id } })
 		.then(result => {
-			if (result[0] === 2) {
+			if (result[0] === 1) {
 				console.log(result)
 				res.status(200).json({
 					message: 'userinfo changed !',
