@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import axios from 'axios'
 import { BsTrash } from 'react-icons/bs'
 
@@ -6,7 +6,6 @@ const Myreviewdelete = () => {
 	const accessToken = localStorage.getItem('accessToken')
 
 	const [changeInfo, setchangeInfo] = useState({
-		id: '',
 		review_id: '',
 	})
 	const userInfoHandler = () => {
@@ -21,12 +20,12 @@ const Myreviewdelete = () => {
 				.then(res => {
 					setchangeInfo(res.data.data.userInfo.reviews[0])
 					console.log(
-						'개인정보가져오기 성공',
-						res.data.data.userInfo.reviews[0]
+						'내 리뷰정보가져오기 성공',
+						res.data.data.userInfo.reviews.map(x => x)
 					)
 				})
 				.catch(err => {
-					console.log('개인가져오기 에러', err)
+					console.log('내 리뷰정보가져오기 에러', err)
 				})
 		}
 	}
@@ -71,7 +70,12 @@ const Myreviewdelete = () => {
 				})
 		}
 	}
-	return <BsTrash onClick={deleteModal} />
+
+	return (
+		<div>
+			<BsTrash onClick={deleteModal} />
+		</div>
+	)
 }
 
 export default Myreviewdelete

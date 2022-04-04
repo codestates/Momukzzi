@@ -1,20 +1,35 @@
 import styled from 'styled-components'
+import { createGlobalStyle } from 'styled-components'
+
+export default createGlobalStyle`
+@font-face {
+	font-family: mypagefont;
+	src: url('./mypagefont.ttf');
+}
+`
 
 export const Styled = {
+	ShopReviewPlusButton: styled.button`
+		margin: 5px 5px;
+		width: 98%;
+		border: none;
+		background-color: white;
+	`,
 	Wrapper: styled.div`
 		display: flex;
 		flex-direction: column;
 		margin-left: auto;
 		margin-right: auto;
-		width: 700px;
+		width: 100%;
+		hegith: 5px;
 		@media (max-width: 1200px) {
-			width: 600px;
+			width: 100%;
 		}
 		@media (max-width: 750px) {
-			width: 90%;
+			width: 100%;
 		}
 		@media (max-width: 700px) {
-			width: 90%;
+			width: 100%;
 		}
 	`,
 
@@ -39,12 +54,14 @@ export const Styled = {
 	`,
 
 	Comment: styled.div`
+		font-family: mypagefont;
 		position: relative;
 		display: grid;
 		width: 100%;
 		height: auto;
 		grid-template-columns: 1fr 3fr 0.5fr;
 		border-radius: 20px;
+		white-space: nowrap;
 		@media (max-width: 500px) {
 			grid-template-columns: 1fr 3fr 0.8fr;
 		}
@@ -60,30 +77,31 @@ export const Styled = {
 
 	ProfileBox: styled.form`
 		position: relative;
-		width: 70%;
-		height: 50%;
+		width: 100%;
+		height: 100%;
 		margin-left: auto;
 		margin-right: auto;
 		margin-top: 20%;
 		margin-bottom: auto;
+
 		@media (max-width: 768px) {
-			width: 70%;
+			width: 100%;
 			height: 50%;
 		}
 		@media (max-width: 640px) {
-			width: 75%;
+			width: 100%;
 			height: 45%;
 		}
 		@media (max-width: 535px) {
-			width: 80%;
+			width: 100%;
 			height: 40%;
 		}
 		@media (max-width: 470px) {
-			width: 80%;
+			width: 100%;
 			height: 40%;
 		}
 		@media (max-width: 360px) {
-			width: 80%;
+			width: 100%;
 			height: 40%;
 		}
 	`,
@@ -98,7 +116,7 @@ export const Styled = {
 	`,
 
 	ProfileImgBox: styled.div`
-		width: 50%;
+		width: 80%;
 		height: 0;
 		padding-top: 50%;
 		position: relative;
@@ -109,7 +127,7 @@ export const Styled = {
 	`,
 
 	ProfileImg: styled.img`
-		border-radius: 50%;
+		/* border-radius: 50%; */
 		width: 100%;
 		height: 100%;
 		position: absolute;
@@ -117,9 +135,17 @@ export const Styled = {
 	`,
 
 	NickName: styled.div`
+		font-family: mypagefont;
 		position: relative;
-		font-size: 0.8rem;
+		font-size: 1rem;
 		text-align: center;
+		line-height: 40px;
+		@media (max-width: 768px) {
+			font-size: 1rem;
+		}
+		@media (max-width: 640px) {
+			font-size: 1rem;
+		}
 	`,
 
 	ContentBox: styled.form`
@@ -130,6 +156,7 @@ export const Styled = {
 		height: auto;
 		padding-top: 5%;
 		padding-bottom: 10%;
+		text-align: center;
 		@media (max-width: 535px) {
 			padding-bottom: 15%;
 		}
@@ -141,12 +168,15 @@ export const Styled = {
 		width: auto;
 		height: auto;
 		padding: 1%;
-		font-size: 0.8rem;
+		font-size: 1.4rem;
+		line-height: 100px;
 		@media (max-width: 768px) {
-			font-size: 0.8rem;
+			font-size: 20px;
+			line-height: 130px;
 		}
 		@media (max-width: 640px) {
-			font-size: 0.8rem;
+			font-size: 15px;
+			line-height: 130px;
 		}
 	`,
 
@@ -202,36 +232,36 @@ export const Styled = {
 			padding-top: 250%;
 		}
 	`,
-	ContentInput: styled.textarea`
-		width: 100%;
-		height: 80px;
-	`,
+	// ContentInput: styled.textarea`
+	// 	width: 100%;
+	// 	height: 80px;
+	// `,
 	BtnOne: styled.div`
-    position: absolute;
-    top: 0;
-    height: 33.33%;
-    width: 100%;
-    .delete-button {
-      cursor: pointer;
-      color: gray;
-    }
-      @media (max-width: 600px) {
-        font-size: 0.7rem;
-      }
-      @media (max-width: 520px) {
-        font-size: 0.7rem;
-        padding-right: 20%;
-        padding-left: 20%;
-        height: 120%;
-      }
-      @media (max-width: 360px) {
-        font-size: 0.7rem;
-        padding-right: 15%;
-        padding-left: 15%;
-        height: 120%;
-      }
-    }
-  `,
+	  position: absolute;
+	  top: 0;
+	  height: 33.33%;
+	  width: 100%;
+	  .delete-button {
+	    cursor: pointer;
+	    color: gray;
+	  }
+	    @media (max-width: 600px) {
+	      font-size: 0.7rem;
+	    }
+	    @media (max-width: 520px) {
+	      font-size: 0.7rem;
+	      padding-right: 20%;
+	      padding-left: 20%;
+	      height: 120%;
+	    }
+	    @media (max-width: 360px) {
+	      font-size: 0.7rem;
+	      padding-right: 15%;
+	      padding-left: 15%;
+	      height: 120%;
+	    }
+	  }
+	`,
 
 	BtnTwo: styled.div`
 		position: absolute;
@@ -281,37 +311,60 @@ export const Styled = {
 		}
 	`,
 
-	ModalContainer: styled.div`
-		position: relative;
-	`,
+	// ModalContainer: styled.div`
+	// 	position: relative;
+	// `,
 
-	ModalBackdrop: styled.div`
-		position: fixed;
-		top: 0;
-		left: 0;
-		display: flex;
-		justify-content: center;
-		backdrop-filter: contrast(90%);
-		align-items: center;
-		width: 100vw;
-		height: 100vh;
-		z-index: 1000;
+	// ModalBackdrop: styled.div`
+	// 	position: fixed;
+	// 	top: 0;
+	// 	left: 0;
+	// 	display: flex;
+	// 	justify-content: center;
+	// 	backdrop-filter: contrast(90%);
+	// 	align-items: center;
+	// 	width: 100vw;
+	// 	height: 100vh;
+	// 	z-index: 1000;
+	// `,
+	// ModalView: styled.div`
+	// 	position: fixed;
+	// 	background-color: white;
+	// 	width: 400px;
+	// 	height: 250px;
+	// 	z-index: 2;
+	// 	border: 1px solid white;
+	// 	border-radius: 20px;
+	// 	@media screen and (max-height: 900px) {
+	// 		width: 350px;
+	// 		height: 200px;
+	// 	}
+	// 	@media screen and (max-width: 500px) {
+	// 		width: 350px;
+	// 		height: 200px;
+	// 	}
+	// `,
+	ReviewContainer: styled.div`
+		border-bottom: 2px solid grey;
+		font-size: 14px;
+		padding: 0 5px 0 5px;
+		margin-bottom: 10px;
+		word-break: keep-all;
 	`,
-	ModalView: styled.div`
-		position: fixed;
-		background-color: white;
-		width: 400px;
-		height: 250px;
-		z-index: 2;
-		border: 1px solid white;
-		border-radius: 20px;
-		@media screen and (max-height: 900px) {
-			width: 350px;
-			height: 200px;
-		}
-		@media screen and (max-width: 500px) {
-			width: 350px;
-			height: 200px;
+	ContentEmpty: styled.div`
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+		color: black;
+		font-size: 3rem;
+		/* margin-right: auto;
+		margin-left: auto;
+		margin-top: 180px; */
+		font-weight: bold;
+		> img {
+			justify-content: center;
+			width: 100%;
 		}
 	`,
 }

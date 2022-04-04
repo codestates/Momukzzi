@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import Myreviewlist from './Myreviewlist'
-import styled from 'styled-components'
+import { Styled } from './style'
 import Loader from '../../ShopDetail/Loader'
+import Emptyreview from './Emptyreview'
 
 function Myreview() {
 	const [userReview, setUserReview] = useState([])
@@ -46,59 +47,33 @@ function Myreview() {
 		console.log(reviewCount)
 	}, [reviewCount])
 
-<<<<<<< HEAD
-  return (
-    <>
-      <div>
-        {newUserReview.length !== 0
-          ? newUserReview.slice(0, reviewCount).map((el, i) => {
-              return (
-                <Myreviewlist
-                  key={i}
-                  comment={el.comment}
-                  createdAt={el.createdAt.slice(0, 10)}
-                  shop_name={el.shop.shop_name}
-                  star={el.star}
-                  pic={el.review_pics[0]?.pic_URL}
-                />
-              );
-            })
-          : "리뷰 없음"}
-        {isLoaded ? (
-          <Loader />
-        ) : (
-          <button onClick={handleReviewMore}>더 보기</button>
-        )}
-      </div>
-    </>
-  );
-=======
 	return (
-		<>
-			<div>
-				{newUserReview.length !== 0
-					? newUserReview.slice(0, reviewCount).map((el, i) => {
-							return (
-								<Myreviewlist
-									key={i}
-									comment={el.comment}
-									createdAt={el.createdAt.slice(0, 10)}
-									shop_name={el.shop.shop_name}
-									star={el.star}
-									pic={el.review_pics[0]?.pic_URL}
-								/>
-							)
-					})
-					: '리뷰 없음'}
-				{isLoaded ? (
-					<Loader />
-				) : (
-					<button onClick={handleReviewMore}>더 보기</button>
-				)}
-			</div>
-		</>
+		<Styled.ReviewContainer>
+			{newUserReview.length !== 0 ? (
+				newUserReview.slice(0, reviewCount).map((el, i) => {
+					return (
+						<Myreviewlist
+							key={i}
+							comment={el.comment.slice(0, 25)}
+							createdAt={el.createdAt.slice(0, 10)}
+							shop_name={el.shop.shop_name}
+							star={el.star}
+							pic={el.review_pics[0]?.pic_URL}
+						/>
+					)
+				})
+			) : (
+				<Emptyreview />
+			)}
+			{isLoaded ? (
+				<Loader />
+			) : (
+				<Styled.ShopReviewPlusButton onClick={handleReviewMore}>
+					더 보기
+				</Styled.ShopReviewPlusButton>
+			)}
+		</Styled.ReviewContainer>
 	)
->>>>>>> 57073cecff850881125bbc2e957e90855f6c1da2
 }
 
 export default Myreview
