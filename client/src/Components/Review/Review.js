@@ -4,6 +4,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import {
   ReviewBody,
+  ReviewShopName,
   ReviewInputText,
   ReviewThumbnail,
   ReviewLabelButton,
@@ -12,7 +13,13 @@ import {
 const createArray = (length) => [...Array(length)];
 
 const Star = ({ selected = false, handleSelect = (f) => f }) => {
-  return <FaStar color={selected ? "orange" : "grey"} onClick={handleSelect} />;
+  return (
+    <FaStar
+      color={selected ? "orange" : "grey"}
+      onClick={handleSelect}
+      style={{ width: 30, height: 30 }}
+    />
+  );
 };
 
 export default function Review({ history, match }) {
@@ -21,10 +28,19 @@ export default function Review({ history, match }) {
   const [uploadImage, setUploadImage] = useState([]);
   const [thumbnailImage, setThumbnailImage] = useState([]);
 
-  // const shopId = useSelector((state) => state.currentShopId);
+  const shopName = useSelector((state) => state.currentShopName);
 
   const handleInputText = (e) => {
     setInputText(e.target.value);
+  };
+
+  const deleteImage = (idx) => {
+    if (window.confirm("해당 사진을 업로드 취소하시겠습니까?")) {
+      setThumbnailImage([
+        ...thumbnailImage.slice(0, idx),
+        ...thumbnailImage.slice(idx + 1),
+      ]);
+    }
   };
 
   const onImageChange = (e) => {
@@ -67,10 +83,10 @@ export default function Review({ history, match }) {
 
   return (
     <ReviewBody>
-      {/* 가게 이름 상태로 내려받기 */}
-      <div>가게 이름에 대한 리뷰를 작성해주세요.</div>
       <div>
-        평점
+        <ReviewShopName>{shopName}</ReviewShopName>에 대한 리뷰를 작성해주세요.
+      </div>
+      <div style={{ marginBottom: 10, marginTop: 10 }}>
         {createArray(5).map((item, idx) => {
           return (
             <Star
@@ -86,7 +102,7 @@ export default function Review({ history, match }) {
       <ReviewInputText onChange={handleInputText} />
       <ReviewThumbnail>
         {thumbnailImage.map((item, idx) => {
-          return <img key={idx} src={item} />;
+          return <img key={idx} src={item} onClick={() => deleteImage(idx)} />;
         })}
         <ReviewLabelButton htmlFor="upload_file">사진 업로드</ReviewLabelButton>
         <input
@@ -107,7 +123,6 @@ export default function Review({ history, match }) {
         >
           취소
         </button>
-
         <button onClick={uploadReview}>리뷰 올리기</button>
       </div>
     </ReviewBody>

@@ -5,6 +5,9 @@ const axios =  require("axios")
 module.exports = async (req, res) => {
     console.log("oauth login!!!!!!!!!!!!!!");
     const code = req.body.code
+    const REACT_APP_GITHUB_CLIENT_ID = process.env.REACT_APP_GITHUB_CLIENT_ID;
+    const REACT_APP_GITHUB_CLIENT_SECRET =process.env.REACT_APP_GITHUB_CLIENT_SECRET;
+
 
     if(req.body.oauth === "KaKao"){
         axios //카카오
@@ -97,14 +100,21 @@ module.exports = async (req, res) => {
                         },
                     });
                 }
-            })
+            }).catch((e)=>{
+                //오류 처리
+                res.status(400).json({
+                    message : "Oauth login err"
+                })}
+            )
     }else{
         axios //깃허브
         .post(
             "https://github.com/login/oauth/access_token",
             {
-                client_id: "3e13dcd314570e792c58",
-                client_secret: "5c84df451bd83eff205c8b10c85a69206cbaabab",
+                client_id:REACT_APP_GITHUB_CLIENT_ID,
+                // "3e13dcd314570e792c58",
+                client_secret:REACT_APP_GITHUB_CLIENT_SECRET,
+                //  "5c84df451bd83eff205c8b10c85a69206cbaabab",
                 code: code
             },{headers: {
                 accept: 'application/json',
@@ -210,7 +220,12 @@ module.exports = async (req, res) => {
                         });
                     }
                     })
-                    .then(console.log("인증절차 통과")).catch(e => console.log(e))
+                    .then(console.log("인증절차 통과")).catch((e)=>{
+                        //오류 처리
+                        res.status(400).json({
+                            message : "Oauth login err"
+                        })}
+                    )
                 }
     )}
 };

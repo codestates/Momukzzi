@@ -41,6 +41,9 @@ const FavoriteHeader = styled.div`
 
 const FavoriteBody = styled.div`
   height: 390px;
+  .shopdetail {
+    cursor: pointer;
+  }
 `;
 
 const FavoriteContent = styled.div`
@@ -191,15 +194,13 @@ const Favorite = () => {
             {cookie.map((obj, i) => {
               return (
                 <FavoriteContent key={i}>
-                  <div>
-                    <Link
-                      to={`/shopdetail/${obj.id}`}
-                      onClick={() => {
-                        window.location.replace(`/shopdetail/${obj.id}`);
-                      }}
-                    >
-                      <img src={obj.pic_URL} alt="shop_pic" />
-                    </Link>
+                  <div
+                    className="shopdetail"
+                    onClick={() => {
+                      window.location.replace(`/shopdetail/${obj.id}`);
+                    }}
+                  >
+                    <img src={obj.pic_URL} alt="shop_pic" />
                   </div>
                   <div>
                     <div className="favorite-shopinfo">
@@ -229,6 +230,7 @@ const Favorite = () => {
               return (
                 <FavoriteContent key={i}>
                   <div
+                    className="shopdetail"
                     onClick={() => {
                       window.location.replace(`/shopdetail/${obj.id}`);
                     }}
