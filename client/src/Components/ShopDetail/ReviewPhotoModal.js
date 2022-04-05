@@ -25,6 +25,7 @@ export default function ReviewPhotoModal({ setReviewOpen, imageSet }) {
     if (clicked) return;
     else setReviewOpen(false);
   };
+
   return (
     <>
       <ImageModalBackdrop onClick={BackgroundClick}>
@@ -51,7 +52,11 @@ export default function ReviewPhotoModal({ setReviewOpen, imageSet }) {
                 <div className="swiper-zoom-container">
                   <img
                     src={item.pic_URL}
-                    style={{ width: "80%", height: "80%" }}
+                    style={{
+                      width: "80%",
+                      height: "80%",
+                      objectFit: "cover",
+                    }}
                   />
                 </div>
               </SwiperSlide>

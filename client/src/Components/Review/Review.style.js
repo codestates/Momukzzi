@@ -3,7 +3,9 @@ import styled from "styled-components";
 export const ReviewBody = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 300px 300px;
+  width: 70%;
+  padding-top: 200px;
+  margin: 0 auto;
 `;
 
 export const ReviewShopName = styled.span`
@@ -17,6 +19,7 @@ export const ReviewInputText = styled.textarea.attrs({
   resize: none;
   width: 100%;
   height: 300px;
+  border: 1px solid grey;
 `;
 
 export const ReviewThumbnail = styled.div`
@@ -25,23 +28,49 @@ export const ReviewThumbnail = styled.div`
   height: 100px;
   display: flex;
   & > img {
-    width: 80px;
-    height: 80px;
-    border: 1px solid black;
-    margin: 5px;
+    width: 100px;
+    height: 100px;
+    border-radius: 4px;
+    border: 1px solid grey;
+    margin-right: 5px;
   }
 `;
 
 export const ReviewLabelButton = styled.label`
   padding: 6px 6px;
-  background-color: #ff6600;
+  background-color: white;
   border-radius: 4px;
-  color: white;
+  color: black;
+  border: 1px dotted grey;
+  font-size: 24px;
   cursor: pointer;
   width: 100px;
-  height: 80px;
+  height: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: auto;
+`;
+
+export const ReviewSubmitButtonDiv = styled.div`
+  margin-top: 100px;
+  width: 100%;
+  height: 100px;
+  display: flex;
+
+  & > button {
+    padding: 6px 6px;
+    background-color: #ff6600;
+    border-radius: 4px;
+    border: none;
+    color: white;
+    cursor: pointer;
+    width: 100px;
+    height: 50px;
+  }
+  .cancel {
+    margin-left: auto;
+    margin-right: 5px;
+  }
+  .submit {
+  }
 `;
