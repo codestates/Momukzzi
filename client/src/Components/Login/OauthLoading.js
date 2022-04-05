@@ -21,7 +21,7 @@ function OauthLoading() {
 
   const kakaocode = (code) => {
     console.log("함수 실행됨!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-    console.log("kakao", code);
+
     if (code.length !== 20) {
       console.log("kakao", code);
       axios
@@ -31,7 +31,7 @@ function OauthLoading() {
         )
         .then((result) => {
           console.log("서버로 데이터 전송 시작");
-          localStorage.setItem("accessToken", result.data.access_token);
+          console.log(result.data)
 
           axios
             .post(
@@ -45,11 +45,12 @@ function OauthLoading() {
               }
             )
             .then((res) => {
-              
+              console.log(res)
                 localStorage.setItem("accessToken", res.data.data.accessToken);
                 localStorage.setItem("email", res.data.data.email);
                 if (res.data.data.accessToken) {
                   localStorage.setItem("accessToken", res.data.data.accessToken);
+                  localStorage.setItem("nickname", res.data.data.nickname);
                 }
                 return window.location.replace("/");
               
@@ -73,6 +74,7 @@ function OauthLoading() {
 
           if(res.status === 400){
             alert("로그인 오류가 발생했습니다. 다시 시도해 주세요.")
+
             return window.location.replace("/");
 
           }else{
