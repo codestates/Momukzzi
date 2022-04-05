@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import localShopInfo from "../../dummy/localShopInfo";
 import dummyKakaoShops from "../../dummy/dummyKakaoShops";
+import LoadingIndicator from "../Loading/LoadingIndicator";
 const Container = styled.div``;
 
 const EditorPickHeader = styled.div`
@@ -101,8 +102,9 @@ const EditorPick = ({ match }) => {
   const currentLocationShopPics = useSelector(
     (state) => state.currentLocationShopPics
   );
-
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
+    setIsLoading(true);
     axios
       .get(
         `https://dapi.kakao.com/v2/local/search/category.json?category_group_code=FD6&page=1&size=15&sort=accuracy&x=${x}&y=${y}&radius=2000`,
@@ -127,6 +129,7 @@ const EditorPick = ({ match }) => {
             // console.log(res);
 
             setShopDetailInfo(res.data.data.result);
+            setIsLoading(false);
           });
 
         const shopMapIds = res.data.documents.map((obj) => {
@@ -274,61 +277,67 @@ const EditorPick = ({ match }) => {
   };
   // console.log("current", currentLocationShops);
   return (
-    <Container>
-      <EditorPickHeader>
-        <div>{name}</div>
-        <div>{description}</div>
-      </EditorPickHeader>
+    <>
+      {isLoading ? (
+        <LoadingIndicator />
+      ) : (
+        <Container>
+          <EditorPickHeader>
+            <div>{name}</div>
+            <div>{description}</div>
+          </EditorPickHeader>
 
-      {currentLocationShops.map((obj, i) => {
-        return (
-          <ShopComponent>
-            <div className="shop_info1">
-              <img src={shopDetailInfo[i]?.shoppic[0]}></img>
-            </div>
-            <div className="shop_info2">
-              <div className="shop_name">
-                <div>
-                  <div>{`${i + 1}. ${obj.shop_name}`}</div>
-                  <div>{obj.location}</div>
+          {currentLocationShops.map((obj, i) => {
+            return (
+              <ShopComponent>
+                <div className="shop_info1">
+                  <img src={shopDetailInfo[i]?.shoppic[0]}></img>
                 </div>
+                <div className="shop_info2">
+                  <div className="shop_name">
+                    <div>
+                      <div>{`${i + 1}. ${obj.shop_name}`}</div>
+                      <div>{obj.location}</div>
+                    </div>
 
-                <div
-                  id="favorite"
-                  onClick={(e) => {
-                    if (!localStorage.getItem("accessToken")) {
-                      dispatch({ type: "login modal" });
-                    } else {
-                      console.log("id값", obj.id);
-                      handleStar(obj.id, e);
-                    }
-                  }}
-                >
-                  <AiOutlineStar
-                    className={
-                      isAddedBookmark(obj.id) ? "staricon on" : "staricon"
-                    }
-                  />
-                </div>
-              </div>
-              <div className="review">
-                <div>
-                  <img src="http://cdn.tgdaily.co.kr/news/photo/202007/301112_61338_3647.png" />
-                </div>
-                <div>
-                  {shopManyReviews[i]?.comment}
-                  <div>
-                    <Link to={`/shopdetail/${currentLocationShops[i]?.id}`}>
-                      더보기
-                    </Link>
+                    <div
+                      id="favorite"
+                      onClick={(e) => {
+                        if (!localStorage.getItem("accessToken")) {
+                          dispatch({ type: "login modal" });
+                        } else {
+                          console.log("id값", obj.id);
+                          handleStar(obj.id, e);
+                        }
+                      }}
+                    >
+                      <AiOutlineStar
+                        className={
+                          isAddedBookmark(obj.id) ? "staricon on" : "staricon"
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className="review">
+                    <div>
+                      <img src="http://cdn.tgdaily.co.kr/news/photo/202007/301112_61338_3647.png" />
+                    </div>
+                    <div>
+                      {shopManyReviews[i]?.comment}
+                      <div>
+                        <Link to={`/shopdetail/${currentLocationShops[i]?.id}`}>
+                          더보기
+                        </Link>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </ShopComponent>
-        );
-      })}
-    </Container>
+              </ShopComponent>
+            );
+          })}
+        </Container>
+      )}
+    </>
   );
 };
 

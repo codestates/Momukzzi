@@ -59,10 +59,8 @@ function SlideShop() {
   // const shopPic = shopDetailInfo.map((el) => {
   //   return el.shoppic;
   // });
-
-  const currentLocationShops = useSelector(
-    (state) => state.currentLocationShops
-  );
+  const [isLoading, setIsLoading] = useState(true)
+  let currentLocationShops = useSelector((state) => state.currentLocationShops);
   const currentLocationShopPics = useSelector(
     (state) => state.currentLocationShopPics
   );

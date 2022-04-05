@@ -144,7 +144,7 @@ export default function ShopDetail({ match }) {
           });
 
           if (!alreadyVisited) {
-            visited.push({
+            visited.unshift({
               shop_pic: res.data.data.targetshop.shop_pics[0].pic_URL,
               shop_name: res.data.data.targetshop.shop_name,
               location: res.data.data.targetshop.location,
