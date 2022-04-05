@@ -8,6 +8,7 @@ import {
   ReviewInputText,
   ReviewThumbnail,
   ReviewLabelButton,
+  ReviewSubmitButtonDiv,
 } from "./Review.style";
 
 const createArray = (length) => [...Array(length)];
@@ -29,7 +30,6 @@ export default function Review({ history, match }) {
   const [thumbnailImage, setThumbnailImage] = useState([]);
 
   const [shopName, setShopName] = useState("");
-  // const shopName = useSelector((state) => state.currentShopName);
 
   const handleInputText = (e) => {
     setInputText(e.target.value);
@@ -51,8 +51,12 @@ export default function Review({ history, match }) {
     ]);
     setUploadImage([...uploadImage, e.target.files[0]]);
   };
-
+  // 별점은 있어야
   const uploadReview = () => {
+    if (selectedStar === 0) {
+      alert("평점을 선택해주세요.");
+      return;
+    }
     const reviewData = new FormData();
     reviewData.append("star", selectedStar);
     reviewData.append("comment", inputText);
@@ -78,6 +82,7 @@ export default function Review({ history, match }) {
   //   console.log(`리뷰 남길 가게 id = ${match.params.shop_id}`);
   //   console.log(`평점 : ${selectedStar}`);
   // }, [selectedStar, thumbnailImage]);
+
   useEffect(() => {
     axios
       .get(`https://localhost:4000/shops/${match.params.shop_id}`)
@@ -105,11 +110,12 @@ export default function Review({ history, match }) {
         })}
       </div>
       <ReviewInputText onChange={handleInputText} />
+      <div style={{ marginTop: 10, fontWeight: "bold" }}>사진 업로드</div>
       <ReviewThumbnail>
         {thumbnailImage.map((item, idx) => {
           return <img key={idx} src={item} onClick={() => deleteImage(idx)} />;
         })}
-        <ReviewLabelButton htmlFor="upload_file">사진 업로드</ReviewLabelButton>
+        <ReviewLabelButton htmlFor="upload_file">+</ReviewLabelButton>
         <input
           type="file"
           id="upload_file"
@@ -118,18 +124,21 @@ export default function Review({ history, match }) {
           onChange={onImageChange}
         />
       </ReviewThumbnail>
-      <div>
+      <ReviewSubmitButtonDiv>
         <button
+          className="cancel"
           onClick={() => {
             if (window.confirm("리뷰 작성을 취소하시겠습니까?")) {
-              history.goBack();
+              window.location.replace(`/shopdetail/${match.params.shop_id}`);
             }
           }}
         >
           취소
         </button>
-        <button onClick={uploadReview}>리뷰 올리기</button>
-      </div>
+        <button className="submit" onClick={uploadReview}>
+          리뷰 올리기
+        </button>
+      </ReviewSubmitButtonDiv>
     </ReviewBody>
   );
 }

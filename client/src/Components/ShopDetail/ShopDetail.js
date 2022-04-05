@@ -164,11 +164,6 @@ export default function ShopDetail({ match }) {
         //     shop_name: res.data.data.targetshop.shop_name,
         //   },
         // });
-        // Redux 상태가 아닌 로컬 스토리지를 활용해서 처리
-        localStorage.setItem(
-          "currentShopName",
-          res.data.data.targetshop.shop_name
-        );
 
         return res.data.data.targetshop;
       })
@@ -260,7 +255,7 @@ export default function ShopDetail({ match }) {
             {/* <Link to={`/review/${match.params.id}`}> */}
             <ReviewButton onClick={handleReviewButton}>
               <BiMessageDetail className="reviewButton" />
-              <span>리뷰</span>
+              <span>리뷰쓰기</span>
             </ReviewButton>
             {/* </Link> */}
 
@@ -327,11 +322,15 @@ export default function ShopDetail({ match }) {
                 return (
                   <ShopEachReview
                     key={idx}
-                    onClick={() => handleReviewClick(idx)}
+                    onClick={() => {
+                      if (el.review_pics.length === 0) {
+                        console.log("업로드된 사진 없음");
+                      } else handleReviewClick(idx);
+                    }}
                   >
                     <ShopReviewUserPart>
                       <BsPersonCircle className="userIcon" />
-                      <span>{el.user_id}</span>
+                      <span>{el.user.user_id}</span>
                     </ShopReviewUserPart>
 
                     <ShopReviewCommentPart>
@@ -352,9 +351,8 @@ export default function ShopDetail({ match }) {
                               style={{
                                 width: 80,
                                 height: 80,
-                                borderStyle: "solid",
-                                borderWidth: 1,
-                                marginBottom: 5,
+                                borderRadius: 4,
+                                marginRight: 5,
                               }}
                             />
                           );

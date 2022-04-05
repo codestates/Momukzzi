@@ -83,7 +83,8 @@ const Header = () => {
       <nav className="navbar">
         <div className="navbar_logo">
           <Link to="/">
-            <img src="img/logo.png" />
+            {/* <img src="img/logo.png" /> */}
+            <img src="https://euilimchoibucket.s3.amazonaws.com/1649123847358.png" />
           </Link>
         </div>
         {localStorage.getItem("accessToken") ? (
@@ -100,8 +101,6 @@ const Header = () => {
               onClick={() => {
                 localStorage.removeItem("accessToken");
                 localStorage.removeItem("nickname");
-                // 추가
-                localStorage.removeItem("currentShopName");
                 axios.get("https://localhost:4000/users/logout", {
                   withCredentials: true,
                 });
