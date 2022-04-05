@@ -3,6 +3,8 @@ const cheerio = require("cheerio");
 const puppeteer = require("puppeteer");
 const { scrollPageToBottom } = require("puppeteer-autoscroll-down");
 
+process.setMaxListeners(100)
+
 module.exports = async (req, res) => {
   // let address = req.body.road_address_name;
   let address = undefined;
@@ -21,7 +23,6 @@ module.exports = async (req, res) => {
 
     if (shopinfo) {
       console.log("데이터 베이스에서 정보가 나갑니다~");
-      let eachshop = [];
       let photodatas = []; //이미지 크롤링 결과
       let menulist = []; //메뉴 정보 크롤링 결과
 
@@ -44,14 +45,15 @@ module.exports = async (req, res) => {
       });
 
       for (let i = 0; i < menu_list.length; i++) {
-        // menulist[menu_list[i].menu_name] = menu_list[i].price;
         menulist.push([menu_list[i].menu_name, menu_list[i].price]);
       }
-
-      result.push({
-        shoppic: photodatas,
-        menulist: menulist,
-      });
+    
+      if(photodatas.length !== 0 && menulist.length !== 0){
+        result.push({
+          shoppic: photodatas,
+          menulist: menulist,
+        });
+      }
     } else {
       console.log("크롤링해서 정보가 나갑니다~");
 
@@ -112,20 +114,28 @@ module.exports = async (req, res) => {
             const somemenu = menulists[i].children[0].data;
             const eachprice = price[i].children[1].data;
             // menulist[somemenu] = eachprice;
-            menulist.push([somemenu, eachprice]);
+            if(somemenu !== null){
+              menulist.push([somemenu, eachprice]);
+            }
           } catch (err) {
             const somemenu = menulists[i].children[0].data;
             const eachprice = "가격 정보 없음"; //상품 가격 (가끔 가격이 없는 곳도 있음)
             // menulist[somemenu] = eachprice;
-            menulist.push([somemenu, eachprice]);
+            if(somemenu !== null){
+              menulist.push([somemenu, eachprice]);
+            }
           }
         } else {
           const somemenu = menulists[i].children[0].data;
           const eachprice = "가격 정보 없음"; //상품 가격 (가끔 가격이 없는 곳도 있음)
           // menulist[somemenu] = eachprice;
-          menulist.push([somemenu, eachprice]);
+          if(somemenu !== null){
+            menulist.push([somemenu, eachprice]);
+          }
         }
       }
+
+      await page.close()
 
       //크롤링 종료!
 
@@ -162,11 +172,13 @@ module.exports = async (req, res) => {
       for (let i = 0; i < menulist.length; i++) {
         const menu_name = menulist[i][0];
         const price_list = menulist[i][1];
-        await menu.create({
-          shop_id: shopid,
-          menu_name: menu_name,
-          price: price_list,
-        });
+        if(menu_name !== undefined){
+          await menu.create({
+            shop_id: shopid,
+            menu_name: menu_name,
+            price: price_list,
+          });
+        }
       }
 
       const checkerr = await shop_pic.findOne({
@@ -191,12 +203,31 @@ module.exports = async (req, res) => {
         });
       }
 
-      result.push({
-        shoppic: photodatas,
-        menulist: menulist,
-      });
+      if(photodatas.length !== 0 && menulist.length !== 0){
+        result.push({
+          shoppic: photodatas,
+          menulist: menulist,
+        });
+      }
     }
   }
+
+  // console.log(req.body.data)
+  // console.log(req.body.data.length)
+  // console.log(result)
+  // console.log(result.length)
+
+  //응답 결과 정리
+
+  // let someerr = []
+
+  // for (let i = 0; i < result.length; i++){
+  //   if (result[i].shoppic.length === 0){
+  //     someerr.push(result[i])
+  //   }
+  // }
+
+  // console.log(someerr)
 
   res.status(200).json({
     message: "shopinfo crawling",

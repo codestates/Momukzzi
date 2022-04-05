@@ -5,6 +5,9 @@ const axios = require("axios");
 module.exports = async (req, res) => {
   console.log("oauth login!!!!!!!!!!!!!!");
   const code = req.body.code;
+  const REACT_APP_GITHUB_CLIENT_ID = process.env.REACT_APP_GITHUB_CLIENT_ID;
+  const REACT_APP_GITHUB_CLIENT_SECRET =
+    process.env.REACT_APP_GITHUB_CLIENT_SECRET;
 
   if (req.body.oauth === "KaKao") {
     axios //카카오
@@ -47,40 +50,7 @@ module.exports = async (req, res) => {
           console.log(payload);
 
           console.log(access_Token);
-          // 즐겨찾기 (쿠키에 담아 전송) 정보 가져오기-------------
-          const bookmarkInfo = await bookmark.findAll({
-            where: {
-              user_id: userInfo.dataValues.user_id,
-            },
-          });
 
-          const cookie = [];
-          for (let i = 0; i < bookmarkInfo.length; i++) {
-            const shopInfo = await shop.findOne({
-              where: {
-                id: bookmarkInfo[i].dataValues.shop_id,
-              },
-            });
-
-            const shopPicInfo = await shop_pic.findOne({
-              where: {
-                shop_id: shopInfo.id,
-              },
-            });
-
-            const obj = {
-              id: shopInfo.id,
-              shop_name: shopInfo.shop_name,
-              genus: shopInfo.genus,
-              location: shopInfo.location,
-              pic_URL: shopPicInfo.pic_URL,
-            };
-
-            cookie.push(obj);
-          }
-          console.log(cookie);
-          res.cookie("bookmark", JSON.stringify(cookie));
-          // --------------------------------------------즐겨찾기
           res
             .status(200)
             .cookie("refreshToken", refresh_Token, {
@@ -122,40 +92,7 @@ module.exports = async (req, res) => {
           console.log(payload);
 
           console.log(access_Token);
-          // 즐겨찾기 (쿠키에 담아 전송) 정보 가져오기-------------
-          const bookmarkInfo = await bookmark.findAll({
-            where: {
-              user_id: userInfo.dataValues.user_id,
-            },
-          });
 
-          const cookie = [];
-          for (let i = 0; i < bookmarkInfo.length; i++) {
-            const shopInfo = await shop.findOne({
-              where: {
-                id: bookmarkInfo[i].dataValues.shop_id,
-              },
-            });
-
-            const shopPicInfo = await shop_pic.findOne({
-              where: {
-                shop_id: shopInfo.id,
-              },
-            });
-
-            const obj = {
-              id: shopInfo.id,
-              shop_name: shopInfo.shop_name,
-              genus: shopInfo.genus,
-              location: shopInfo.location,
-              pic_URL: shopPicInfo.pic_URL,
-            };
-
-            cookie.push(obj);
-          }
-          console.log(cookie);
-          res.cookie("bookmark", JSON.stringify(cookie));
-          // --------------------------------------------즐겨찾기
           res
             .status(200)
             .cookie("refreshToken", refresh_Token, {
@@ -171,14 +108,22 @@ module.exports = async (req, res) => {
               },
             });
         }
+      })
+      .catch((e) => {
+        //오류 처리
+        res.status(400).json({
+          message: "Oauth login err",
+        });
       });
   } else {
     axios //깃허브
       .post(
         "https://github.com/login/oauth/access_token",
         {
-          client_id: "3e13dcd314570e792c58",
-          client_secret: "5c84df451bd83eff205c8b10c85a69206cbaabab",
+          client_id: REACT_APP_GITHUB_CLIENT_ID,
+          // "3e13dcd314570e792c58",
+          client_secret: REACT_APP_GITHUB_CLIENT_SECRET,
+          //  "5c84df451bd83eff205c8b10c85a69206cbaabab",
           code: code,
         },
         {
@@ -236,40 +181,7 @@ module.exports = async (req, res) => {
 
               console.log(access_Token);
               console.log("res 발송");
-              // 즐겨찾기 (쿠키에 담아 전송) 정보 가져오기-------------
-              const bookmarkInfo = await bookmark.findAll({
-                where: {
-                  user_id: userInfo.dataValues.user_id,
-                },
-              });
 
-              const cookie = [];
-              for (let i = 0; i < bookmarkInfo.length; i++) {
-                const shopInfo = await shop.findOne({
-                  where: {
-                    id: bookmarkInfo[i].dataValues.shop_id,
-                  },
-                });
-
-                const shopPicInfo = await shop_pic.findOne({
-                  where: {
-                    shop_id: shopInfo.id,
-                  },
-                });
-
-                const obj = {
-                  id: shopInfo.id,
-                  shop_name: shopInfo.shop_name,
-                  genus: shopInfo.genus,
-                  location: shopInfo.location,
-                  pic_URL: shopPicInfo.pic_URL,
-                };
-
-                cookie.push(obj);
-              }
-              console.log(cookie);
-              res.cookie("bookmark", JSON.stringify(cookie));
-              // --------------------------------------------즐겨찾기
               res
                 .status(200)
                 .cookie("refreshToken", refresh_Token, {
@@ -314,42 +226,9 @@ module.exports = async (req, res) => {
               console.log(payload);
 
               console.log(access_Token);
-              // 쿠키 (즐겨찾기 정보를 담는 공간) 추가-------------
-              const bookmarkInfo = await bookmark.findAll({
-                where: {
-                  user_id: userInfo.dataValues.user_id,
-                },
-              });
 
-              const cookie = [];
-              for (let i = 0; i < bookmarkInfo.length; i++) {
-                const shopInfo = await shop.findOne({
-                  where: {
-                    id: bookmarkInfo[i].dataValues.shop_id,
-                  },
-                });
-
-                const shopPicInfo = await shop_pic.findOne({
-                  where: {
-                    shop_id: shopInfo.id,
-                  },
-                });
-
-                const obj = {
-                  id: shopInfo.id,
-                  shop_name: shopInfo.shop_name,
-                  genus: shopInfo.genus,
-                  location: shopInfo.location,
-                  pic_URL: shopPicInfo.pic_URL,
-                };
-
-                cookie.push(obj);
-              }
-
-              // --------------------------------------------즐겨찾기
               res
                 .status(200)
-                .cookie("bookmark", JSON.stringify(cookie))
                 .cookie("refreshToken", refresh_Token, {
                   httpOnly: true,
                   secure: true,
@@ -365,7 +244,12 @@ module.exports = async (req, res) => {
             }
           })
           .then(console.log("인증절차 통과"))
-          .catch((e) => console.log(e));
+          .catch((e) => {
+            //오류 처리
+            res.status(400).json({
+              message: "Oauth login err",
+            });
+          });
       });
   }
 };

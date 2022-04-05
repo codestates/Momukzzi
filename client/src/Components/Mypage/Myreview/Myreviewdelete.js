@@ -1,39 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { BsTrash } from "react-icons/bs";
 
-const Myreviewdelete = () => {
+const Myreviewdelete = ({ id }) => {
   const accessToken = localStorage.getItem("accessToken");
-
-  const [changeInfo, setchangeInfo] = useState({
-    id: "",
-    review_id: "",
-  });
-  const userInfoHandler = () => {
-    if (!accessToken) {
-      return;
-    } else {
-      axios
-        .get("https://localhost:4000/users", {
-          headers: { authorization: `Bearer ${accessToken}` },
-          "Content-Type": "application/json",
-        })
-        .then((res) => {
-          setchangeInfo(res.data.data.userInfo.reviews[0]);
-          console.log(
-            "개인정보가져오기 성공",
-            res.data.data.userInfo.reviews[0]
-          );
-          console.log(res.data.data.userInfo.reviews);
-        })
-        .catch((err) => {
-          console.log("개인가져오기 에러", err);
-        });
-    }
-  };
-  useEffect(() => {
-    userInfoHandler();
-  }, []);
 
   const deleteModal = () => {
     if (window.confirm("정말 리뷰를 삭제하시겠습니까?")) {
@@ -43,7 +13,7 @@ const Myreviewdelete = () => {
     }
   };
   const deleteHandler = () => {
-    const { id } = changeInfo;
+    // const { id } = changeInfo;
 
     if (!accessToken) {
       return;

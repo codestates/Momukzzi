@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
       genus: DataTypes.STRING,
       location: DataTypes.STRING,
       total_review: DataTypes.INTEGER,
-      star_avg: DataTypes.FLOAT,
+      star_avg: DataTypes.FLOAT(3,2),
       work_time: DataTypes.STRING,
       holiday: DataTypes.STRING,
       map_id: DataTypes.STRING,
