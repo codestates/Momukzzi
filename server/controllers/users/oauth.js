@@ -47,9 +47,7 @@ module.exports = async (req, res) => {
             expiresIn: "2days",
           });
 
-          console.log(payload);
-
-          console.log(access_Token);
+          console.log(nickname);
 
           res
             .status(200)
@@ -62,7 +60,8 @@ module.exports = async (req, res) => {
               message: "Login success!",
               data: {
                 accessToken: access_Token,
-                nickname: userInfo.dataValues.nickname,
+                nickname: nickname,
+                oauth : true
               },
             });
         } else {
@@ -104,7 +103,8 @@ module.exports = async (req, res) => {
               message: "Login success!",
               data: {
                 accessToken: access_Token,
-                nickname: userInfo.dataValues.nickname,
+                nickname: nickname,
+                oauth : true
               },
             });
         }
@@ -194,6 +194,7 @@ module.exports = async (req, res) => {
                   data: {
                     accessToken: access_Token,
                     nickname: userInfo.dataValues.nickname,
+                    oauth : true
                   },
                 });
             } else {
@@ -239,6 +240,7 @@ module.exports = async (req, res) => {
                   data: {
                     accessToken: access_Token,
                     nickname: userInfo.dataValues.nickname,
+                    oauth : true
                   },
                 });
             }
