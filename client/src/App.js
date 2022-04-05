@@ -29,6 +29,7 @@ import OauthLoding from "./Components/Login/OauthLoading";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Myreview from "./Components/Mypage/Myreview/Myreview";
+import { Redirect } from "react-router-dom";
 
 function App() {
   const isLogInOpen = useSelector((state) => state.isLogInOpen);
@@ -86,6 +87,11 @@ function App() {
           </Route>
           <Route path="/shopdetail/:id" component={ShopDetail} />
           <Route path="/editor_pick/:code" component={EditorPick} />
+          {localStorage.getItem("accessToken") ? (
+            <Route path={"/review/:shop_id"} component={Review} />
+          ) : (
+            <Redirect to="/" />
+          )}
           <Route path={"/review/:shop_id"} component={Review} />
           <Route path="/oauthloding" component={OauthLoding} />
         </Switch>

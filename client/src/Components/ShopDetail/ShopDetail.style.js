@@ -21,7 +21,7 @@ export const ShopHeader = styled.div`
 `;
 
 export const ShopImages = styled.div`
-  width: 70%;
+  width: 100%;
   height: 250px;
   display: flex;
   flex-direction: row;
@@ -30,9 +30,10 @@ export const ShopImages = styled.div`
   margin: 0 auto;
 
   & > img {
-    position: relative;
+    /* position: relative; */
     margin: 5px 5px 5px 0px;
-    width: 300px;
+    min-width: 20%;
+    max-width: 20%;
     object-fit: cover;
   }
 `;
@@ -76,9 +77,6 @@ export const ReviewButton = styled.button`
   background-color: transparent;
   & > span {
     font-size: 12px;
-  }
-  .on {
-    color: yellow;
   }
 `;
 
@@ -166,6 +164,7 @@ export const ShopReviewUserPart = styled.div`
 
   & > span {
     display: flex-row;
+    padding-top: 5px;
   }
 `;
 
