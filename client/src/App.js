@@ -62,11 +62,11 @@ function App() {
           </Route>
           <Route path="/shopdetail/:id" component={ShopDetail} />
           <Route path="/editor_pick/:code" component={EditorPick} />
-          {localStorage.getItem("accessToken") ? (
+          {/* {localStorage.getItem("accessToken") ? (
             <Route path={"/review/:shop_id"} component={Review} />
           ) : (
             <Redirect to="/" />
-          )}
+          )} */}
           <Route path={"/review/:shop_id"} component={Review} />
           <Route path="/oauthloding" component={OauthLoding} />
         </Switch>
