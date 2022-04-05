@@ -79,7 +79,10 @@ const FavoriteContent = styled.div`
 const Favorite = () => {
   // document.body.style.overflow = "hidden";
   const dispatch = useDispatch();
-  const visited = JSON.parse(localStorage.getItem("visited"));
+  const visited = JSON.parse(localStorage.getItem("visited")).slice(
+    JSON.parse(localStorage.getItem("visited")).length - 9,
+    JSON.parse(localStorage.getItem("visited")).length
+  );
   const [isBookMarkMenu, setIsBookMarkMenu] = useState(false);
 
   const getCookie = function (name) {
@@ -179,11 +182,12 @@ const Favorite = () => {
           </div>
           <div
             onClick={() => {
-              if (!cookie) {
+              if (!localStorage.getItem("accessToken")) {
                 dispatch({ type: "login modal" });
                 return;
+              } else {
+                setIsBookMarkMenu(true);
               }
-              setIsBookMarkMenu(true);
             }}
           >
             가고 싶다

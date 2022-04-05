@@ -29,40 +29,16 @@ import OauthLoding from "./Components/Login/OauthLoading";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Myreview from "./Components/Mypage/Myreview/Myreview";
+import { Redirect } from "react-router-dom";
 
 function App() {
   const isLogInOpen = useSelector((state) => state.isLogInOpen);
   const isSignUpOpen = useSelector((state) => state.isSignUpOpen);
   const isFavoriteModal = useSelector((state) => state.isFavoriteModal);
 
-  useEffect(() => {
-    function getLocation() {
-      if (navigator.geolocation) {
-        // GPS를 지원하면
-        navigator.geolocation.getCurrentPosition(
-          function (position) {},
-          function (error) {
-            console.error(error);
-          },
-          {
-            enableHighAccuracy: false,
-            maximumAge: 0,
-            timeout: Infinity,
-          }
-        );
-      } else {
-        alert("GPS를 지원하지 않습니다");
-      }
-    }
-    getLocation();
-  }, []);
-
   if (localStorage.getItem("visited") === null) {
     localStorage.setItem("visited", JSON.stringify([]));
   }
-
-  // console.log("카카오로 받아온 정보", shopInfo);
-  // console.log("크롤링으로 받아온 정보", shopDetailInfo);
 
   return (
     <div className="App">
@@ -86,6 +62,11 @@ function App() {
           </Route>
           <Route path="/shopdetail/:id" component={ShopDetail} />
           <Route path="/editor_pick/:code" component={EditorPick} />
+          {localStorage.getItem("accessToken") ? (
+            <Route path={"/review/:shop_id"} component={Review} />
+          ) : (
+            <Redirect to="/" />
+          )}
           <Route path={"/review/:shop_id"} component={Review} />
           <Route path="/oauthloding" component={OauthLoding} />
         </Switch>

@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { BsStar, BsPersonCircle } from "react-icons/bs";
@@ -7,7 +7,6 @@ import { FaStar } from "react-icons/fa";
 import ShopImageModal from "./ShopImageModal";
 import ReviewPhotoModal from "./ReviewPhotoModal";
 import Loader from "./Loader";
-import Review from "../Review/Review";
 import {
   ShopImages,
   ShopBody,
@@ -70,7 +69,6 @@ export default function ShopDetail({ match }) {
   const handleStar = () => {
     // 즐겨찾기 bookmark 상태변수 true or false, 별모양 빈거/채워진거
 
-    console.log("hello");
     axios
       .post(
         "https://localhost:4000/bookmark",
@@ -100,6 +98,12 @@ export default function ShopDetail({ match }) {
       });
   };
 
+  const handleReviewButton = () => {
+    if (!localStorage.getItem("accessToken")) {
+      dispatch({ type: "login modal" });
+    } else window.location.replace(`/review/${match.params.id}`);
+  };
+
   const handleReviewPlus = async () => {
     setIsLoaded(true);
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -107,9 +111,9 @@ export default function ShopDetail({ match }) {
     setIsLoaded(false);
   };
 
-  useEffect(() => {
-    console.log(reviewCount);
-  }, [reviewCount]);
+  // useEffect(() => {
+  //   console.log(reviewCount);
+  // }, [reviewCount]);
 
   useEffect(() => {
     const cookie = JSON.parse(getCookie("bookmark"));
@@ -140,7 +144,7 @@ export default function ShopDetail({ match }) {
           });
 
           if (!alreadyVisited) {
-            visited.push({
+            visited.unshift({
               shop_pic: res.data.data.targetshop.shop_pics[0].pic_URL,
               shop_name: res.data.data.targetshop.shop_name,
               location: res.data.data.targetshop.location,
@@ -148,18 +152,24 @@ export default function ShopDetail({ match }) {
               id: res.data.data.targetshop.id,
             });
             localStorage.setItem("visited", JSON.stringify(visited));
-            // console.log(JSON.stringify(visited));
           }
         }
-        // -------------------------------------------------
+
         setInfo(res.data.data.targetshop);
         console.log(res.data.data.targetshop);
-        dispatch({
-          type: "current_shop_name",
-          payload: {
-            shop_name: res.data.data.targetshop.shop_name,
-          },
-        });
+
+        // dispatch({
+        //   type: "current_shop_name",
+        //   payload: {
+        //     shop_name: res.data.data.targetshop.shop_name,
+        //   },
+        // });
+        // Redux 상태가 아닌 로컬 스토리지를 활용해서 처리
+        localStorage.setItem(
+          "currentShopName",
+          res.data.data.targetshop.shop_name
+        );
+
         return res.data.data.targetshop;
       })
       // KAKAO map api and marker
@@ -247,24 +257,29 @@ export default function ShopDetail({ match }) {
             {info.star_avg}
           </span>
           <Buttons>
-              <Link to={`/review/${match.params.id}`}>
-                <ReviewButton>
-                  <BiMessageDetail className="reviewButton" />
-                  <span>리뷰</span>
-                </ReviewButton>
-              </Link>
+            {/* <Link to={`/review/${match.params.id}`}> */}
+            <ReviewButton onClick={handleReviewButton}>
+              <BiMessageDetail className="reviewButton" />
+              <span>리뷰</span>
+            </ReviewButton>
+            {/* </Link> */}
 
-              {/*클릭 시 즐겨찾기 등록 or 해제 */}
-              <ReviewButton>
-                <BsStar
-                  className={bookmark ? "favoriteButton on" : "favoriteButton"}
+            {/*클릭 시 즐겨찾기 등록 or 해제 */}
+            <ReviewButton>
+              {bookmark ? (
+                <FaStar
+                  className="favoriteButton"
                   onClick={handleStar}
+                  color="orange"
                 />
-                <span>즐겨찾기</span>
-              </ReviewButton>
-            </Buttons>
+              ) : (
+                <BsStar className="favoriteButton" onClick={handleStar} />
+              )}
+              <span>즐겨찾기</span>
+            </ReviewButton>
+          </Buttons>
         </ShopBasicInfoHeader>
-        
+
         <ShopBasicInfo>
           <ShopDetailInfo>
             <table>
@@ -289,13 +304,15 @@ export default function ShopDetail({ match }) {
                   <th>메뉴</th>
                   <td>
                     <ul style={{ margin: 0, padding: 0 }}>
-                      {info.menus.map((item) => {
-                        return (
-                          <li>
-                            {item.menu_name} : {item.price}원
-                          </li>
-                        );
-                      })}
+                      {info.menus
+                        .filter((el) => el.menu_name !== null)
+                        .map((item) => {
+                          return (
+                            <li>
+                              {item.menu_name} : {item.price}원
+                            </li>
+                          );
+                        })}
                     </ul>
                   </td>
                 </tr>

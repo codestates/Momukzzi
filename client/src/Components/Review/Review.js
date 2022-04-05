@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaStar } from "react-icons/fa";
 import axios from "axios";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import {
   ReviewBody,
   ReviewShopName,
@@ -28,7 +28,8 @@ export default function Review({ history, match }) {
   const [uploadImage, setUploadImage] = useState([]);
   const [thumbnailImage, setThumbnailImage] = useState([]);
 
-  const shopName = useSelector((state) => state.currentShopName);
+  const [shopName, setShopName] = useState("");
+  // const shopName = useSelector((state) => state.currentShopName);
 
   const handleInputText = (e) => {
     setInputText(e.target.value);
@@ -69,17 +70,21 @@ export default function Review({ history, match }) {
       .then((res) => {
         console.log(res);
         alert("리뷰 작성이 완료되었습니다.");
-        history.goBack();
+        window.location.replace(`/shopdetail/${match.params.shop_id}`);
       });
   };
 
+  // useEffect(() => {
+  //   console.log(`리뷰 남길 가게 id = ${match.params.shop_id}`);
+  //   console.log(`평점 : ${selectedStar}`);
+  // }, [selectedStar, thumbnailImage]);
   useEffect(() => {
-    console.log(`리뷰 남길 가게 id = ${match.params.shop_id}`);
-    console.log(`평점 : ${selectedStar}`);
-    // for (let pair of formData.entries()) {
-    //   console.log(pair[0] + ", " + pair[1]);
-    // }
-  }, [selectedStar, thumbnailImage]);
+    axios
+      .get(`https://localhost:4000/shops/${match.params.shop_id}`)
+      .then((res) => {
+        setShopName(res.data.data.targetshop.shop_name);
+      });
+  }, []);
 
   return (
     <ReviewBody>

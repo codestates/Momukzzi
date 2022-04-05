@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import localShopInfo from "../../dummy/localShopInfo";
 import dummyKakaoShops from "../../dummy/dummyKakaoShops";
+import LoadingIndicator from "../Loading/LoadingIndicator";
 const Container = styled.div``;
 
 const EditorPickHeader = styled.div`
@@ -76,33 +77,12 @@ const EditorPick = ({ match }) => {
   const x = match.params.code.split(",")[1];
   const name = match.params.code.split(",")[2];
   const description = match.params.code.split(",")[3];
-  const [shopDetailInfo, setShopDetailInfo] = useState([
-    { shoppic: [], menulist: [] },
-    { shoppic: [], menulist: [] },
-    { shoppic: [], menulist: [] },
-    { shoppic: [], menulist: [] },
-    { shoppic: [], menulist: [] },
-    { shoppic: [], menulist: [] },
-    { shoppic: [], menulist: [] },
-    { shoppic: [], menulist: [] },
-    { shoppic: [], menulist: [] },
-    { shoppic: [], menulist: [] },
-    { shoppic: [], menulist: [] },
-    { shoppic: [], menulist: [] },
-    { shoppic: [], menulist: [] },
-    { shoppic: [], menulist: [] },
-    { shoppic: [], menulist: [] },
-  ]);
-  const [shopInfo, setShopInfo] = useState(dummyKakaoShops);
+  const [topicShops, setTopciShops] = useState([]);
   const [shopManyReviews, setShopManyReviews] = useState([]);
-  const currentLocationShops = useSelector(
-    (state) => state.currentLocationShops
-  );
-  const currentLocationShopPics = useSelector(
-    (state) => state.currentLocationShopPics
-  );
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
     axios
       .get(
         `https://dapi.kakao.com/v2/local/search/category.json?category_group_code=FD6&page=1&size=15&sort=accuracy&x=${x}&y=${y}&radius=2000`,
@@ -113,8 +93,6 @@ const EditorPick = ({ match }) => {
         }
       )
       .then((res) => {
-        setShopInfo(res.data.documents);
-
         axios
           .post(
             "https://localhost:4000/data",
@@ -126,53 +104,11 @@ const EditorPick = ({ match }) => {
           .then((res) => {
             // console.log(res);
 
-            setShopDetailInfo(res.data.data.result);
-          });
-
-        const shopMapIds = res.data.documents.map((obj) => {
-          return obj.id;
-        });
-        axios
-          .post(
-            "https://localhost:4000/shopmanyinfo",
-            {
-              map_ids: shopMapIds,
-            },
-            {
-              withCredentials: true,
-            }
-          )
-          .then((res) => {
-            // console.log("응답", res.data.data);
-            const shopData = res.data.data.filter((obj) => {
-              if (obj !== null) {
-                return obj;
-              }
+            setTopciShops(res.data.data.result);
+            const shopIds = res.data.data.result.map((obj) => {
+              return obj.shopinfo.shop_id;
             });
-            // console.log(shopData);
-            dispatch({
-              type: "current_location_shops",
-              data: shopData,
-            });
-            const shopIds = shopData.map((obj) => {
-              return obj.id;
-            });
-            console.log(shopIds);
-            axios
-              .post(
-                "https://localhost:4000/shopmanypics",
-                {
-                  shop_ids: shopIds,
-                },
-                { withCredentials: true }
-              )
-              .then((res) => {
-                // console.log(res.data.data);
-                dispatch({
-                  type: "current_location_shop_pics",
-                  data: res.data.data,
-                });
-              });
+            console.log("sdfsd", shopIds);
             axios
               .post(
                 "https://localhost:4000/shopmanyreviews",
@@ -184,15 +120,16 @@ const EditorPick = ({ match }) => {
                 }
               )
               .then((res) => {
-                console.log(res.data.data);
+                console.log(res);
                 setShopManyReviews(res.data.data);
+                setIsLoading(false);
               });
           });
       });
   }, []);
 
-  // console.log(shopInfo);
-  // console.log(shopDetailInfo);
+  // console.log(topicShops);
+  // console.log(shopManyReviews);
 
   const getCookie = function (name) {
     var value = document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
@@ -212,9 +149,7 @@ const EditorPick = ({ match }) => {
     return result;
   };
   const handleStar = (id, e) => {
-    console.log(cookie);
     const filteredCookie = cookie.filter((shop) => {
-      console.log(shop.id, id);
       return shop.id === id;
     });
     console.log(filteredCookie);
@@ -272,63 +207,72 @@ const EditorPick = ({ match }) => {
         });
     }
   };
-  console.log("current", currentLocationShops);
+  // console.log("current", currentLocationShops);
   return (
-    <Container>
-      <EditorPickHeader>
-        <div>{name}</div>
-        <div>{description}</div>
-      </EditorPickHeader>
+    <>
+      {isLoading ? (
+        <LoadingIndicator />
+      ) : (
+        <Container>
+          <EditorPickHeader>
+            <div>{name}</div>
+            <div>{description}</div>
+          </EditorPickHeader>
 
-      {currentLocationShops.map((obj, i) => {
-        return (
-          <ShopComponent>
-            <div className="shop_info1">
-              <img src={shopDetailInfo[i]?.shoppic[0]}></img>
-            </div>
-            <div className="shop_info2">
-              <div className="shop_name">
-                <div>
-                  <div>{`${i + 1}. ${obj.shop_name}`}</div>
-                  <div>{obj.location}</div>
+          {topicShops.map((obj, i) => {
+            return (
+              <ShopComponent>
+                <div className="shop_info1">
+                  <img src={obj.shoppic.photodatas[0]}></img>
                 </div>
+                <div className="shop_info2">
+                  <div className="shop_name">
+                    <div>
+                      <div>{`${i + 1}. ${
+                        obj.shopinfo.shopinfo.place_name
+                      }`}</div>
+                      <div>{obj.shopinfo.shopinfo.address_name}</div>
+                    </div>
 
-                <div
-                  id="favorite"
-                  onClick={(e) => {
-                    if (!localStorage.getItem("accessToken")) {
-                      dispatch({ type: "login modal" });
-                    } else {
-                      console.log("id값", obj.id);
-                      handleStar(obj.id, e);
-                    }
-                  }}
-                >
-                  <AiOutlineStar
-                    className={
-                      isAddedBookmark(obj.id) ? "staricon on" : "staricon"
-                    }
-                  />
-                </div>
-              </div>
-              <div className="review">
-                <div>
-                  <img src="http://cdn.tgdaily.co.kr/news/photo/202007/301112_61338_3647.png" />
-                </div>
-                <div>
-                  {shopManyReviews[i]?.comment}
-                  <div>
-                    <Link to={`/shopdetail/${currentLocationShops[i]?.id}`}>
-                      더보기
-                    </Link>
+                    <div
+                      id="favorite"
+                      onClick={(e) => {
+                        if (!localStorage.getItem("accessToken")) {
+                          dispatch({ type: "login modal" });
+                        } else {
+                          handleStar(obj.shopinfo.shop_id);
+                        }
+                      }}
+                    >
+                      <AiOutlineStar
+                        className={
+                          isAddedBookmark(obj.shopinfo.shop_id)
+                            ? "staricon on"
+                            : "staricon"
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className="review">
+                    <div>
+                      <img src="http://cdn.tgdaily.co.kr/news/photo/202007/301112_61338_3647.png" />
+                    </div>
+                    <div>
+                      {shopManyReviews[i]?.comment}
+                      <div>
+                        <Link to={`/shopdetail/${obj.shopinfo.shop_id}`}>
+                          더보기
+                        </Link>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </ShopComponent>
-        );
-      })}
-    </Container>
+              </ShopComponent>
+            );
+          })}
+        </Container>
+      )}
+    </>
   );
 };
 
