@@ -73,33 +73,33 @@ function Loginmodal({ setOpenModal, close }) {
   };
   console.log(loginInfo);
 
-  const onClickLogin = () => {
-    const { user_id, password } = loginInfo;
-    if (user_id === "") {
-      console.log("아이디를 입력하세요");
-      return;
-    } else if (password === "") {
-      console.log("비밀번호를 입력하세요");
-      return;
-    }
-    console.log("click login");
-    axios
-      .post(
-        "https://localhost:4000/users/login",
-        {
-          user_id,
-          password,
-        },
-        { "Content-Type": "application/json", withCredentials: true }
-      )
-      .then((res) => {
-        console.log(res);
-        console.log(res.data.data.accessToken);
-        localStorage.setItem("accessToken", res.data.data.accessToken);
-        localStorage.setItem("nickname", res.data.data.nickname);
-        if (res.data.data.accessToken) {
-          localStorage.setItem("accessToken", res.data.data.accessToken);
-        }
+	const onClickLogin = () => {
+		const { user_id, password } = loginInfo
+		if (user_id === '') {
+			console.log('아이디를 입력하세요')
+			return
+		} else if (password === '') {
+			console.log('비밀번호를 입력하세요')
+			return
+		}
+		console.log('click login')
+		axios
+			.post(
+				'https://localhost:4000/users/login',
+				{
+					user_id,
+					password,
+				},
+				{ 'Content-Type': 'application/json', withCredentials: true }
+			)
+			.then(res => {
+				console.log(res)
+				console.log(res.data.data.accessToken)
+				localStorage.setItem('accessToken', res.data.data.accessToken)
+				localStorage.setItem('nickname', res.data.data.nickname)
+				if (res.data.data.accessToken) {
+					localStorage.setItem('accessToken', res.data.data.accessToken)
+				}
 
         return window.location.replace(window.location.pathname);
       })

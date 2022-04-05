@@ -35,7 +35,7 @@ module.exports = async (req, res) => {
             attributes: ["pic_URL"],
           },
         ],
-        attributes: ["id", "user_id", "comment", "star"],
+        attributes: ["id", "user_id", "comment", "star","updatedAt"],
       },
     ],
 
