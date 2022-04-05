@@ -66,7 +66,8 @@ function SlideShop() {
   const currentLocationShopPics = useSelector(
     (state) => state.currentLocationShopPics
   );
-
+  // console.log(currentLocationShopPics);
+  // console.log(currentLocationShops);
   return (
     <SlideShopContainer>
       <Swiper

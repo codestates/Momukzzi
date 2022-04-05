@@ -272,7 +272,7 @@ const EditorPick = ({ match }) => {
         });
     }
   };
-  console.log("current", currentLocationShops);
+  // console.log("current", currentLocationShops);
   return (
     <Container>
       <EditorPickHeader>
