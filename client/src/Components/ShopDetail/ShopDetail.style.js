@@ -25,15 +25,17 @@ export const ShopImages = styled.div`
   height: 250px;
   display: flex;
   flex-direction: row;
-  border: 1px solid red;
   overflow: auto;
   margin: 0 auto;
-
+  border-bottom: 1px solid grey;
+  ::-webkit-scrollbar {
+    display: none;
+  }
   & > img {
     /* position: relative; */
-    margin: 5px 5px 5px 0px;
-    min-width: 20%;
-    max-width: 20%;
+    margin-right: 5px;
+    min-width: calc(20% - 4px);
+    max-width: calc(20% - 4px);
     object-fit: cover;
   }
 `;
@@ -59,13 +61,13 @@ export const Buttons = styled.div`
   align-items: center;
   .favoriteButton {
     display: block;
-    width: 35px;
-    height: 35px;
+    width: 41px;
+    height: 41px;
   }
   .reviewButton {
     display: block;
-    width: 35px;
-    height: 35px;
+    width: 41px;
+    height: 41px;
   }
 `;
 
@@ -127,7 +129,6 @@ export const ShopDetailInfo = styled.div`
 `;
 
 export const ShopLocation = styled.div`
-  border: 1px solid black;
   margin-top: 30px;
   margin-bottom: 30px;
   width: 40%;
@@ -137,16 +138,14 @@ export const ShopLocation = styled.div`
 export const ShopReview = styled.div`
   display: flex;
   flex-direction: column;
-  border: 1px solid black;
   margin: 0 auto;
   width: 70%;
   height: auto;
 `;
 
 export const ShopEachReview = styled.div`
-  border: 1px solid blue;
-  padding-left: 30px;
-  padding-top: 5px;
+  border-top: 1px solid grey;
+  padding: 20px 0px 30px 30px;
   min-height: 100px;
   display: flex;
 
