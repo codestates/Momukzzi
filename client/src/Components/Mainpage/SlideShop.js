@@ -12,8 +12,9 @@ import "swiper/css/navigation";
 
 // import required modules
 import { Grid, Pagination, Navigation } from "swiper";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import LoadingIndicator from "../Loading/LoadingIndicator";
 
 const SlideShopContainer = styled.div`
   margin-top: 30px;
@@ -59,40 +60,50 @@ function SlideShop() {
   // const shopPic = shopDetailInfo.map((el) => {
   //   return el.shoppic;
   // });
-  const [isLoading, setIsLoading] = useState(true)
-  let currentLocationShops = useSelector((state) => state.currentLocationShops);
-  const currentLocationShopPics = useSelector(
-    (state) => state.currentLocationShopPics
+  const loading = useSelector((state) => state.loading);
+  useEffect(() => {});
+  const currentLocationShops = useSelector(
+    (state) => state.currentLocationShops
   );
+  const dispatch = useDispatch();
   // console.log(currentLocationShopPics);
   // console.log(currentLocationShops);
   return (
-    <SlideShopContainer>
-      <Swiper
-        slidesPerView={3}
-        grid={{
-          rows: 2,
-        }}
-        slidesPerGroup={3}
-        spaceBetween={30}
-        pagination={{
-          clickable: true,
-        }}
-        navigation={true}
-        modules={[Grid, Pagination, Navigation]}
-        className="mySwiper"
-      >
-        {currentLocationShopPics.map((obj, i) => {
-          return (
-            <SwiperSlide key={i}>
-              <Link to={`/shopdetail/${currentLocationShops[i]?.id}`}>
-                <img src={obj.pic_URL} className="food-picture"></img>
-              </Link>
-            </SwiperSlide>
-          );
-        })}
-      </Swiper>
-    </SlideShopContainer>
+    <>
+      {loading ? (
+        <LoadingIndicator />
+      ) : (
+        <SlideShopContainer>
+          <Swiper
+            slidesPerView={3}
+            grid={{
+              rows: 2,
+            }}
+            slidesPerGroup={3}
+            spaceBetween={30}
+            pagination={{
+              clickable: true,
+            }}
+            navigation={true}
+            modules={[Grid, Pagination, Navigation]}
+            className="mySwiper"
+          >
+            {currentLocationShops.map((obj, i) => {
+              return (
+                <SwiperSlide key={i}>
+                  <Link to={`/shopdetail/${obj.shopinfo?.shop_id}`}>
+                    <img
+                      src={obj.shoppic?.photodatas[0]}
+                      className="food-picture"
+                    ></img>
+                  </Link>
+                </SwiperSlide>
+              );
+            })}
+          </Swiper>
+        </SlideShopContainer>
+      )}
+    </>
   );
 }
 
