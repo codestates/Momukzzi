@@ -51,7 +51,7 @@ function OauthLoading() {
                 if (res.data.data.accessToken) {
                   localStorage.setItem("accessToken", res.data.data.accessToken);
                 }
-                //return window.location.replace("/");
+                return window.location.replace("/");
               
             });
         });
@@ -73,7 +73,7 @@ function OauthLoading() {
 
           if(res.status === 400){
             alert("로그인 오류가 발생했습니다. 다시 시도해 주세요.")
-            //return window.location.replace("/");
+            return window.location.replace("/");
 
           }else{
             console.log("응답 나가는 중");
@@ -86,7 +86,7 @@ function OauthLoading() {
               if (res.data.data.accessToken) {
                 localStorage.setItem("accessToken", res.data.data.accessToken);
               }
-              //return window.location.replace("/");
+              return window.location.replace("/");
             }
           }
         });
