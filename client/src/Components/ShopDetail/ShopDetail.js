@@ -140,7 +140,7 @@ export default function ShopDetail({ match }) {
           });
 
           if (!alreadyVisited) {
-            visited.push({
+            visited.unshift({
               shop_pic: res.data.data.targetshop.shop_pics[0].pic_URL,
               shop_name: res.data.data.targetshop.shop_name,
               location: res.data.data.targetshop.location,
@@ -247,24 +247,24 @@ export default function ShopDetail({ match }) {
             {info.star_avg}
           </span>
           <Buttons>
-              <Link to={`/review/${match.params.id}`}>
-                <ReviewButton>
-                  <BiMessageDetail className="reviewButton" />
-                  <span>리뷰</span>
-                </ReviewButton>
-              </Link>
-
-              {/*클릭 시 즐겨찾기 등록 or 해제 */}
+            <Link to={`/review/${match.params.id}`}>
               <ReviewButton>
-                <BsStar
-                  className={bookmark ? "favoriteButton on" : "favoriteButton"}
-                  onClick={handleStar}
-                />
-                <span>즐겨찾기</span>
+                <BiMessageDetail className="reviewButton" />
+                <span>리뷰</span>
               </ReviewButton>
-            </Buttons>
+            </Link>
+
+            {/*클릭 시 즐겨찾기 등록 or 해제 */}
+            <ReviewButton>
+              <BsStar
+                className={bookmark ? "favoriteButton on" : "favoriteButton"}
+                onClick={handleStar}
+              />
+              <span>즐겨찾기</span>
+            </ReviewButton>
+          </Buttons>
         </ShopBasicInfoHeader>
-        
+
         <ShopBasicInfo>
           <ShopDetailInfo>
             <table>

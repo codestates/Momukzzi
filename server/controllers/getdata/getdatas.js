@@ -3,7 +3,7 @@ const cheerio = require("cheerio");
 const puppeteer = require("puppeteer");
 const { scrollPageToBottom } = require("puppeteer-autoscroll-down");
 
-process.setMaxListeners(100)
+process.setMaxListeners(100);
 
 module.exports = async (req, res) => {
   // let address = req.body.road_address_name;
@@ -47,8 +47,8 @@ module.exports = async (req, res) => {
       for (let i = 0; i < menu_list.length; i++) {
         menulist.push([menu_list[i].menu_name, menu_list[i].price]);
       }
-    
-      if(photodatas.length !== 0 && menulist.length !== 0){
+
+      if (photodatas.length !== 0 && menulist.length !== 0) {
         result.push({
           shoppic: photodatas,
           menulist: menulist,
@@ -114,14 +114,14 @@ module.exports = async (req, res) => {
             const somemenu = menulists[i].children[0].data;
             const eachprice = price[i].children[1].data;
             // menulist[somemenu] = eachprice;
-            if(somemenu !== null){
+            if (somemenu !== null) {
               menulist.push([somemenu, eachprice]);
             }
           } catch (err) {
             const somemenu = menulists[i].children[0].data;
             const eachprice = "가격 정보 없음"; //상품 가격 (가끔 가격이 없는 곳도 있음)
             // menulist[somemenu] = eachprice;
-            if(somemenu !== null){
+            if (somemenu !== null) {
               menulist.push([somemenu, eachprice]);
             }
           }
@@ -129,13 +129,13 @@ module.exports = async (req, res) => {
           const somemenu = menulists[i].children[0].data;
           const eachprice = "가격 정보 없음"; //상품 가격 (가끔 가격이 없는 곳도 있음)
           // menulist[somemenu] = eachprice;
-          if(somemenu !== null){
+          if (somemenu !== null) {
             menulist.push([somemenu, eachprice]);
           }
         }
       }
 
-      await page.close()
+      await page.close();
 
       //크롤링 종료!
 
@@ -172,7 +172,7 @@ module.exports = async (req, res) => {
       for (let i = 0; i < menulist.length; i++) {
         const menu_name = menulist[i][0];
         const price_list = menulist[i][1];
-        if(menu_name !== undefined){
+        if (menu_name !== undefined || menu_name !== null) {
           await menu.create({
             shop_id: shopid,
             menu_name: menu_name,
@@ -203,7 +203,7 @@ module.exports = async (req, res) => {
         });
       }
 
-      if(photodatas.length !== 0 && menulist.length !== 0){
+      if (photodatas.length !== 0 && menulist.length !== 0) {
         result.push({
           shoppic: photodatas,
           menulist: menulist,

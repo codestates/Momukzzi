@@ -26,6 +26,7 @@ import { AiOutlineConsoleSql } from "react-icons/ai";
 import { type } from "@testing-library/user-event/dist/type";
 import dummyKakaoShops from "../../dummy/dummyKakaoShops";
 import SlideShop from "../Mainpage/SlideShop";
+import LoadingIndicator from "../Loading/LoadingIndicator";
 const TodaysPickContainer = styled.div`
   border: 1px solid black;
   width: 800px;
@@ -74,6 +75,7 @@ const ShopMenu = styled.div`
 `;
 
 const Intro = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [randomInt, setRandomInt] = useState(0);
   const [shopDetailInfo, setShopDetailInfo] = useState([
     { shoppic: [], menulist: [] },
@@ -119,6 +121,7 @@ const Intro = () => {
         // GPS를 지원하면
         navigator.geolocation.getCurrentPosition(
           function (position) {
+            setIsLoading(true);
             axios
               .get(
                 `https://dapi.kakao.com/v2/local/search/category.json?category_group_code=FD6&page=1&size=15&sort=accuracy&x=${position.coords.longitude}&y=${position.coords.latitude}&radius=2000`,
@@ -142,6 +145,7 @@ const Intro = () => {
                   .then((res) => {
                     // console.log(res.data.data.result);
                     setShopDetailInfo(res.data.data.result);
+                    setIsLoading(false);
                   });
 
                 const shopMapIds = res.data.documents.map((obj) => {
@@ -277,6 +281,7 @@ const Intro = () => {
         alert("GPS를 지원하지 않습니다");
       }
     }
+
     getLocation();
   }, []);
 
@@ -285,49 +290,57 @@ const Intro = () => {
   console.log(shopDetailInfo);
   console.log(shopInfo);
   return (
-    <TodaysPickContainer>
-      <Section>
-        <ShopDetail>상세 정보</ShopDetail>
-        <Swiper
-          slidesPerView={2}
-          slidesPerGroup={2}
-          loop={true}
-          loopFillGroupWithBlank={true}
-          pagination={{
-            clickable: true,
-          }}
-          navigation={true}
-          modules={[Pagination, Navigation]}
-          className="mySwiper"
-        >
-          {shopDetailInfo[randomInt].shoppic.map((img) => {
-            return (
-              <SwiperSlide>
-                <img src={img}></img>
-              </SwiperSlide>
-            );
-          })}
-          <SwiperSlide></SwiperSlide>
-        </Swiper>
-        <ShopName>
-          <span id="shop-name">{shopInfo[randomInt].place_name}</span>
-          <span id="shop-category">{shopInfo[randomInt].category_name}</span>
-        </ShopName>
-      </Section>
-      <Section className="map-container">
-        <Map>
-          <div id="map" style={{ width: "400px", height: "300px" }}></div>
-        </Map>
-        <ShopMenu className="test">
-          <ul>
-            <h3>메뉴</h3>
-            {shopDetailInfo[randomInt].menulist.map((menu, i) => {
-              return <li key={i}>{`${menu[0]} : ${menu[1]}`}</li>;
-            })}
-          </ul>
-        </ShopMenu>
-      </Section>
-    </TodaysPickContainer>
+    <>
+      {isLoading ? (
+        <LoadingIndicator />
+      ) : (
+        <TodaysPickContainer>
+          <Section>
+            <ShopDetail>상세 정보</ShopDetail>
+            <Swiper
+              slidesPerView={2}
+              slidesPerGroup={2}
+              loop={true}
+              loopFillGroupWithBlank={true}
+              pagination={{
+                clickable: true,
+              }}
+              navigation={true}
+              modules={[Pagination, Navigation]}
+              className="mySwiper"
+            >
+              {shopDetailInfo[randomInt].shoppic.map((img) => {
+                return (
+                  <SwiperSlide>
+                    <img src={img}></img>
+                  </SwiperSlide>
+                );
+              })}
+              <SwiperSlide></SwiperSlide>
+            </Swiper>
+            <ShopName>
+              <span id="shop-name">{shopInfo[randomInt].place_name}</span>
+              <span id="shop-category">
+                {shopInfo[randomInt].category_name}
+              </span>
+            </ShopName>
+          </Section>
+          <Section className="map-container">
+            <Map>
+              <div id="map" style={{ width: "400px", height: "300px" }}></div>
+            </Map>
+            <ShopMenu className="test">
+              <ul>
+                <h3>메뉴</h3>
+                {shopDetailInfo[randomInt].menulist.map((menu, i) => {
+                  return <li key={i}>{`${menu[0]} : ${menu[1]}`}</li>;
+                })}
+              </ul>
+            </ShopMenu>
+          </Section>
+        </TodaysPickContainer>
+      )}
+    </>
   );
 };
 
