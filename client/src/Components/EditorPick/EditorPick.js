@@ -77,7 +77,7 @@ const EditorPick = ({ match }) => {
   const x = match.params.code.split(",")[1];
   const name = match.params.code.split(",")[2];
   const description = match.params.code.split(",")[3];
-  const [topicShops, setTopciShops] = useState([]);
+  const [shops, setShops] = useState([]);
   const [shopManyReviews, setShopManyReviews] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -104,7 +104,7 @@ const EditorPick = ({ match }) => {
           .then((res) => {
             // console.log(res);
 
-            setTopciShops(res.data.data.result);
+            setShops(res.data.data.result);
             const shopIds = res.data.data.result.map((obj) => {
               return obj.shopinfo.shop_id;
             });
@@ -219,7 +219,7 @@ const EditorPick = ({ match }) => {
             <div>{description}</div>
           </EditorPickHeader>
 
-          {topicShops.map((obj, i) => {
+          {shops.map((obj, i) => {
             return (
               <ShopComponent>
                 <div className="shop_info1">
