@@ -1,13 +1,5 @@
 import styled from 'styled-components'
 import MypageImg from './21631.jpg'
-import { createGlobalStyle } from 'styled-components'
-
-export default createGlobalStyle`
-@font-face {
-	font-family: mypagefont;
-	src: url('./mypagefont.ttf');
-}
-`
 
 export const My = {
 	MypageContainer: styled.div`
@@ -15,8 +7,6 @@ export const My = {
 		font-size: 14px;
 		word-break: keep-all;
 		min-height: 81vh;
-		/* background-image: url('https://www.freepik.com/free-vector/fast-food-isometric-set_5972199.htm');
-		background-repeat: repeat-x; */
 
 		@media (min-width: 758px) and (max-width: 1023px) {
 			margin: 70px 0 20px 0;
