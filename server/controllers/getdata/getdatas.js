@@ -2,6 +2,7 @@ const { shop, shop_pic, menu } = require("../../models");
 const cheerio = require("cheerio");
 const puppeteer = require("puppeteer");
 const { scrollPageToBottom } = require("puppeteer-autoscroll-down");
+const { data } = require("cheerio/lib/api/attributes");
 
 process.setMaxListeners(100)
 
@@ -49,7 +50,17 @@ module.exports = async (req, res) => {
       }
     
       if(photodatas.length !== 0 && menulist.length !== 0){
+
+        console.log({
+          shopid : shopid,
+          shopinfo : req.body.data[i],
+          shoppic: photodatas,
+          menulist: menulist,
+        })
+
         result.push({
+          shopid : shopid,
+          shopinfo : req.body.data[i],
           shoppic: photodatas,
           menulist: menulist,
         });
@@ -204,7 +215,10 @@ module.exports = async (req, res) => {
       }
 
       if(photodatas.length !== 0 && menulist.length !== 0){
+        
         result.push({
+          shopid : shopid,
+          shopinfo : req.body.data[i],
           shoppic: photodatas,
           menulist: menulist,
         });
@@ -235,4 +249,8 @@ module.exports = async (req, res) => {
       result,
     },
   });
+
+
+
+
 };
