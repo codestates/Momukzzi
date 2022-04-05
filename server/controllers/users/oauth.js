@@ -1,8 +1,9 @@
-const { user, bookmark, shop, shop_pic } = require("../../models");
+const { user} = require("../../models");
 const jwt = require("jsonwebtoken");
 const axios = require("axios");
 
 module.exports = async (req, res) => {
+  
   console.log("oauth login!!!!!!!!!!!!!!");
   const code = req.body.code;
   const REACT_APP_GITHUB_CLIENT_ID = process.env.REACT_APP_GITHUB_CLIENT_ID;
@@ -110,10 +111,11 @@ module.exports = async (req, res) => {
         }
       })
       .catch((e) => {
-        //오류 처리
-        res.status(400).json({
-          message: "Oauth login err",
-        });
+        // //오류 처리
+        // res.status(400).json({
+        //   message: "Oauth login err",
+        // });
+        console.log(e)
       });
   } else {
     axios //깃허브
@@ -194,6 +196,7 @@ module.exports = async (req, res) => {
                   data: {
                     accessToken: access_Token,
                     nickname: userInfo.dataValues.nickname,
+                    Oauth : true
                   },
                 });
             } else {
@@ -239,6 +242,7 @@ module.exports = async (req, res) => {
                   data: {
                     accessToken: access_Token,
                     nickname: userInfo.dataValues.nickname,
+                    Oauth : true
                   },
                 });
             }
@@ -246,9 +250,10 @@ module.exports = async (req, res) => {
           .then(console.log("인증절차 통과"))
           .catch((e) => {
             //오류 처리
-            res.status(400).json({
-              message: "Oauth login err",
-            });
+            // res.status(400).json({
+            //   message: "Oauth login err",
+            // });
+            console.log(e)
           });
       });
   }

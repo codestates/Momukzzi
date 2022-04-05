@@ -20,6 +20,7 @@ function OauthLoading() {
   const REACT_APP_GITHUB_CLIENT_SECRET =process.env.REACT_APP_GITHUB_CLIENT_SECRET;
 
   const kakaocode = (code) => {
+    console.log("함수 실행됨!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
     if (code.length !== 20) {
       console.log("kakao", code);
       axios
@@ -43,18 +44,14 @@ function OauthLoading() {
               }
             )
             .then((res) => {
-              if(res.status === 400){
-                alert("로그인 오류가 발생했습니다. 다시 시도해 주세요.")
-                return window.location.replace("/");
-                
-              }else{
+              
                 localStorage.setItem("accessToken", res.data.data.accessToken);
                 localStorage.setItem("email", res.data.data.email);
                 if (res.data.data.accessToken) {
                   localStorage.setItem("accessToken", res.data.data.accessToken);
                 }
-                return window.location.replace("/");
-              }
+                //return window.location.replace("/");
+              
             });
         });
     } else {
@@ -75,7 +72,7 @@ function OauthLoading() {
 
           if(res.status === 400){
             alert("로그인 오류가 발생했습니다. 다시 시도해 주세요.")
-            return window.location.replace("/");
+            //return window.location.replace("/");
 
           }else{
             console.log("응답 나가는 중");
@@ -88,7 +85,7 @@ function OauthLoading() {
               if (res.data.data.accessToken) {
                 localStorage.setItem("accessToken", res.data.data.accessToken);
               }
-              return window.location.replace("/");
+              //return window.location.replace("/");
             }
           }
         });

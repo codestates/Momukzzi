@@ -40,19 +40,17 @@ const IconBox = styled.span`
 
 function OauthLoading() {
 	const REACT_APP_REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
+	const REACT_APP_GITHUB_CLIENT_ID = process.env.REACT_APP_GITHUB_CLIENT_ID;
 	const REDIRECT_URI = 'https://localhost:3000/oauthloding';
 	const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REACT_APP_REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`
 
-	const GITHUB_LOGIN_URL = `https://github.com/login/oauth/authorize?client_id=3e13dcd314570e792c58`
+	const GITHUB_LOGIN_URL = `https://github.com/login/oauth/authorize?client_id=${REACT_APP_GITHUB_CLIENT_ID}`
 
-	// const kakaologin = async () ={
-		// result = await axios.get(KAKAO_AUTH_URL)
-	// }
 
 	return (
 		<OauthContainer>
 			<IconBox>
-				{/* <a href={KAKAO_AUTH_URL}> */}
+
 				<a id="kakao" href={KAKAO_AUTH_URL}>
 					<img src={kakao_oauth} />
 					
