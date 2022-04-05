@@ -100,10 +100,11 @@ const Header = () => {
               onClick={() => {
                 localStorage.removeItem("accessToken");
                 localStorage.removeItem("nickname");
+                // 추가
+                localStorage.removeItem("currentShopName");
                 axios.get("https://localhost:4000/users/logout", {
                   withCredentials: true,
                 });
-
                 window.location.replace(window.location.pathname);
               }}
             >
