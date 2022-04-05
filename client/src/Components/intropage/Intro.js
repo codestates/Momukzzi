@@ -226,7 +226,7 @@ const Intro = () => {
             // 장소 검색 객체를 생성합니다
             var ps = new kakao.maps.services.Places(map);
 
-            // 카테고리로 은행을 검색합니다
+            // 카테고리로 식당을 검색합니다
             ps.categorySearch("FD6", placesSearchCB, {
               useMapBounds: true,
               page: 1,
@@ -282,8 +282,8 @@ const Intro = () => {
 
   // console.log("currentLocationShops", currentLocationShops);
   // console.log("currnetLocationShopPics", currentLocationShopPics);
-  // console.log(shopDetailInfo);
-
+  console.log(shopDetailInfo);
+  console.log(shopInfo);
   return (
     <TodaysPickContainer>
       <Section>

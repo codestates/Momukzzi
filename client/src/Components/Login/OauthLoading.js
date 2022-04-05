@@ -33,10 +33,16 @@ function OauthLoading() {
           localStorage.setItem("accessToken", result.data.access_token);
 
           axios
-            .post("https://localhost:4000/users/oauth", {
-              oauth: "KaKao",
-              code: result.data.access_token,
-            })
+            .post(
+              "https://localhost:4000/users/oauth",
+              {
+                oauth: "KaKao",
+                code: result.data.access_token,
+              },
+              {
+                withCredentials: true,
+              }
+            )
             .then((res) => {
               console.log("응답 나가는 중");
               console.log(res);
@@ -52,15 +58,21 @@ function OauthLoading() {
       console.log("github", code);
 
       axios
-        .post("https://localhost:4000/users/oauth", {
-          oauth: "github",
-          code: code,
-        })
+        .post(
+          "https://localhost:4000/users/oauth",
+          {
+            oauth: "github",
+            code: code,
+          },
+          {
+            withCredentials: true,
+          }
+        )
         .then((res) => {
           console.log("응답 나가는 중");
           console.log(res);
           localStorage.setItem("accessToken", res.data.data.accessToken);
-          localStorage.setItem("email", res.data.data.email);
+          localStorage.setItem("nickname", res.data.data.nickname);
           if (res.data.data.accessToken) {
             localStorage.setItem("accessToken", res.data.data.accessToken);
           }

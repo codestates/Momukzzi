@@ -179,11 +179,12 @@ const Favorite = () => {
           </div>
           <div
             onClick={() => {
-              if (!cookie) {
+              if (!localStorage.getItem("accessToken")) {
                 dispatch({ type: "login modal" });
                 return;
+              } else {
+                setIsBookMarkMenu(true);
               }
-              setIsBookMarkMenu(true);
             }}
           >
             가고 싶다
