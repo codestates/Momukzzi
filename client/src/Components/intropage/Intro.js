@@ -97,12 +97,12 @@ const Intro = () => {
   const [shopInfo, setShopInfo] = useState(dummyKakaoShops);
   const dispatch = useDispatch();
 
-  const currentLocationShops = useSelector(
-    (state) => state.currentLocationShops
-  );
-  const currentLocationShopPics = useSelector(
-    (state) => state.currentLocationShopPics
-  );
+  // const currentLocationShops = useSelector(
+  //   (state) => state.currentLocationShops
+  // );
+  // const currentLocationShopPics = useSelector(
+  //   (state) => state.currentLocationShopPics
+  // );
 
   useEffect(() => {
     // 0 ~ 44 랜덤 정수 생성
@@ -143,7 +143,7 @@ const Intro = () => {
                     }
                   )
                   .then((res) => {
-                    // console.log(res.data.data.result);
+                    console.log(res);
                     setShopDetailInfo(res.data.data.result);
                     setIsLoading(false);
                   });
@@ -287,8 +287,8 @@ const Intro = () => {
 
   // console.log("currentLocationShops", currentLocationShops);
   // console.log("currnetLocationShopPics", currentLocationShopPics);
-  console.log(shopDetailInfo);
-  console.log(shopInfo);
+  // console.log(shopDetailInfo);
+  // console.log(shopInfo);
   return (
     <>
       {isLoading ? (
