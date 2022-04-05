@@ -13,17 +13,15 @@ import {
   shallowEqual,
 } from "react-redux";
 import dummyShops from "./dummy/dummyShops";
-import dummyShopPics from "./dummy/dummyShopPics";
 
 const initialState = {
   isLogInOpen: false,
   isSignUpOpen: false,
   isFavoriteModal: false,
   currentLocationShops: dummyShops,
-  currentLocationShopPics: dummyShopPics,
   topicShops: dummyShops,
-  topicShopPics: dummyShopPics,
   currentShopName: 0,
+  loading: true,
 };
 
 function reducer(currentState = initialState, action) {
@@ -36,14 +34,12 @@ function reducer(currentState = initialState, action) {
     newState.isFavoriteModal = !newState.isFavoriteModal;
   } else if (action.type === "current_location_shops") {
     newState.currentLocationShops = action.data;
-  } else if (action.type === "current_location_shop_pics") {
-    newState.currentLocationShopPics = action.data;
   } else if (action.type === "topic_shops") {
     newState.topicShops = action.data;
-  } else if (action.type === "topic_shop_pics") {
-    newState.topicShopPics = action.data;
   } else if (action.type === "current_shop_name") {
     newState.currentShopName = action.payload.shop_name;
+  } else if (action.type === "loading") {
+    newState.loading = action.data;
   }
 
   return newState;
