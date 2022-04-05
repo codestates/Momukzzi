@@ -58,10 +58,18 @@ module.exports = async (req, res) => {
         // });
 
         result.push({
-          shopid: shopid,
-          shopinfo: req.body.data[i],
-          shoppic: photodatas,
-          menulist: menulist,
+          shopinfo: {
+            shop_id: shopid,
+            shopinfo: req.body.data[i],
+          },
+          shoppic: {
+            shop_id: shopid,
+            photodatas,
+          },
+          menulist: {
+            shop_id: shopid,
+            menulist,
+          },
         });
       }
     } else {
@@ -215,10 +223,18 @@ module.exports = async (req, res) => {
 
       if (photodatas.length !== 0 && menulist.length !== 0) {
         result.push({
-          shopid: shopid,
-          shopinfo: req.body.data[i],
-          shoppic: photodatas,
-          menulist: menulist,
+          shopinfo: {
+            shop_id: shopid,
+            shopinfo: req.body.data[i],
+          },
+          shoppic: {
+            shop_id: shopid,
+            photodatas,
+          },
+          menulist: {
+            shop_id: shopid,
+            menulist,
+          },
         });
       }
     }

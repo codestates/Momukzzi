@@ -170,10 +170,10 @@ const Intro = () => {
                       }
                     });
                     // console.log(shopData);
-                    dispatch({
-                      type: "current_location_shops",
-                      data: shopData,
-                    });
+                    // dispatch({
+                    //   type: "current_location_shops",
+                    //   data: shopData,
+                    // });
                     const shopIds = shopData.map((obj) => {
                       return obj.id;
                     });
@@ -188,10 +188,10 @@ const Intro = () => {
                       )
                       .then((res) => {
                         // console.log(res.data.data);
-                        dispatch({
-                          type: "current_location_shop_pics",
-                          data: res.data.data,
-                        });
+                        // dispatch({
+                        //   type: "current_location_shop_pics",
+                        //   data: res.data.data,
+                        // });
                       });
                   });
               });
