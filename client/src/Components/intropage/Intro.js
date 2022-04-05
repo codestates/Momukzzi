@@ -140,14 +140,14 @@ const Intro = () => {
                     }
                   )
                   .then((res) => {
-                    // console.log(res.data.data.result);
+                    console.log(res.data.data.result);
                     setShopDetailInfo(res.data.data.result);
                   });
 
                 const shopMapIds = res.data.documents.map((obj) => {
                   return obj.id;
                 });
-                // console.log(shopMapIds);
+                console.log(shopMapIds);
                 axios
                   .post(
                     "https://localhost:4000/shopmanyinfo",
