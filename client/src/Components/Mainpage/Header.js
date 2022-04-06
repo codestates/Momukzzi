@@ -77,19 +77,14 @@ const HeaderContainer = styled.div`
 `;
 
 const Header = () => {
-  const [active, setActive] = useState(false);
-
-  const clickToggleBtn = () => {
-    setActive(!active);
-  };
-
   const dispatch = useDispatch();
   return (
     <HeaderContainer>
       <nav className="navbar">
         <div className="navbar_logo">
           <Link to="/">
-            <img src="img/logo.png" />
+            {/* <img src="img/logo.png" /> */}
+            <img src="https://euilimchoibucket.s3.amazonaws.com/1649123847358.png" />
           </Link>
         </div>
         {localStorage.getItem("accessToken") ? (
@@ -106,6 +101,9 @@ const Header = () => {
               onClick={() => {
                 localStorage.removeItem("accessToken");
                 localStorage.removeItem("nickname");
+                axios.get("https://localhost:4000/users/logout", {
+                  withCredentials: true,
+                });
                 window.location.replace(window.location.pathname);
               }}
             >

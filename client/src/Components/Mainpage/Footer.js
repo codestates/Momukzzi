@@ -67,7 +67,10 @@ const Footer = () => {
       <ul className="footer_info">
         <li>
           <Link to="/">
-            <img src="img/logo.png" alt="logo" />
+            <img
+              src="https://euilimchoibucket.s3.amazonaws.com/1649123847358.png"
+              alt="logo"
+            />
           </Link>
         </li>
         <li>Copyright @ 2022 All right Reserved</li>

@@ -2,12 +2,15 @@ const { shop, shop_pic, menu } = require("../../models");
 const cheerio = require("cheerio");
 const puppeteer = require("puppeteer");
 const { scrollPageToBottom } = require("puppeteer-autoscroll-down");
+const { data } = require("cheerio/lib/api/attributes");
+
+process.setMaxListeners(100);
 
 module.exports = async (req, res) => {
   // let address = req.body.road_address_name;
   let address = undefined;
   let result = []; //결과를 담을 객체
-  // console.log(req.body.data);
+  // console.log(req.body);
   for (let i = 0; i < req.body.data.length; i++) {
     // 데이터 베이스에 있는지 검증
 
@@ -21,7 +24,6 @@ module.exports = async (req, res) => {
 
     if (shopinfo) {
       console.log("데이터 베이스에서 정보가 나갑니다~");
-      let eachshop = [];
       let photodatas = []; //이미지 크롤링 결과
       let menulist = []; //메뉴 정보 크롤링 결과
 
@@ -47,10 +49,29 @@ module.exports = async (req, res) => {
         menulist.push([menu_list[i].menu_name, menu_list[i].price]);
       }
 
-      result.push({
-        shoppic: photodatas,
-        menulist: menulist,
-      });
+      if (photodatas.length !== 0 && menulist.length !== 0) {
+        // console.log({
+        //   shopid: shopid,
+        //   shopinfo: req.body.data[i],
+        //   shoppic: photodatas,
+        //   menulist: menulist,
+        // });
+
+        result.push({
+          shopinfo: {
+            shop_id: shopid,
+            shopinfo: req.body.data[i],
+          },
+          shoppic: {
+            shop_id: shopid,
+            photodatas,
+          },
+          menulist: {
+            shop_id: shopid,
+            menulist,
+          },
+        });
+      }
     } else {
       console.log("크롤링해서 정보가 나갑니다~");
 
@@ -107,15 +128,32 @@ module.exports = async (req, res) => {
 
       for (let i = 0; i < menulists.length; i++) {
         if (price.length !== 0) {
-          const somemenu = menulists[i].children[0].data;
-          const eachprice = price[i].children[1].data;
-          menulist.push([somemenu, eachprice]);
+          try {
+            const somemenu = menulists[i].children[0].data;
+            const eachprice = price[i].children[1].data;
+            // menulist[somemenu] = eachprice;
+            if (somemenu !== null) {
+              menulist.push([somemenu, eachprice]);
+            }
+          } catch (err) {
+            const somemenu = menulists[i].children[0].data;
+            const eachprice = "가격 정보 없음"; //상품 가격 (가끔 가격이 없는 곳도 있음)
+            // menulist[somemenu] = eachprice;
+            if (somemenu !== null) {
+              menulist.push([somemenu, eachprice]);
+            }
+          }
         } else {
           const somemenu = menulists[i].children[0].data;
           const eachprice = "가격 정보 없음"; //상품 가격 (가끔 가격이 없는 곳도 있음)
-          menulist.push([somemenu, eachprice]);
+          // menulist[somemenu] = eachprice;
+          if (somemenu !== null) {
+            menulist.push([somemenu, eachprice]);
+          }
         }
       }
+
+      await page.close();
 
       //크롤링 종료!
 
@@ -125,6 +163,9 @@ module.exports = async (req, res) => {
         genus: genus,
         location: req.body.data[i].road_address_name,
         work_time: "9:00 ~ 21:00",
+        map_id: req.body.data[i].id,
+        x: req.body.data[i].x,
+        y: req.body.data[i].y,
       });
 
       // 저장한 기본 정보의 음식점 id 가져오기
@@ -149,19 +190,72 @@ module.exports = async (req, res) => {
       for (let i = 0; i < menulist.length; i++) {
         const menu_name = menulist[i][0];
         const price_list = menulist[i][1];
-        await menu.create({
+        if (menu_name !== undefined && menu_name !== null) {
+          await menu.create({
+            shop_id: shopid,
+            menu_name: menu_name,
+            price: price_list,
+          });
+        }
+      }
+
+      const checkerr = await shop_pic.findOne({
+        where: {
           shop_id: shopid,
-          menu_name: menu_name,
-          price: price_list,
+        },
+      });
+
+      try {
+        if (checkerr.dataValues.pic_URL === "") {
+          await shop.destroy({
+            where: {
+              id: shopid,
+            },
+          });
+        }
+      } catch (err) {
+        await shop.destroy({
+          where: {
+            id: shopid,
+          },
         });
       }
 
-      result.push({
-        shoppic: photodatas,
-        menulist: menulist,
-      });
+      if (photodatas.length !== 0 && menulist.length !== 0) {
+        result.push({
+          shopinfo: {
+            shop_id: shopid,
+            shopinfo: req.body.data[i],
+          },
+          shoppic: {
+            shop_id: shopid,
+            photodatas,
+          },
+          menulist: {
+            shop_id: shopid,
+            menulist,
+          },
+        });
+      }
     }
   }
+
+  // console.log(req.body.data)
+  // console.log(req.body.data.length)
+  // console.log(result)
+  // console.log(result.length)
+
+  //응답 결과 정리
+
+  // let someerr = []
+
+  // for (let i = 0; i < result.length; i++){
+  //   if (result[i].shoppic.length === 0){
+  //     someerr.push(result[i])
+  //   }
+  // }
+
+  // console.log(someerr)
 
   res.status(200).json({
     message: "shopinfo crawling",

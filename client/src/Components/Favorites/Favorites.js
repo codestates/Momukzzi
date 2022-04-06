@@ -4,10 +4,12 @@ import styled from "styled-components";
 import axios from "axios";
 import { Provider, useSelector, useDispatch, connect } from "react-redux";
 import { AiOutlineStar } from "react-icons/ai";
+import { FaBlackberry } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const BackDropModal = styled.div`
   position: fixed;
-  z-index: 999;
+  z-index: 998;
   top: 0;
   left: 0;
   bottom: 0;
@@ -33,11 +35,15 @@ const FavoriteHeader = styled.div`
     display: inline-block;
     text-align: center;
     flex: 1 1 auto;
+    cursor: pointer;
   }
 `;
 
 const FavoriteBody = styled.div`
   height: 390px;
+  .shopdetail {
+    cursor: pointer;
+  }
 `;
 
 const FavoriteContent = styled.div`
@@ -56,6 +62,7 @@ const FavoriteContent = styled.div`
   }
   #icon-container {
     position: relative;
+    cursor: pointer;
   }
   .staricon {
     position: absolute;
@@ -64,10 +71,100 @@ const FavoriteContent = styled.div`
     top: 10px;
     right: 5px;
   }
+  .on {
+    color: yellow;
+  }
 `;
 
 const Favorite = () => {
+  // document.body.style.overflow = "hidden";
   const dispatch = useDispatch();
+  const visited = JSON.parse(localStorage.getItem("visited")).slice(
+    JSON.parse(localStorage.getItem("visited")).length - 9,
+    JSON.parse(localStorage.getItem("visited")).length
+  );
+  const [isBookMarkMenu, setIsBookMarkMenu] = useState(false);
+
+  const getCookie = function (name) {
+    var value = document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
+    return value ? decodeURIComponent(value[2]) : null;
+  };
+  const [cookie, setCookie] = useState(JSON.parse(getCookie("bookmark")));
+  const isAddedBookmark = (id) => {
+    let result = false;
+    if (!cookie) {
+      return;
+    }
+    for (let i = 0; i < cookie.length; i++) {
+      if (id === cookie[i].id) {
+        result = true;
+      }
+    }
+    return result;
+  };
+  const handleStar = (id, e) => {
+    const filteredCookie = cookie.filter((shop) => {
+      console.log(shop.id, id);
+      return shop.id === id;
+    });
+    console.log(filteredCookie);
+    if (filteredCookie.length === 0) {
+      console.log("hello");
+      axios
+        .post(
+          "https://localhost:4000/bookmark",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+            shop_id: id,
+            bookmark: false,
+          },
+          {
+            withCredentials: true,
+          }
+        )
+        .then((res) => {
+          if (res.data.message === "add success") {
+            e.target.classname = "staricon on";
+            setCookie(JSON.parse(getCookie("bookmark")));
+          } else if (res.data.message === "not authorized") {
+            dispatch({ type: "login modal" });
+          }
+
+          console.log("즐겨찾기 응답", res);
+          console.log(JSON.parse(getCookie("bookmark")));
+        });
+    } else {
+      console.log("hello");
+      axios
+        .post(
+          "https://localhost:4000/bookmark",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+            shop_id: id,
+            bookmark: true,
+          },
+          {
+            withCredentials: true,
+          }
+        )
+        .then((res) => {
+          if (res.data.message === "remove success") {
+            e.target.classname = "staricon";
+            setCookie(JSON.parse(getCookie("bookmark")));
+          } else if (res.data.message === "not authorized") {
+            dispatch({ type: "login modal" });
+          }
+
+          console.log("즐겨찾기 응답", res);
+          console.log(JSON.parse(getCookie("bookmark")));
+        });
+    }
+  };
+
   return (
     <BackDropModal
       onClick={() => {
@@ -76,71 +173,101 @@ const Favorite = () => {
     >
       <FavoriteContainer onClick={(e) => e.stopPropagation()}>
         <FavoriteHeader>
-          <div>최근 본 맛집</div>
-          <div>가고 싶다</div>
+          <div
+            onClick={() => {
+              setIsBookMarkMenu(false);
+            }}
+          >
+            최근 본 맛집
+          </div>
+          <div
+            onClick={() => {
+              if (!localStorage.getItem("accessToken")) {
+                dispatch({ type: "login modal" });
+                return;
+              } else {
+                setIsBookMarkMenu(true);
+              }
+            }}
+          >
+            가고 싶다
+          </div>
         </FavoriteHeader>
-        <FavoriteBody>
-          <FavoriteContent>
-            <div>
-              <img src="https://src.hidoc.co.kr/image/lib/2019/6/12/20190612112121719_0.jpg"></img>
-            </div>
-            <div>
-              <div className="favorite-shopinfo">설빙 서울중앙대점</div>
-              <div className="favorite-shopinfo">서대문구 - 디저트</div>
-            </div>
-            <div id="icon-container">
-              <AiOutlineStar className="staricon" />
-            </div>
-          </FavoriteContent>
-          <FavoriteContent>
-            <div>
-              <img src="https://src.hidoc.co.kr/image/lib/2019/6/12/20190612112121719_0.jpg"></img>
-            </div>
-            <div>
-              <div className="favorite-shopinfo">설빙 서울중앙대점</div>
-              <div className="favorite-shopinfo">서대문구 - 디저트</div>
-            </div>
-            <div id="icon-container">
-              <AiOutlineStar className="staricon" />
-            </div>
-          </FavoriteContent>
-          <FavoriteContent>
-            <div>
-              <img src="https://src.hidoc.co.kr/image/lib/2019/6/12/20190612112121719_0.jpg"></img>
-            </div>
-            <div>
-              <div className="favorite-shopinfo">설빙 서울중앙대점</div>
-              <div className="favorite-shopinfo">서대문구 - 디저트</div>
-            </div>
-            <div id="icon-container">
-              <AiOutlineStar className="staricon" />
-            </div>
-          </FavoriteContent>
-          <FavoriteContent>
-            <div>
-              <img src="https://src.hidoc.co.kr/image/lib/2019/6/12/20190612112121719_0.jpg"></img>
-            </div>
-            <div>
-              <div className="favorite-shopinfo">설빙 서울중앙대점</div>
-              <div className="favorite-shopinfo">서대문구 - 디저트</div>
-            </div>
-            <div id="icon-container">
-              <AiOutlineStar className="staricon" />
-            </div>
-          </FavoriteContent>
-          <FavoriteContent>
-            <div>
-              <img src="https://src.hidoc.co.kr/image/lib/2019/6/12/20190612112121719_0.jpg"></img>
-            </div>
-            <div>
-              <div className="favorite-shopinfo">설빙 서울중앙대점</div>
-              <div className="favorite-shopinfo">서대문구 - 디저트</div>
-            </div>
-            <div id="icon-container">
-              <AiOutlineStar className="staricon" />
-            </div>
-          </FavoriteContent>
-        </FavoriteBody>
+        {isBookMarkMenu ? (
+          <FavoriteBody>
+            {cookie.map((obj, i) => {
+              return (
+                <FavoriteContent key={i}>
+                  <div
+                    className="shopdetail"
+                    onClick={() => {
+                      window.location.replace(`/shopdetail/${obj.id}`);
+                    }}
+                  >
+                    <img src={obj.pic_URL} alt="shop_pic" />
+                  </div>
+                  <div>
+                    <div className="favorite-shopinfo">
+                      {obj.shop_name} - {obj.genus}
+                    </div>
+                    <div className="favorite-shopinfo">{obj.location}</div>
+                  </div>
+                  <div
+                    id="icon-container"
+                    onClick={(e) => {
+                      if (!localStorage.getItem("accessToken")) {
+                        dispatch({ type: "login modal" });
+                      } else {
+                        handleStar(obj.id, e);
+                      }
+                    }}
+                  >
+                    <AiOutlineStar className="staricon on" />
+                  </div>
+                </FavoriteContent>
+              );
+            })}
+          </FavoriteBody>
+        ) : (
+          <FavoriteBody>
+            {visited.map((obj, i) => {
+              return (
+                <FavoriteContent key={i}>
+                  <div
+                    className="shopdetail"
+                    onClick={() => {
+                      window.location.replace(`/shopdetail/${obj.id}`);
+                    }}
+                  >
+                    <img src={obj.shop_pic}></img>
+                  </div>
+                  <div>
+                    <div className="favorite-shopinfo">
+                      {obj.shop_name} - {obj.genus}
+                    </div>
+                    <div className="favorite-shopinfo">{obj.location}</div>
+                  </div>
+                  <div
+                    id="icon-container"
+                    onClick={(e) => {
+                      if (!localStorage.getItem("accessToken")) {
+                        dispatch({ type: "login modal" });
+                      } else {
+                        handleStar(obj.id, e);
+                      }
+                    }}
+                  >
+                    <AiOutlineStar
+                      className={
+                        isAddedBookmark(obj.id) ? "staricon on" : "staricon"
+                      }
+                    />
+                  </div>
+                </FavoriteContent>
+              );
+            })}
+          </FavoriteBody>
+        )}
       </FavoriteContainer>
     </BackDropModal>
   );

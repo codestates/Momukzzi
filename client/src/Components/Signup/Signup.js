@@ -72,6 +72,7 @@ const SignUpButton = styled.div`
 `;
 
 function Signup() {
+  // document.body.style.overflow = "hidden";
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [passwordRetype, setPasswordRetype] = useState("");
@@ -160,7 +161,7 @@ function Signup() {
     ) {
       axios
         .post(
-          `${process.env.REACT_APP_API_URL}/users`,
+          `https://localhost:4000/users`,
           {
             userid: userId,
             password: password,

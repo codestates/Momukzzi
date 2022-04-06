@@ -1,6 +1,7 @@
 module.exports = {
   login: require("./users/login"),
   logout: require("./users/logout"),
+  oauth: require("./users/oauth"),
 
   signup: require("./users/signup"),
   signout: require("./users/signout"),
@@ -25,4 +26,10 @@ module.exports = {
   tag: require("./tag/tag"),
   shoptag: require("./tag/shoptag"),
   data: require("./getdata/getdatas"),
+
+  topicshop: require("./shop/topicshop"),
+  shopmanyinfo: require("./shop/shopmanyinfo"),
+  shopmanypics: require("./shop/shopmanypics"),
+  shopmanyreviews: require("./shop/shopmanyreviews"),
+  bookmark: require("./bookmark/bookmark"),
 };

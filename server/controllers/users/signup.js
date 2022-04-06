@@ -15,6 +15,7 @@ module.exports = async (req, res) => {
         password: req.body.password,
         nickname: req.body.nickname,
         email: req.body.email,
+        oauth: false
       })
       .then((response) => {
         res.status(201).send({ message: "created" });

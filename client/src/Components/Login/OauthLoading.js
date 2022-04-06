@@ -1,0 +1,109 @@
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import styled from "styled-components";
+import Loginoauth from "./Loginoauth";
+import { useDispatch } from "react-redux";
+
+const Div = styled.div`
+  margin: 0 auto;
+  width: 440px;
+  border: 1px solid black;
+  transform: translateY(20%);
+`;
+
+function OauthLoading() {
+  let code = new URL(window.location.href).searchParams.get("code");
+
+  const REACT_APP_REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
+  const REDIRECT_URI = "https://localhost:3000/oauthloding";
+  const REACT_APP_GITHUB_CLIENT_ID = process.env.REACT_APP_GITHUB_CLIENT_ID;
+  const REACT_APP_GITHUB_CLIENT_SECRET =process.env.REACT_APP_GITHUB_CLIENT_SECRET;
+
+  const kakaocode = (code) => {
+    console.log("함수 실행됨!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+
+    if (code.length !== 20) {
+      console.log("kakao", code);
+      axios
+        .post(
+          `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${REACT_APP_REST_API_KEY}&redirect_uri=${REDIRECT_URI}&code=${code}`,
+          { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
+        )
+        .then((result) => {
+          console.log("서버로 데이터 전송 시작");
+          console.log(result.data)
+
+          axios
+            .post(
+              "https://localhost:4000/users/oauth",
+              {
+                oauth: "KaKao",
+                code: result.data.access_token,
+              },
+              {
+                withCredentials: true,
+              }
+            )
+            .then((res) => {
+              console.log(res)
+                localStorage.setItem("accessToken", res.data.data.accessToken);
+                if (res.data.data.accessToken) {
+                  localStorage.setItem("accessToken", res.data.data.accessToken);
+                  localStorage.setItem("nickname", res.data.data.nickname);
+                  localStorage.setItem("Oauth", res.data.data.oauth);
+                }
+
+                return alert("로그인 되었습니다!", window.location.replace("/"));
+              
+            }).catch(e=>{
+              return alert("로그인 오류가 발생했습니다. 다시 시도해 주세요.", window.location.replace("/"));
+            });
+        });
+    } else {
+      console.log("github", code);
+
+      axios
+        .post(
+          "https://localhost:4000/users/oauth",
+          {
+            oauth: "github",
+            code: code,
+          },
+          {
+            withCredentials: true,
+          }
+        )
+        .then((res) => {
+
+          if(res.status === 400){
+            alert("로그인 오류가 발생했습니다. 다시 시도해 주세요.")
+
+            return window.location.replace("/");
+
+          }else{
+            console.log("응답 나가는 중");
+            console.log(res.data.data);
+            localStorage.setItem("accessToken", res.data.data.accessToken);
+            localStorage.setItem("nickname", res.data.data.nickname);
+            if (res.data.data.accessToken) {
+              localStorage.setItem("accessToken", res.data.data.accessToken);
+              localStorage.setItem("Oauth", res.data.data.oauth);
+              if (res.data.data.accessToken) {
+                localStorage.setItem("accessToken", res.data.data.accessToken);
+              }
+              return alert("로그인 되었습니다!", window.location.replace("/"));
+            }
+          }
+        }).catch(e => { 
+          return alert("로그인 도중 오류가 발생했습니다, 자동으로 로그인을 다시 시도합니다.", window.location.replace("/"));
+        
+        });
+    }
+  };
+
+  useEffect(kakaocode(code), []);
+
+  return <Div>loading~~~~~~~~~~~~~~~~~~~~~~~~</Div>;
+}
+
+export default OauthLoading;
