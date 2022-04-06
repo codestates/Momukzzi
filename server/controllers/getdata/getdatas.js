@@ -190,7 +190,7 @@ module.exports = async (req, res) => {
       for (let i = 0; i < menulist.length; i++) {
         const menu_name = menulist[i][0];
         const price_list = menulist[i][1];
-        if (menu_name !== undefined || menu_name !== null) {
+        if (menu_name !== undefined && menu_name !== null) {
           await menu.create({
             shop_id: shopid,
             menu_name: menu_name,
