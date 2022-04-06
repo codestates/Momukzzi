@@ -4,7 +4,8 @@ import styled from "styled-components";
 import axios from "axios";
 import { Provider, useSelector, useDispatch, connect } from "react-redux";
 import { AiOutlineStar } from "react-icons/ai";
-import { FaBlackberry } from "react-icons/fa";
+import { FaBlackberry, FaStar } from "react-icons/fa";
+import { BsStar } from "react-icons/bs";
 import { Link } from "react-router-dom";
 
 const BackDropModal = styled.div`
@@ -16,64 +17,63 @@ const BackDropModal = styled.div`
   right: 0;
   background-color: rgba(0, 0, 0, 0.4);
 `;
-const FavoriteContainer = styled.div`
-  background-color: white;
-  width: 320px;
-  height: 500px;
-  border: 1px solid black;
+
+const ExampleBody = styled.div`
   position: absolute;
   top: 70px;
   right: 10px;
-`;
-
-const FavoriteHeader = styled.div`
   display: flex;
-  height: 50px;
-  border-bottom: 1px solid black;
-  align-items: center;
-  > div {
-    display: inline-block;
-    text-align: center;
-    flex: 1 1 auto;
-    cursor: pointer;
-  }
+  flex-direction: column;
+  max-width: 320px;
+  min-width: 320px;
+  min-height: 500px;
+  max-height: 500px;
+  margin: 0 auto;
+  border-radius: 5px;
+  overflow: auto;
+  background-color: white;
 `;
 
-const FavoriteBody = styled.div`
-  height: 390px;
-  .shopdetail {
-    cursor: pointer;
-  }
-`;
-
-const FavoriteContent = styled.div`
+const ButtonDiv = styled.div`
   display: flex;
-  border: 1px solid black;
-  height: 80px;
-  > div {
-    flex: 1 1 auto;
+
+  & > button {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 50%;
+    background-color: white;
+    border: none;
   }
-  img {
-    width: 60px;
-    height: 60px;
+`;
+
+const InfoDiv = styled.div`
+  display: flex;
+  padding: 10px;
+
+  & > img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    margin-right: 15px;
+    flex-shrink: 0;
   }
-  .favorite-shopinfo {
-    line-height: 35px;
+  & > div {
+    flex-grow: 1;
   }
-  #icon-container {
-    position: relative;
-    cursor: pointer;
+  & > span {
+    flex-shrink: 0;
+    width: 30px;
   }
-  .staricon {
-    position: absolute;
-    font-size: 40px;
-    color: gainsboro;
-    top: 10px;
-    right: 5px;
+`;
+
+const MenuScore = styled.div`
+  & > span {
+    margin-right: 5px;
   }
-  .on {
-    color: yellow;
-  }
+`;
+
+const InfoContainer = styled.div`
+  display: block;
 `;
 
 const Favorite = () => {
@@ -123,7 +123,6 @@ const Favorite = () => {
         )
         .then((res) => {
           if (res.data.message === "add success") {
-            e.target.classname = "staricon on";
             setCookie(JSON.parse(getCookie("bookmark")));
           } else if (res.data.message === "not authorized") {
             dispatch({ type: "login modal" });
@@ -150,34 +149,35 @@ const Favorite = () => {
         )
         .then((res) => {
           if (res.data.message === "remove success") {
-            e.target.classname = "staricon";
             setCookie(JSON.parse(getCookie("bookmark")));
           } else if (res.data.message === "not authorized") {
             dispatch({ type: "login modal" });
           }
 
           console.log("즐겨찾기 응답", res);
-          console.log(JSON.parse(getCookie("bookmark")));
+          console.log("쿠키", JSON.parse(getCookie("bookmark")));
         });
     }
   };
-  console.log(visited);
+  console.log("방문한 페이지", visited);
   return (
     <BackDropModal
       onClick={() => {
         dispatch({ type: "favorite modal" });
       }}
     >
-      <FavoriteContainer onClick={(e) => e.stopPropagation()}>
-        <FavoriteHeader>
-          <div
+      <ExampleBody onClick={(e) => e.stopPropagation()}>
+        <ButtonDiv>
+          <button
+            // className={recentClicked ? "recent on" : "recent"}
             onClick={() => {
               setIsBookMarkMenu(false);
             }}
           >
             최근 본 맛집
-          </div>
-          <div
+          </button>
+          <button
+            // className={favoriteClicked ? "favorite on" : "favorite"}
             onClick={() => {
               if (!localStorage.getItem("accessToken")) {
                 dispatch({ type: "login modal" });
@@ -188,84 +188,158 @@ const Favorite = () => {
             }}
           >
             가고 싶다
-          </div>
-        </FavoriteHeader>
+          </button>
+        </ButtonDiv>
+
         {isBookMarkMenu ? (
-          <FavoriteBody>
-            {cookie?.map((obj, i) => {
+          <InfoContainer>
+            {cookie.map((obj, i) => {
               return (
-                <FavoriteContent key={i}>
-                  <div
-                    className="shopdetail"
+                <InfoDiv>
+                  <img
+                    src={obj.pic_URL}
+                    alt="shop_pic"
                     onClick={() => {
                       window.location.replace(`/shopdetail/${obj.id}`);
                     }}
-                  >
-                    <img src={obj.pic_URL} alt="shop_pic" />
-                  </div>
+                    cursor="pointer"
+                  />
                   <div>
-                    <div className="favorite-shopinfo">
-                      {obj.shop_name} - {obj.genus}
-                    </div>
-                    <div className="favorite-shopinfo">{obj.location}</div>
+                    <MenuScore>
+                      <span>{obj.shop_name}</span>
+                      <span style={{ color: "#ffba34" }}>
+                        {obj.star_avg?.toFixed(1)}
+                      </span>
+                    </MenuScore>
+                    <span style={{ color: "grey", fontSize: 12 }}>
+                      {obj.genus}
+                    </span>
                   </div>
-                  <div
-                    id="icon-container"
-                    onClick={(e) => {
-                      if (!localStorage.getItem("accessToken")) {
-                        dispatch({ type: "login modal" });
-                      } else {
-                        handleStar(obj.id, e);
-                      }
-                    }}
-                  >
-                    <AiOutlineStar className="staricon on" />
-                  </div>
-                </FavoriteContent>
+                  <span>
+                    <FaStar
+                      color="#ffba34"
+                      style={{
+                        width: 30,
+                        height: 30,
+                      }}
+                      onClick={(e) => {
+                        if (!localStorage.getItem("accessToken")) {
+                          dispatch({ type: "login modal" });
+                        } else {
+                          handleStar(obj.id, e);
+                        }
+                      }}
+                      cursor="pointer"
+                    />
+                  </span>
+                </InfoDiv>
               );
             })}
-          </FavoriteBody>
+          </InfoContainer>
         ) : (
-          <FavoriteBody>
+          // <FavoriteBody>
+          //   {visited.map((obj, i) => {
+          //     return (
+          //       <FavoriteContent key={i}>
+          //         <div
+          //           className="shopdetail"
+          //           onClick={() => {
+          //             window.location.replace(`/shopdetail/${obj.id}`);
+          //           }}
+          //         >
+          //           <img src={obj.shop_pic}></img>
+          //         </div>
+          //         <div>
+          //           <div className="favorite-shopinfo">
+          //             {obj.shop_name} - {obj.genus}
+          //           </div>
+          //           <div className="favorite-shopinfo">{obj.location}</div>
+          //         </div>
+          //         <div
+          //           id="icon-container"
+          //           onClick={(e) => {
+          //             if (!localStorage.getItem("accessToken")) {
+          //               dispatch({ type: "login modal" });
+          //             } else {
+          //               handleStar(obj.id, e);
+          //             }
+          //           }}
+          //         >
+          //           <AiOutlineStar
+          //             className={
+          //               isAddedBookmark(obj.id) ? "staricon on" : "staricon"
+          //             }
+          //           />
+          //         </div>
+          //       </FavoriteContent>
+          //     );
+          //   })}
+          // </FavoriteBody>
+
+          <InfoContainer>
             {visited.map((obj, i) => {
               return (
-                <FavoriteContent key={i}>
-                  <div
-                    className="shopdetail"
+                <InfoDiv>
+                  <img
+                    src={obj.shop_pic}
                     onClick={() => {
                       window.location.replace(`/shopdetail/${obj.id}`);
                     }}
-                  >
-                    <img src={obj.shop_pic}></img>
-                  </div>
+                    cursor="pointer"
+                  />
                   <div>
-                    <div className="favorite-shopinfo">
-                      {obj.shop_name} - {obj.genus}
-                    </div>
-                    <div className="favorite-shopinfo">{obj.location}</div>
+                    <MenuScore>
+                      <span>{obj.shop_name}</span>
+                      <span style={{ color: "#ffba34" }}>
+                        {obj.star_avg?.toFixed(1)}
+                      </span>
+                    </MenuScore>
+                    <span style={{ color: "grey", fontSize: 12 }}>
+                      {obj.genus}
+                    </span>
                   </div>
-                  <div
-                    id="icon-container"
-                    onClick={(e) => {
-                      if (!localStorage.getItem("accessToken")) {
-                        dispatch({ type: "login modal" });
-                      } else {
-                        handleStar(obj.id, e);
-                      }
-                    }}
-                  >
-                    <AiOutlineStar
-                      className={
-                        isAddedBookmark(obj.id) ? "staricon on" : "staricon"
-                      }
-                    />
-                  </div>
-                </FavoriteContent>
+                  <span>
+                    {isAddedBookmark(obj.id) ? (
+                      <FaStar
+                        style={{
+                          width: 30,
+                          height: 30,
+                        }}
+                        onClick={(e) => {
+                          if (!localStorage.getItem("accessToken")) {
+                            dispatch({ type: "login modal" });
+                          } else {
+                            handleStar(obj.id);
+                          }
+                        }}
+                        color="#ffba34"
+                        cursor="pointer"
+                      />
+                    ) : (
+                      <BsStar
+                        style={{
+                          width: 30,
+                          height: 30,
+                        }}
+                        onClick={(e) => {
+                          if (!localStorage.getItem("accessToken")) {
+                            dispatch({ type: "login modal" });
+                          } else {
+                            handleStar(obj.id);
+                          }
+                        }}
+                        color="gainsboro"
+                        cursor="pointer"
+                      />
+                    )}
+                  </span>
+                </InfoDiv>
               );
             })}
-          </FavoriteBody>
+          </InfoContainer>
         )}
-      </FavoriteContainer>
+        {/* </FavoriteContainer> */}
+      </ExampleBody>
     </BackDropModal>
   );
 };

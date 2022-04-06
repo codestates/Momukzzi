@@ -101,6 +101,7 @@ const Intro = () => {
         navigator.geolocation.getCurrentPosition(
           function (position) {
             dispatch({ type: "loading", data: true });
+            dispatch({ type: "loading_modal", data: true });
             axios
               .get(
                 `https://dapi.kakao.com/v2/local/search/category.json?category_group_code=FD6&page=1&size=15&sort=accuracy&x=${position.coords.longitude}&y=${position.coords.latitude}&radius=2000`,
@@ -129,6 +130,7 @@ const Intro = () => {
                       data: res.data.data.result,
                     });
                     dispatch({ type: "loading", data: false });
+                    dispatch({ type: "loading_modal", data: false });
                     return res;
                   })
                   .then((res) => {

@@ -18,39 +18,39 @@ import LoadingIndicator from "../Loading/LoadingIndicator";
 
 const SlideShopContainer = styled.div`
   margin-top: 30px;
-  .mySwiper {
-    width: 1300px;
-    height: 500px;
-    margin-left: auto;
-    margin-right: auto;
 
-    border: 1px solid black;
+  .mySwiper {
+    margin: 0 auto;
+    width: 1600px;
+    height: 700px;
   }
 
   .swiper-slide {
     text-align: center;
-    font-size: 18px;
-    background: #fff;
+    font-size: 1.3rem;
     height: calc((100% - 30px) / 2) !important;
-
-    /* Center slide text vertically */
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    -webkit-justify-content: center;
-    justify-content: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    -webkit-align-items: center;
-    align-items: center;
   }
+  img {
+    width: 100%;
+    height: 80%;
+    border-radius: 10px;
+  }
+`;
 
-  .food-picture {
-    width: 500px;
-    height: 235px;
+const Title = styled.div`
+  height: 50px;
+  margin-left: 6%;
+  font-size: 1.5rem;
+  color: #ffba34;
+`;
+const ShopName = styled.div`
+  height: 100px;
+  div {
+    text-decoration: none;
+  }
+  span {
+    font-size: 15px;
+    color: darkgray;
   }
 `;
 
@@ -67,13 +67,14 @@ function SlideShop() {
   );
   const dispatch = useDispatch();
   // console.log(currentLocationShopPics);
-  // console.log(currentLocationShops);
+  console.log(currentLocationShops);
   return (
     <>
       {loading ? (
         <LoadingIndicator />
       ) : (
         <SlideShopContainer>
+          <Title>내 주변 음식점 추천</Title>
           <Swiper
             slidesPerView={3}
             grid={{
@@ -91,11 +92,24 @@ function SlideShop() {
             {currentLocationShops.map((obj, i) => {
               return (
                 <SwiperSlide key={i}>
-                  <Link to={`/shopdetail/${obj.shopinfo?.shop_id}`}>
-                    <img
-                      src={obj.shoppic?.photodatas[0]}
-                      className="food-picture"
-                    ></img>
+                  <Link
+                    to={`/shopdetail/${obj.shopinfo?.shop_id}`}
+                    style={{ textDecoration: "none", color: "#533026" }}
+                  >
+                    <img src={obj.shoppic?.photodatas[0]}></img>
+                    <ShopName>
+                      <div>
+                        {obj.shopinfo.shopinfo.place_name}{" "}
+                        <span>
+                          {
+                            obj.shopinfo.shopinfo.category_name.split(">")[
+                              obj.shopinfo.shopinfo.category_name.split(">")
+                                .length - 1
+                            ]
+                          }
+                        </span>
+                      </div>
+                    </ShopName>
                   </Link>
                 </SwiperSlide>
               );

@@ -4,7 +4,7 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { Provider, useSelector, useDispatch, connect } from "react-redux";
-
+import { Modal, Button } from "react-bootstrap";
 const ModalBackdrop = styled.div`
   position: fixed;
   z-index: 999;
@@ -18,19 +18,25 @@ const ModalBackdrop = styled.div`
 const SignUpForm = styled.div`
   margin: 0 auto;
   width: 550px;
-  height: 600px;
+  height: 740px;
   font-weight: 700;
   text-align: left;
   transform: translateY(20%);
-  border: 1px solid black;
+  border-radius: 5px;
   background-color: white;
 `;
 
 const Div = styled.div`
   margin: 0 auto;
+  padding-top: 20px;
   width: 440px;
-  border: 1px solid black;
-  transform: translateY(20%);
+  height: 100%;
+  /* border: 1px solid black; */
+
+  & > img {
+    width: 300px;
+    margin-left: 75px;
+  }
 `;
 
 const InputForm = styled.div`
@@ -45,8 +51,8 @@ const ValidateMsg = styled.div`
 const Input = styled.input`
   width: 390px;
   border-style: none;
-  height: 39px;
-  padding-left: 5px;
+  height: 35px;
+  margin-left: 5px;
   font-size: 13px;
   :focus {
     outline: none;
@@ -56,22 +62,24 @@ const Input = styled.input`
 const InputBox = styled.div`
   width: 430px;
   height: 40px;
-  border: solid 2px gainsboro;
+  border: solid 1px gainsboro;
+  border-radius: 5px;
 `;
 
 const SignUpButton = styled.div`
   width: 430px;
   height: 45px;
   margin: 30px auto 0 auto;
-  border: solid 1px gainsboro;
+
+  border-radius: 5px;
   text-align: center;
-  background-color: #2a2a2a;
+  background-color: #ffba34;
   color: white;
   cursor: pointer;
   line-height: 40px;
 `;
 
-function Signup() {
+function Signup(props) {
   // document.body.style.overflow = "hidden";
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
@@ -194,6 +202,7 @@ function Signup() {
     >
       <SignUpForm onClick={(e) => e.stopPropagation()}>
         <Div>
+          <img src="https://euilimchoibucket.s3.amazonaws.com/1649123847358.png"></img>
           <InputForm>
             <div>아이디</div>
             <InputBox>

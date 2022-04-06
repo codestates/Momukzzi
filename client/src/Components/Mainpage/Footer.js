@@ -8,6 +8,8 @@ const FooterContainer = styled.footer`
   display: flex;
   border: 1px solid black;
   height: 150px;
+  background-color: #3e3e3e;
+  color: white;
 
   .footer_info {
     list-style-type: none;
@@ -41,7 +43,7 @@ const FooterContainer = styled.footer`
 
   .github_icons {
     font-size: 50px;
-    color: black;
+    color: white;
   }
   .currentColor {
     font-size: 25px;
@@ -54,7 +56,7 @@ const FooterContainer = styled.footer`
 
   .footer_github_members_name > a {
     text-decoration: none;
-    color: black;
+    color: white;
   }
 
   #github_title {

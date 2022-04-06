@@ -8,21 +8,20 @@ import { BsPersonCircle } from "react-icons/bs";
 import { MdMenu } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { Redirect } from "react-router-dom";
+import { Nav } from "react-bootstrap";
 
 const HeaderContainer = styled.div`
   margin: 0 auto;
-
   .navbar {
+    height: 120px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #263343;
+    background-color: #f1c83e;
     padding: 9px 12px;
   }
 
   .navbar_logo {
-    font-size: 24px;
-    color: #f0f4f5;
     flex: 1 1 auto;
   }
 
@@ -34,12 +33,14 @@ const HeaderContainer = styled.div`
   .navbar_menu {
     display: flex;
     list-style: none;
+    font-size: 20px;
   }
 
   .navbar_menu li {
     padding: 9px 12px;
-    margin: 15px;
+    margin: 15px 30px;
     cursor: pointer;
+    text-decoration: none;
   }
 
   .navbar_menu li:hover {
@@ -48,20 +49,28 @@ const HeaderContainer = styled.div`
   }
 
   .navbar_menu li > div {
-    color: #f0f4f5;
+    color: #533026;
+  }
+
+  .navbar_link {
+    text-decoration: none;
+    color: #533026;
   }
 
   .navbar_icons {
     list-style: none;
-    color: #f0f4f5;
+    color: #533026;
     display: flex;
-    padding-left: 0;
+    margin-right: 20px;
   }
 
   .navbar_icons li {
     padding: 8px 12px;
   }
-
+  .navbar_icons li:hover {
+    background-color: #d49466;
+    border-radius: 4px;
+  }
   .navbar_toggleBtn {
     position: absolute;
     right: 32px;
@@ -69,7 +78,7 @@ const HeaderContainer = styled.div`
     display: none;
   }
   .person_circle {
-    font-size: 25px;
+    font-size: 30px;
   }
   .navbar_icons > li {
     cursor: pointer;
@@ -90,9 +99,14 @@ const Header = () => {
         {localStorage.getItem("accessToken") ? (
           <ul className="navbar_menu">
             <li>
+              <Link to="/" className="navbar_link">
+                Home
+              </Link>
+            </li>
+            <li>
               <div>{localStorage.getItem("nickname")}님</div>
             </li>
-            <Link to="/mypage">
+            <Link to="/mypage" className="navbar_link">
               <li>
                 <div>마이페이지</div>
               </li>
@@ -112,6 +126,11 @@ const Header = () => {
           </ul>
         ) : (
           <ul className="navbar_menu">
+            <li>
+              <Link to="/" className="navbar_link">
+                Home
+              </Link>
+            </li>
             <li
               onClick={() => {
                 dispatch({ type: "login modal" });

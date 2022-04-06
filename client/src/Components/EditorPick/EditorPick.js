@@ -11,11 +11,20 @@ const Container = styled.div``;
 
 const EditorPickHeader = styled.div`
   height: 200px;
-  border: 1px solid black;
+
   text-align: center;
+  background-color: whitesmoke;
+
   div {
-    height: 50px;
+    height: 25%;
     line-height: 130px;
+  }
+  #name {
+    font-size: 2.5rem;
+  }
+  #description {
+    font-size: 1.3rem;
+    color: rgba(0, 0, 0, 0.3);
   }
 `;
 
@@ -23,34 +32,43 @@ const ShopComponent = styled.div`
   display: flex;
   width: 800px;
   height: 300px;
-  border: 1px solid black;
-  margin: 0 auto;
+  border-bottom:solid 2px gainsboro ;
+  
+  margin: 15px auto;
+  
+  
   .shop_info1 {
-    border: 1px solid black;
+    position:relative ;
     width: 300px;
     height: 300px;
   }
   .shop_info2{
-    border: 1px solid black;
+   
     width: 500px;
   }
   img {
-    width: 300px;
-    height: 300px;
-    margin:0 auto;
+    width: 90%;
+    height: 90%;
+    position:absolute ;
+    top : 5%;
+    left: 5%;
   }
   .review {
-    border: 1px solid black;
+   border-top:solid 2px gainsboro ;
     height: 200px ;
     display: flex ;
-     img {
-       width:50px;
-       height:50px;
-       border-radius:50% ;
-     }
+     padding: 15px 0 0 15px;
   }
-
+  .review > #nickname {
+    font-weight:700 ;
+    margin-right : 10px;
+  }
+  .review > #comment
+  {
+  
+  }
   .shop_name {
+    text-align:center ;
     height: 100px;
     display: flex ;
     justify-content:space-between ;
@@ -58,7 +76,7 @@ const ShopComponent = styled.div`
 
   #favorite {
     text-align: right ;
-    border:1px solid black ;
+    
     cursor: pointer;
   }
   .staricon {
@@ -70,6 +88,22 @@ const ShopComponent = styled.div`
     color: yellow;
   }
 }
+`;
+
+const ShopName = styled.div`
+  div {
+    text-align: center;
+    width: 430px;
+
+    margin-top: 10px;
+  }
+
+  #name {
+    font-size: 1.3rem;
+  }
+  #address {
+    color: rgba(0, 0, 0, 0.3);
+  }
 `;
 const EditorPick = ({ match }) => {
   const dispatch = useDispatch();
@@ -83,6 +117,7 @@ const EditorPick = ({ match }) => {
 
   useEffect(() => {
     setIsLoading(true);
+    dispatch({ type: "loading_modal", data: true });
     axios
       .get(
         `https://dapi.kakao.com/v2/local/search/category.json?category_group_code=FD6&page=1&size=15&sort=accuracy&x=${x}&y=${y}&radius=2000`,
@@ -123,6 +158,7 @@ const EditorPick = ({ match }) => {
                 console.log(res);
                 setShopManyReviews(res.data.data);
                 setIsLoading(false);
+                dispatch({ type: "loading_modal", data: false });
               });
           });
       });
@@ -215,24 +251,33 @@ const EditorPick = ({ match }) => {
       ) : (
         <Container>
           <EditorPickHeader>
-            <div>{name}</div>
-            <div>{description}</div>
+            <div id="name">{name}</div>
+            <div id="description">{description}</div>
           </EditorPickHeader>
 
           {shops.map((obj, i) => {
             return (
               <ShopComponent>
                 <div className="shop_info1">
-                  <img src={obj.shoppic.photodatas[0]}></img>
+                  <Link to={`/shopdetail/${obj.shopinfo.shop_id}`}>
+                    <img src={obj.shoppic.photodatas[0]} />
+                  </Link>
                 </div>
                 <div className="shop_info2">
                   <div className="shop_name">
-                    <div>
-                      <div>{`${i + 1}. ${
-                        obj.shopinfo.shopinfo.place_name
-                      }`}</div>
-                      <div>{obj.shopinfo.shopinfo.address_name}</div>
-                    </div>
+                    <ShopName>
+                      <Link
+                        to={`/shopdetail/${obj.shopinfo.shop_id}`}
+                        style={{ textDecoration: "none", color: "#555555" }}
+                      >
+                        <div id="name">{`${i + 1}. ${
+                          obj.shopinfo.shopinfo.place_name
+                        }`}</div>
+                      </Link>
+                      <div id="address">
+                        {obj.shopinfo.shopinfo.address_name}
+                      </div>
+                    </ShopName>
 
                     <div
                       id="favorite"
@@ -254,17 +299,8 @@ const EditorPick = ({ match }) => {
                     </div>
                   </div>
                   <div className="review">
-                    <div>
-                      <img src="http://cdn.tgdaily.co.kr/news/photo/202007/301112_61338_3647.png" />
-                    </div>
-                    <div>
-                      {shopManyReviews[i]?.comment}
-                      <div>
-                        <Link to={`/shopdetail/${obj.shopinfo.shop_id}`}>
-                          더보기
-                        </Link>
-                      </div>
-                    </div>
+                    <div id="nickname">{shopManyReviews[i][1]?.nickname}</div>
+                    <div id="comment">{shopManyReviews[i][0]?.comment}</div>
                   </div>
                 </div>
               </ShopComponent>

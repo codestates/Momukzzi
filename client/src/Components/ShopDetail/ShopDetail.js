@@ -150,6 +150,7 @@ export default function ShopDetail({ match }) {
               location: res.data.data.targetshop.location,
               genus: res.data.data.targetshop.genus,
               id: res.data.data.targetshop.id,
+              star_avg: res.data.data.targetshop.star_avg,
             });
             localStorage.setItem("visited", JSON.stringify(visited));
           }
@@ -249,12 +250,12 @@ export default function ShopDetail({ match }) {
             {info.shop_name}
           </span>
           <span style={{ fontSize: 24, fontWeight: "bold", color: "red" }}>
-            {info.star_avg}
+            {info.star_avg?.toFixed(1)}
           </span>
           <Buttons>
             {/* <Link to={`/review/${match.params.id}`}> */}
             <ReviewButton onClick={handleReviewButton}>
-              <BiMessageDetail className="reviewButton" />
+              <BiMessageDetail className="reviewButton" color="gainsboro" />
               <span>리뷰쓰기</span>
             </ReviewButton>
             {/* </Link> */}
@@ -268,7 +269,11 @@ export default function ShopDetail({ match }) {
                   color="orange"
                 />
               ) : (
-                <BsStar className="favoriteButton" onClick={handleStar} />
+                <BsStar
+                  className="favoriteButton"
+                  onClick={handleStar}
+                  color="gainsboro"
+                />
               )}
               <span>즐겨찾기</span>
             </ReviewButton>

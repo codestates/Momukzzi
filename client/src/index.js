@@ -22,6 +22,7 @@ const initialState = {
   currentLocationShops: dummyShops,
   currentShopName: 0,
   loading: true,
+  loadingModal: false,
 };
 
 function reducer(currentState = initialState, action) {
@@ -38,6 +39,8 @@ function reducer(currentState = initialState, action) {
     newState.currentShopName = action.payload.shop_name;
   } else if (action.type === "loading") {
     newState.loading = action.data;
+  } else if (action.type === "loading_modal") {
+    newState.loadingModal = action.data;
   }
 
   return newState;
