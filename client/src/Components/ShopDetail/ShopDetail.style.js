@@ -160,6 +160,8 @@ export const ShopReviewUserPart = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  min-width: 80px;
+  margin-right: 100px;
 
   & > span {
     display: flex-row;
@@ -168,7 +170,7 @@ export const ShopReviewUserPart = styled.div`
 `;
 
 export const ShopReviewCommentPart = styled.div`
-  padding-left: 100px;
+  padding-left: 20px;
 `;
 
 export const ShopReviewPlusButton = styled.button`
