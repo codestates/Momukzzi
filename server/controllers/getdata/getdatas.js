@@ -1,10 +1,12 @@
 const { shop, shop_pic, menu } = require("../../models");
 const cheerio = require("cheerio");
+
 const puppeteer = require("puppeteer");
 const { scrollPageToBottom } = require("puppeteer-autoscroll-down");
 const { data } = require("cheerio/lib/api/attributes");
 
 process.setMaxListeners(100);
+
 
 module.exports = async (req, res) => {
   // let address = req.body.road_address_name;
@@ -249,6 +251,7 @@ module.exports = async (req, res) => {
 
   // let someerr = []
 
+
   // for (let i = 0; i < result.length; i++){
   //   if (result[i].shoppic.length === 0){
   //     someerr.push(result[i])
@@ -256,6 +259,7 @@ module.exports = async (req, res) => {
   // }
 
   // console.log(someerr)
+
 
   res.status(200).json({
     message: "shopinfo crawling",
