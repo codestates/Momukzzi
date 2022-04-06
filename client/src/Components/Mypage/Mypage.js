@@ -11,6 +11,9 @@ import { faUserCircle } from '@fortawesome/free-regular-svg-icons'
 
 function Mypage() {
 	const accessToken = localStorage.getItem('accessToken')
+	const Oauth = localStorage.getItem('Oauth')
+	console.log(Oauth)
+
 	const [signoutModal, setSignoutModal] = useState(false)
 	const [userInfo, setUserInfo] = useState('')
 	const [fixNicknameToggle, setFixNicknameToggle] = useState(false)
@@ -76,17 +79,20 @@ function Mypage() {
 									</div>
 								</My.MypageFixToggleContainer>
 							) : null}
-							{/* {/* {isKakaoLogin === 'kakao' ? (
-              <span className="mypage-fix-myinfo-not-toggle-button" disabled={true}>
-                카카오 계정으로 로그인 하신 계정은 비밀번호 수정을 하실 수 없습니다
-              </span>
-            ) : ( */}
-							<My.MypageFixMyinfoToggleButton
-								onClick={fixPasswordToggleHandler}
-							>
-								비밀번호 수정
-							</My.MypageFixMyinfoToggleButton>
-							{/* )} */}
+							{Oauth === 'true' ? (
+								<div
+									className="mypage-fix-myinfo-not-toggle-button"
+									disabled={true}
+								>
+									소셜 계정은 비밀번호 수정을 하실 수 없습니다.
+								</div>
+							) : (
+								<My.MypageFixMyinfoToggleButton
+									onClick={fixPasswordToggleHandler}
+								>
+									비밀번호 수정
+								</My.MypageFixMyinfoToggleButton>
+							)}
 							{fixPasswordToggle ? (
 								<My.MypageFixToggleContainer onSubmit={e => e.preventDefault()}>
 									<div className="password-container">

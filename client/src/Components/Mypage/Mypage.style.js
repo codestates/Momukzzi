@@ -36,8 +36,7 @@ export const My = {
 		margin-bottom: 5px;
 		font-size: 100%;
 		font-weight: bolder;
-		font-family: mypagefont;
-
+		text-align: center;
 		@media (min-width: 758px) and (max-width: 1023px) {
 			font-size: 30px;
 			margin-bottom: 10px;
@@ -55,13 +54,17 @@ export const My = {
 		-webkit-box-direction: normal;
 		-ms-flex-direction: column;
 		flex-direction: column;
-		border: 3px solid rgb(39, 51, 67);
-		border-radius: 10px;
+		/* border: 3px solid rgb(39, 51, 67); */
+		/* border-radius: 10px; */
 		padding: 5px;
 		margin-bottom: 15px;
 		overflow: auto;
 		background-image: url('${MypageImg}');
 		background-position: 80px 50px;
+		border-right-style: solid;
+		border-right-width: 5px;
+		border-right-color: #ffba34;
+		background-filter: blur(4px);
 
 		@media (min-width: 1024px) {
 			height: 650px;
@@ -78,7 +81,6 @@ export const My = {
 		font-weight: bolder;
 		margin-top: 20px;
 		margin-bottom: 5px;
-		font-family: mypagefont;
 		@media (min-width: 758px) and (max-width: 1023px) {
 			font-size: 2rem;
 			@media (min-width: 1024px) {
