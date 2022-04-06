@@ -79,10 +79,7 @@ const FavoriteContent = styled.div`
 const Favorite = () => {
   // document.body.style.overflow = "hidden";
   const dispatch = useDispatch();
-  const visited = JSON.parse(localStorage.getItem("visited")).slice(
-    JSON.parse(localStorage.getItem("visited")).length - 9,
-    JSON.parse(localStorage.getItem("visited")).length
-  );
+  const visited = JSON.parse(localStorage.getItem("visited")).slice(0, 9);
   const [isBookMarkMenu, setIsBookMarkMenu] = useState(false);
 
   const getCookie = function (name) {
@@ -164,7 +161,7 @@ const Favorite = () => {
         });
     }
   };
-
+  console.log(visited);
   return (
     <BackDropModal
       onClick={() => {
@@ -195,7 +192,7 @@ const Favorite = () => {
         </FavoriteHeader>
         {isBookMarkMenu ? (
           <FavoriteBody>
-            {cookie.map((obj, i) => {
+            {cookie?.map((obj, i) => {
               return (
                 <FavoriteContent key={i}>
                   <div

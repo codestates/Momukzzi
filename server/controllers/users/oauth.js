@@ -49,7 +49,37 @@ module.exports = async (req, res) => {
           });
 
           console.log(nickname);
+          const bookmarkInfo = await bookmark.findAll({
+            where: {
+              user_id: userInfo.dataValues.user_id,
+            },
+          });
 
+          const cookie = [];
+          for (let i = 0; i < bookmarkInfo.length; i++) {
+            const shopInfo = await shop.findOne({
+              where: {
+                id: bookmarkInfo[i].dataValues.shop_id,
+              },
+            });
+            const shopPicInfo = await shop_pic.findOne({
+              where: {
+                shop_id: shopInfo.id,
+              },
+            });
+
+            const obj = {
+              id: shopInfo.id,
+              shop_name: shopInfo.shop_name,
+              genus: shopInfo.genus,
+              location: shopInfo.location,
+              pic_URL: shopPicInfo.pic_URL,
+            };
+
+            cookie.push(obj);
+          }
+
+          res.cookie("bookmark", JSON.stringify(cookie));
           res
             .status(200)
             .cookie("refreshToken", refresh_Token, {
@@ -62,7 +92,7 @@ module.exports = async (req, res) => {
               data: {
                 accessToken: access_Token,
                 nickname: nickname,
-                oauth : true
+                oauth: true,
               },
             });
         } else {
@@ -94,6 +124,37 @@ module.exports = async (req, res) => {
 
           console.log(access_Token);
 
+          const bookmarkInfo = await bookmark.findAll({
+            where: {
+              user_id: userInfo.dataValues.user_id,
+            },
+          });
+
+          const cookie = [];
+          for (let i = 0; i < bookmarkInfo.length; i++) {
+            const shopInfo = await shop.findOne({
+              where: {
+                id: bookmarkInfo[i].dataValues.shop_id,
+              },
+            });
+            const shopPicInfo = await shop_pic.findOne({
+              where: {
+                shop_id: shopInfo.id,
+              },
+            });
+
+            const obj = {
+              id: shopInfo.id,
+              shop_name: shopInfo.shop_name,
+              genus: shopInfo.genus,
+              location: shopInfo.location,
+              pic_URL: shopPicInfo.pic_URL,
+            };
+
+            cookie.push(obj);
+          }
+
+          res.cookie("bookmark", JSON.stringify(cookie));
           res
             .status(200)
             .cookie("refreshToken", refresh_Token, {
@@ -106,7 +167,7 @@ module.exports = async (req, res) => {
               data: {
                 accessToken: access_Token,
                 nickname: nickname,
-                oauth : true
+                oauth: true,
               },
             });
         }
@@ -190,7 +251,37 @@ module.exports = async (req, res) => {
 
               console.log(access_Token);
               console.log("res 발송");
+              const bookmarkInfo = await bookmark.findAll({
+                where: {
+                  user_id: userInfo.dataValues.user_id,
+                },
+              });
 
+              const cookie = [];
+              for (let i = 0; i < bookmarkInfo.length; i++) {
+                const shopInfo = await shop.findOne({
+                  where: {
+                    id: bookmarkInfo[i].dataValues.shop_id,
+                  },
+                });
+                const shopPicInfo = await shop_pic.findOne({
+                  where: {
+                    shop_id: shopInfo.id,
+                  },
+                });
+
+                const obj = {
+                  id: shopInfo.id,
+                  shop_name: shopInfo.shop_name,
+                  genus: shopInfo.genus,
+                  location: shopInfo.location,
+                  pic_URL: shopPicInfo.pic_URL,
+                };
+
+                cookie.push(obj);
+              }
+
+              res.cookie("bookmark", JSON.stringify(cookie));
               res
                 .status(200)
                 .cookie("refreshToken", refresh_Token, {
@@ -203,7 +294,7 @@ module.exports = async (req, res) => {
                   data: {
                     accessToken: access_Token,
                     nickname: userInfo.dataValues.nickname,
-                    oauth : true
+                    oauth: true,
                   },
                 });
             } else {
@@ -237,7 +328,37 @@ module.exports = async (req, res) => {
               console.log(payload);
 
               console.log(access_Token);
+              const bookmarkInfo = await bookmark.findAll({
+                where: {
+                  user_id: userInfo.dataValues.user_id,
+                },
+              });
 
+              const cookie = [];
+              for (let i = 0; i < bookmarkInfo.length; i++) {
+                const shopInfo = await shop.findOne({
+                  where: {
+                    id: bookmarkInfo[i].dataValues.shop_id,
+                  },
+                });
+                const shopPicInfo = await shop_pic.findOne({
+                  where: {
+                    shop_id: shopInfo.id,
+                  },
+                });
+
+                const obj = {
+                  id: shopInfo.id,
+                  shop_name: shopInfo.shop_name,
+                  genus: shopInfo.genus,
+                  location: shopInfo.location,
+                  pic_URL: shopPicInfo.pic_URL,
+                };
+
+                cookie.push(obj);
+              }
+
+              res.cookie("bookmark", JSON.stringify(cookie));
               res
                 .status(200)
                 .cookie("refreshToken", refresh_Token, {
@@ -250,7 +371,7 @@ module.exports = async (req, res) => {
                   data: {
                     accessToken: access_Token,
                     nickname: userInfo.dataValues.nickname,
-                    oauth : true
+                    oauth: true,
                   },
                 });
             }
