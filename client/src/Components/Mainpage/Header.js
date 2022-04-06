@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import { BsPersonCircle } from "react-icons/bs";
 import { MdMenu } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 const HeaderContainer = styled.div`
   margin: 0 auto;
@@ -70,22 +71,20 @@ const HeaderContainer = styled.div`
   .person_circle {
     font-size: 25px;
   }
+  .navbar_icons > li {
+    cursor: pointer;
+  }
 `;
 
 const Header = () => {
-  const [active, setActive] = useState(false);
-
-  const clickToggleBtn = () => {
-    setActive(!active);
-  };
-
   const dispatch = useDispatch();
   return (
     <HeaderContainer>
       <nav className="navbar">
         <div className="navbar_logo">
           <Link to="/">
-            <img src="img/logo.png" />
+            {/* <img src="img/logo.png" /> */}
+            <img src="https://euilimchoibucket.s3.amazonaws.com/1649123847358.png" />
           </Link>
         </div>
         {localStorage.getItem("accessToken") ? (
@@ -102,6 +101,9 @@ const Header = () => {
               onClick={() => {
                 localStorage.removeItem("accessToken");
                 localStorage.removeItem("nickname");
+                axios.get("https://localhost:4000/users/logout", {
+                  withCredentials: true,
+                });
                 window.location.replace(window.location.pathname);
               }}
             >
@@ -130,7 +132,12 @@ const Header = () => {
         <ul className="navbar_icons">
           <li>
             {/* <img src="./favorite.png" /> */}
-            <BsPersonCircle className="person_circle" />
+            <BsPersonCircle
+              className="person_circle"
+              onClick={() => {
+                dispatch({ type: "favorite modal" });
+              }}
+            />
           </li>
         </ul>
       </nav>

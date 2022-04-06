@@ -1,13 +1,37 @@
-
 require("dotenv").config();
-const axios = require("axios");
-const cheerio = require("cheerio");
 const fs = require("fs");
 const https = require("https");
+const path = require("path");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const express = require("express");
 const app = express();
+const bodyParser = require("body-parser");
+const multer = require("multer");
+const form_data = multer();
+
+const upload = multer({ dest: "uploads/" });
+const multerS3 = require("multer-s3");
+const AWS = require("aws-sdk");
+
+const s3 = new AWS.S3({
+  //AWS SDK 설정 항목
+  accessKeyId: process.env.AWS_S3_ACCESS_KEYID,
+  secretAccessKey: process.env.AWS_S3_SECRET_KEY,
+  region: "us-east-1",
+});
+
+const storage = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: "euilimchoibucket", //bucket 이름
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    key: function (req, file, cb) {
+      let extension = path.extname(file.originalname);
+      cb(null, Date.now().toString() + extension);
+    },
+  }),
+});
 
 const controllers = require("./controllers");
 
@@ -24,16 +48,21 @@ app.use(
 );
 app.use(cookieParser());
 
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({extended: true}));
+// app.use(form_data.array());
+
 //로그인, 아웃
 app.post("/users/login", controllers.login); //로그인
 app.get("/users/logout", controllers.logout); //로그아웃
+app.post("/users/oauth", controllers.oauth); //oauth 로그인
 
 //신규 유저 가입, 탈퇴, 유저 정보 조회, 유저 정보 변경
 app.post("/users", controllers.signup); // 유저 정보 변경
 app.delete("/users", controllers.signout); // 회원 탈퇴
 app.get("/users", controllers.userinfo); // 유저 정보 조회
 app.patch("/users", controllers.changeinfo); // 유저 정보 변경
-app.post("/users/check", controllers.checkinfo) // 중복 조회
+app.post("/users/check", controllers.checkinfo); // 중복 조회
 
 //음식점 정보 조회, 사진업로드, 사진 업로드, 사진 삭제
 app.get("/shops/:shop_id", controllers.shopinfo); // 음식점 정보 조회
@@ -51,10 +80,10 @@ app.patch("/articles", controllers.patcharticle);
 app.get("/articles/:article_id", controllers.article);
 
 //리뷰 조회, 업로드, 삭제, 수정, 리뷰사진 업로드, 리뷰사진 삭제
-app.post("/reviews", controllers.createreview);
+app.post("/reviews", storage.array("img"), controllers.createreview);
 app.delete("/reviews", controllers.delreview);
 app.patch("/reviews", controllers.patchreview);
-app.get("/reviews", controllers.review);
+app.get("/reviews/:shopid", controllers.review);
 app.post("/reviews-pics", controllers.reviewpic.post);
 app.delete("/reviews-pics", controllers.reviewpic.delete);
 
@@ -66,6 +95,19 @@ app.patch("/tags", controllers.tag.patch);
 //프론트에서 데이터 받기
 app.post("/data", controllers.data);
 
+// 주제별 식당 추천
+app.get("/topicshop/:topic", controllers.topicshop);
+
+// shop 테이블 정보 여러개 가져오기
+app.post("/shopmanyinfo", controllers.shopmanyinfo);
+// shop_pic 테이블 정보 여러개 가져오기
+app.post("/shopmanypics", controllers.shopmanypics);
+// review 테이블 정보 여러개 가져오기
+app.post("/shopmanyreviews", controllers.shopmanyreviews);
+// 즐겨찾기 추가/제거
+app.post("/bookmark", controllers.bookmark);
+
+//
 
 const HTTPS_PORT = process.env.HTTPS_PORT || 4000;
 

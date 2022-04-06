@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { useEffect } from "react";
 import Slider from "react-slick";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -13,10 +14,12 @@ import "swiper/css/navigation";
 
 // import required modules
 import { Grid, Pagination, Navigation } from "swiper";
-import dummyData from "./dummyData";
-
+import { useDispatch } from "react-redux";
+import localShopInfo from "../../dummy/localShopInfo";
 const SlidePickContainer = styled.div`
+  width: 1300px;
   margin: 30px auto;
+  border: 1px solid black;
   .swiper {
     width: 1300px;
     height: 250px;
@@ -45,12 +48,12 @@ const SlidePickContainer = styled.div`
     -ms-flex-align: center;
     -webkit-align-items: center;
     align-items: center;
-  }
 
-  .food-picture {
-    width: 600px;
-    height: 260px;
-    transform: translateY(25%);
+    img {
+      width: 200px;
+      height: 200px;
+      margin-top: 140px;
+    }
   }
 `;
 const PickImage = styled.img`
@@ -60,10 +63,11 @@ const PickImage = styled.img`
 function SlidePick() {
   return (
     <SlidePickContainer>
+      <div>지역별 추천 맛집</div>
       <Swiper
-        slidesPerView={2}
+        slidesPerView={3}
         spaceBetween={30}
-        slidesPerGroup={2}
+        slidesPerGroup={3}
         loop={true}
         loopFillGroupWithBlank={true}
         pagination={{
@@ -73,10 +77,16 @@ function SlidePick() {
         modules={[Pagination, Navigation]}
         className="mySwiper"
       >
-        {dummyData.map((data, i) => {
+        {localShopInfo.map((obj) => {
           return (
-            <SwiperSlide key={i}>
-              <PickImage src={data.img} />
+            <SwiperSlide className="slide">
+              <Link
+                to={`/editor_pick/${obj.code},${obj.name},${obj.description}`}
+              >
+                <img src={obj.img[0]}></img>
+                <img src={obj.img[1]}></img>
+                <div>{obj.name}</div>
+              </Link>
             </SwiperSlide>
           );
         })}

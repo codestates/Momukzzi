@@ -1,108 +1,248 @@
 /* global kakao */
 
-import React, { useEffect } from "react";
-import { useState } from "react";
-import axios from "axios";
-import { useHistory } from "react-router-dom";
+import react, { useEffect, useState, Suspense } from "react";
 import styled from "styled-components";
-import { Provider, useSelector, useDispatch, connectm, shallowEqual } from "react-redux";
+import Slider from "react-slick";
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/grid";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+// import required modules
+import { Grid, Pagination, Navigation } from "swiper";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import {
+  Provider,
+  useSelector,
+  useDispatch,
+  connect,
+  shallowEqual,
+} from "react-redux";
+import { put } from "redux-saga/effects";
+import { AiOutlineConsoleSql } from "react-icons/ai";
+import { type } from "@testing-library/user-event/dist/type";
+import dummyKakaoShops from "../../dummy/dummyKakaoShops";
+import SlideShop from "../Mainpage/SlideShop";
+import LoadingIndicator from "../Loading/LoadingIndicator";
 
-const Intro=()=>{
-    
+const TodaysPickContainer = styled.div`
+  border: 1px solid black;
+  width: 800px;
+  height: 830px;
+  margin: 0 auto;
+  .swiper-slide {
+    height: 300px;
+    border: 1px solid black;
+  }
+  .swiper-slide > img {
+    /* width: 790px; */
+    /* height: 300px; */
+  }
+  .map-container {
+    display: flex;
+  }
+`;
 
-    useEffect(()=>{
+const Section = styled.section``;
 
-        var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-        mapOption = {
-            center: new kakao.maps.LatLng(37.4963124, 127.0368533), // 지도의 중심좌표
-            level: 3 // 지도의 확대 레벨
-        };  
+const Map = styled.div``;
 
-        
-        // 지도를 생성합니다    
-        var map = new kakao.maps.Map(mapContainer, mapOption); 
+const ShopDetail = styled.div`
+  text-align: right;
+  font-size: 20px;
+  color: gainsboro;
+`;
 
-        function displayMarker(place,message) {
-            // 마커를 생성하고 지도에 표시합니다
-            var marker = new kakao.maps.Marker({
-                map: map,
-                position: new kakao.maps.LatLng(place.y, place.x) 
-            });
-    
-            // 마커에 클릭이벤트를 등록합니다
-            kakao.maps.event.addListener(marker, 'click', function() {
-                // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-                infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>');
-                infowindow.open(map, marker);
-            });
-        }
+const ShopName = styled.div`
+  border: 1px solid black;
+  height: 80px;
+  text-align: center;
+  line-height: 90px;
+  #shop-name {
+    font-size: 25px;
+  }
+  #shop-category {
+    margin-left: 5px;
+    color: rgb(0, 0, 0.4);
+  }
+`;
 
-        navigator.geolocation.getCurrentPosition((position) => {
-        
-            var lat = position.coords.latitude, // 위도
-                lng = position.coords.longitude; // 경도
-            
-            // 마커와 인포윈도우를 표시합니다
-            var mylocmarker = new kakao.maps.Marker({
-                map: map,
-                position: new kakao.maps.LatLng(lat, lng)
-            });
+const ShopMenu = styled.div`
+  border: solid 1px black;
+  width: 50%;
+`;
 
+const Intro = () => {
+  const loading = useSelector((state) => state.loading);
+  const [randomInt, setRandomInt] = useState(0);
 
-            kakao.maps.event.addListener(mylocmarker, 'click', function() {
-                // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-                infowindow.setContent('<div style="padding:5px;font-size:12px;">' + "너님의 위치" + '</div>');
-                infowindow.open(map, mylocmarker);
-            });
-            
-            map.setCenter(new kakao.maps.LatLng(lat, lng));
+  const dispatch = useDispatch();
 
-            console.log(lat,lng)
+  const currentLocationShops = useSelector(
+    (state) => state.currentLocationShops
+  );
+  // const currentLocationShopPics = useSelector(
+  //   (state) => state.currentLocationShopPics
+  // );
+  function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min; //최댓값은 제외, 최솟값은 포함
+  }
 
-        })
-        
-        
-        var infowindow = new kakao.maps.InfoWindow({zIndex:1});
+  useEffect(() => {
+    var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+    function getLocation() {
+      if (navigator.geolocation) {
+        // GPS를 지원하면
+        navigator.geolocation.getCurrentPosition(
+          function (position) {
+            dispatch({ type: "loading", data: true });
+            axios
+              .get(
+                `https://dapi.kakao.com/v2/local/search/category.json?category_group_code=FD6&page=1&size=15&sort=accuracy&x=${position.coords.longitude}&y=${position.coords.latitude}&radius=2000`,
+                {
+                  headers: {
+                    Authorization: "KakaoAK 2af87592ef59bb8f2f504dc1544a0a89",
+                  },
+                }
+              )
+              .then((res) => {
+                console.log(res.data.documents);
 
+                axios
+                  .post(
+                    "https://localhost:4000/data",
+                    { data: res.data.documents },
+                    {
+                      withCredentials: true,
+                    }
+                  )
+                  .then((res) => {
+                    console.log(res);
 
-        // 장소 검색 객체를 생성합니다
-        var ps = new kakao.maps.services.Places(map); 
+                    dispatch({
+                      type: "current_location_shops",
+                      data: res.data.data.result,
+                    });
+                    dispatch({ type: "loading", data: false });
+                    return res;
+                  })
+                  .then((res) => {
+                    setRandomInt(getRandomInt(0, res.data.data.result.length));
 
-        // 카테고리로 음식점을 검색합니다
-        ps.categorySearch('FD6', placesSearchCB, {
-            useMapBounds:true,
-            page : 3}); 
+                    const y = Number(
+                      res.data.data.result[randomInt].shopinfo.shopinfo.x
+                    );
+                    const x = Number(
+                      res.data.data.result[randomInt].shopinfo.shopinfo.y
+                    );
+                    console.log(x, y);
+                    const container = document.getElementById("map"); //지도를 담을 영역의 DOM 레퍼런스
+                    const options = {
+                      //지도를 생성할 때 필요한 기본 옵션
+                      center: new kakao.maps.LatLng(x, y), //지도의 중심좌표.
+                      level: 3, //지도의 레벨(확대, 축소 정도)
+                    };
 
-        // 키워드 검색 완료 시 호출되는 콜백함수 입니다
-        let list = [];
-        
-        function placesSearchCB (data, status, pagination) {
-            console.log(pagination)
-            if (status === kakao.maps.services.Status.OK) {
-                pagination.prevPage()
-                for (let i=0; i<data.length; i++){
-                    displayMarker(data[i]);
+                    const map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+                    // 마커가 표시될 위치입니다
+                    var markerPosition = new kakao.maps.LatLng(x, y);
 
-                    console.log(data[i])
-                    list.push(data[i])
-                }     
-                
-                console.log(list.length)
-                console.log(list)
-            }
-        }
+                    // 마커를 생성합니다
+                    var marker = new kakao.maps.Marker({
+                      position: markerPosition,
+                    });
 
-        // 지도에 마커를 표시하는 함수입니다
+                    // 마커가 지도 위에 표시되도록 설정합니다
+                    marker.setMap(map);
 
-    }, [])
+                    // 아래 코드는 지도 위의 마커를 제거하는 코드입니다
+                    // marker.setMap(null);
+                  });
+              });
+          },
+          function (error) {
+            console.error(error);
+          },
+          {
+            enableHighAccuracy: false,
+            maximumAge: 0,
+            timeout: Infinity,
+          }
+        );
+      } else {
+        alert("GPS를 지원하지 않습니다");
+      }
+    }
+    getLocation();
+  }, []);
 
+  return (
+    <>
+      {loading ? (
+        <LoadingIndicator />
+      ) : (
+        <TodaysPickContainer>
+          <Section>
+            <ShopDetail>상세 정보</ShopDetail>
+            <Swiper
+              slidesPerView={2}
+              slidesPerGroup={2}
+              loop={true}
+              loopFillGroupWithBlank={true}
+              pagination={{
+                clickable: true,
+              }}
+              navigation={true}
+              modules={[Pagination, Navigation]}
+              className="mySwiper"
+            >
+              {currentLocationShops[randomInt].shoppic.photodatas.map((img) => {
+                return (
+                  <SwiperSlide>
+                    <img src={img}></img>
+                  </SwiperSlide>
+                );
+              })}
+              <SwiperSlide></SwiperSlide>
+            </Swiper>
+            <ShopName>
+              <span id="shop-name">
+                {currentLocationShops[randomInt].shopinfo.shopinfo.place_name}
+              </span>
+              <span id="shop-category">
+                {
+                  currentLocationShops[
+                    randomInt
+                  ].shopinfo?.shopinfo?.category_name.split(">")[1]
+                }
+              </span>
+            </ShopName>
+          </Section>
+          <Section className="map-container">
+            <Map>
+              <div id="map" style={{ width: "400px", height: "300px" }}></div>
+            </Map>
 
-            return (
-                <div>
-                <div id="map" style={{width:"500px", height:"400px"}}></div>
-                
-                </div>
-            )
-        }
-    
-    export default Intro;
+            <ShopMenu className="test">
+              <ul>
+                <h3>메뉴</h3>
+                {currentLocationShops[randomInt].menulist.menulist.map(
+                  (menu, i) => {
+                    return <li key={i}>{`${menu[0]} : ${menu[1]}`}</li>;
+                  }
+                )}
+              </ul>
+            </ShopMenu>
+          </Section>
+        </TodaysPickContainer>
+      )}
+    </>
+  );
+};
+
+export default Intro;

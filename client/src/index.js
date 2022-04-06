@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
-import reportWebVitals from "./reportWebVitals";
+import "bootstrap/dist/css/bootstrap.css";
 import axios from "axios";
 import { createStore } from "redux";
 import {
@@ -12,25 +12,42 @@ import {
   connect,
   shallowEqual,
 } from "react-redux";
-axios.defaults.withCredentials = true;
+import dummyShops from "./dummy/dummyShops";
+import dummyShopPics from "./dummy/dummyShopPics";
 
-function reducer(currentState, action) {
-  if (currentState === undefined) {
-    return {
-      isLogInOpen: false,
-      isSignUpOpen: false,
-    };
-  }
+const initialState = {
+  isLogInOpen: false,
+  isSignUpOpen: false,
+  isFavoriteModal: false,
+  currentLocationShops: dummyShops,
+  currentShopName: 0,
+  loading: true,
+};
 
+function reducer(currentState = initialState, action) {
   const newState = { ...currentState };
   if (action.type === "login modal") {
     newState.isLogInOpen = !newState.isLogInOpen;
   } else if (action.type === "signup modal") {
     newState.isSignUpOpen = !newState.isSignUpOpen;
+  } else if (action.type === "favorite modal") {
+    newState.isFavoriteModal = !newState.isFavoriteModal;
+  } else if (action.type === "current_location_shops") {
+    newState.currentLocationShops = action.data;
+  } else if (action.type === "current_shop_name") {
+    newState.currentShopName = action.payload.shop_name;
+  } else if (action.type === "loading") {
+    newState.loading = action.data;
   }
+
   return newState;
 }
 const store = createStore(reducer);
+
+// 사가함수를 작성할땐 * 별포 키워드와 함께 시작하는 것 참고해주세요
+// 정확한 이론은 아니니 참고만 해주세요
+// 패턴처럼 이해하시면 쉽습니다.
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
@@ -39,8 +56,3 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById("root")
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

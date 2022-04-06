@@ -22,48 +22,53 @@ export const ShopHeader = styled.div`
 
 export const ShopImages = styled.div`
   width: 100%;
-  height: 200px;
+  height: 250px;
   display: flex;
   flex-direction: row;
-  border: 1px solid red;
   overflow: auto;
-
+  margin: 0 auto;
+  border-bottom: 1px solid grey;
+  ::-webkit-scrollbar {
+    display: none;
+  }
   & > img {
-    position: relative;
-    margin: 5px 5px 5px 0px;
-    width: 33%;
+    /* position: relative; */
+    margin-right: 5px;
+    min-width: calc(20% - 4px);
+    max-width: calc(20% - 4px);
+    object-fit: cover;
   }
 `;
 
 export const ShopBody = styled.div`
+  width: 100%;
   height: auto;
-  border: 1px solid brown;
-  margin: 0px 0px 5px 0px;
-  display: flex;
-`;
-
-export const ShopBasicInfo = styled.div`
-  border: 1px solid brown;
-  width: 70%;
-  height: auto;
+  margin: 10px 0px 10px 0px;
+  display: flex-row;
 `;
 
 export const ShopBasicInfoHeader = styled.div`
-  border: 1px solid black;
-  margin: 5px 5px;
+  margin: 0 auto;
+  width: 70%;
   height: 100px;
   display: flex;
   align-items: center;
-
-  & > span {
-    margin-right: 10px;
-  }
 `;
 
 export const Buttons = styled.div`
   margin-left: auto;
   display: flex;
   align-items: center;
+  .favoriteButton {
+    display: block;
+    width: 41px;
+    height: 41px;
+  }
+  .reviewButton {
+    display: block;
+    width: 41px;
+    height: 41px;
+  }
 `;
 
 export const ReviewButton = styled.button`
@@ -72,44 +77,103 @@ export const ReviewButton = styled.button`
   border: 0px;
   border-radius: 0;
   background-color: transparent;
+  & > span {
+    font-size: 12px;
+  }
 `;
 
-export const ReviewIcon = styled.i`
-  display: block;
-  width: 32px;
-  height: 32px;
-  background-image: url("img/review_icon.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-`;
-
-export const FavoriteButton = styled.button`
-  appearance: none;
-  cursor: pointer;
-  border: 0px;
-  border-radius: 0;
-  background-color: transparent;
-  margin-left: 5px;
-  margin-right: 10px;
-  width: 50px;
-  height: 50px;
+export const ShopBasicInfo = styled.div`
+  width: 70%;
+  height: auto;
+  min-height: 400px;
+  display: flex;
+  margin: 0 auto;
 `;
 
 export const ShopDetailInfo = styled.div`
-  border: 1px solid black;
-  margin: 5px 5px;
+  margin: 30px 0px 30px 30px;
   min-height: 200px;
-`;
+  width: 60%;
 
-export const ShopReview = styled.div`
-  border: 1px solid black;
-  margin: 5px 5px;
-  min-height: 200px;
+  & > table > tbody {
+    display: table-row-group;
+    vertical-align: middle;
+    border-color: inherit;
+  }
+
+  & > table > tbody > tr {
+    display: table-row;
+    vertical-align: inherit;
+    border-color: inherit;
+  }
+
+  & > table > tbody > tr > th {
+    width: 110px;
+    font-size: 0.9rem;
+    color: rgba(79, 79, 79, 0.6);
+    line-height: 1.7;
+    text-align: left;
+    vertical-align: top;
+    padding-right: 10px;
+    padding-bottom: 5px;
+  }
+
+  & > table > tbody > tr > td {
+    font-size: 0.9rem;
+    color: #4f4f4f;
+    line-height: 1.7;
+    text-align: left;
+    vertical-align: middle;
+    padding-bottom: 5px;
+  }
 `;
 
 export const ShopLocation = styled.div`
-  border: 1px solid black;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  width: 40%;
+  height: auto;
+`;
+
+export const ShopReview = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 70%;
+  height: auto;
+`;
+
+export const ShopEachReview = styled.div`
+  border-top: 1px solid grey;
+  padding: 20px 0px 30px 30px;
+  min-height: 100px;
+  display: flex;
+
+  .userIcon {
+    width: 32px;
+    height: 32px;
+  }
+`;
+
+export const ShopReviewUserPart = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  & > span {
+    display: flex-row;
+    padding-top: 5px;
+  }
+`;
+
+export const ShopReviewCommentPart = styled.div`
+  padding-left: 100px;
+`;
+
+export const ShopReviewPlusButton = styled.button`
   margin: 5px 5px;
-  width: 30%;
-  height: 400px;
+  width: 98%;
+  border: none;
+  background-color: white;
 `;
