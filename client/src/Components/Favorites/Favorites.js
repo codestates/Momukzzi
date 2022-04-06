@@ -161,7 +161,7 @@ const Favorite = () => {
         });
     }
   };
-
+  console.log(visited);
   return (
     <BackDropModal
       onClick={() => {
@@ -192,7 +192,7 @@ const Favorite = () => {
         </FavoriteHeader>
         {isBookMarkMenu ? (
           <FavoriteBody>
-            {cookie.map((obj, i) => {
+            {cookie?.map((obj, i) => {
               return (
                 <FavoriteContent key={i}>
                   <div

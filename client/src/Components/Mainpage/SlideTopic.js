@@ -56,6 +56,8 @@ const SlideTopic = () => {
         console.log(res);
         setTopicShopsInfo(res.data.data.shopInfo);
         setTopicShopPics(res.data.data.shopPicInfos);
+        console.log(res.data.data.shopInfo);
+        console.log(res.data.data.shopPicInfos);
       });
   }, []);
 
@@ -70,6 +72,7 @@ const SlideTopic = () => {
                 <SlideTopicImage
                   className="shop_pic"
                   src={topicShopPics[i]?.pic_URL}
+                  alt={obj.shop_name}
                 ></SlideTopicImage>
               </Link>
             </TopicShopList>
