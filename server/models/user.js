@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       email: DataTypes.STRING,
       nickname: DataTypes.STRING,
       total_review: DataTypes.INTEGER,
-      Oauth: DataTypes.BOOLEAN
+      oauth: DataTypes.BOOLEAN
     },
     {
       sequelize,

@@ -10,7 +10,7 @@ module.exports = async (req, res) => {
   // let address = req.body.road_address_name;
   let address = undefined;
   let result = []; //결과를 담을 객체
-  // console.log(req.body);
+  console.log(req.body);
   for (let i = 0; i < req.body.data.length; i++) {
     // 데이터 베이스에 있는지 검증
 

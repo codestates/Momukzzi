@@ -111,7 +111,7 @@ const Intro = () => {
                 }
               )
               .then((res) => {
-                // console.log(res.data.documents);
+                console.log(res.data.documents);
 
                 axios
                   .post(
