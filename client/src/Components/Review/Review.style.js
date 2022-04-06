@@ -59,7 +59,7 @@ export const ReviewSubmitButtonDiv = styled.div`
 
   & > button {
     padding: 6px 6px;
-    background-color: #ff6600;
+    background-color: #ffba34;
     border-radius: 4px;
     border: none;
     color: white;

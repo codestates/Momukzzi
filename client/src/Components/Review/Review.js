@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaStar } from "react-icons/fa";
 import axios from "axios";
-// import { useSelector } from "react-redux";
 import {
   ReviewBody,
   ReviewShopName,
@@ -16,7 +15,7 @@ const createArray = (length) => [...Array(length)];
 const Star = ({ selected = false, handleSelect = (f) => f }) => {
   return (
     <FaStar
-      color={selected ? "orange" : "grey"}
+      color={selected ? "#ffba34" : "grey"}
       onClick={handleSelect}
       style={{ width: 30, height: 30 }}
     />
@@ -51,7 +50,7 @@ export default function Review({ history, match }) {
     ]);
     setUploadImage([...uploadImage, e.target.files[0]]);
   };
-  // 별점은 있어야
+
   const uploadReview = () => {
     if (selectedStar === 0) {
       alert("평점을 선택해주세요.");
@@ -78,11 +77,6 @@ export default function Review({ history, match }) {
       });
   };
 
-  // useEffect(() => {
-  //   console.log(`리뷰 남길 가게 id = ${match.params.shop_id}`);
-  //   console.log(`평점 : ${selectedStar}`);
-  // }, [selectedStar, thumbnailImage]);
-
   useEffect(() => {
     axios
       .get(`https://localhost:4000/shops/${match.params.shop_id}`)
@@ -91,54 +85,62 @@ export default function Review({ history, match }) {
       });
   }, []);
 
-  return (
-    <ReviewBody>
-      <div>
-        <ReviewShopName>{shopName}</ReviewShopName>에 대한 리뷰를 작성해주세요.
-      </div>
-      <div style={{ marginBottom: 10, marginTop: 10 }}>
-        {createArray(5).map((item, idx) => {
-          return (
-            <Star
-              key={idx}
-              selected={selectedStar > idx}
-              handleSelect={() => {
-                setSelectedStar(idx + 1);
-              }}
-            />
-          );
-        })}
-      </div>
-      <ReviewInputText onChange={handleInputText} />
-      <div style={{ marginTop: 10, fontWeight: "bold" }}>사진 업로드</div>
-      <ReviewThumbnail>
-        {thumbnailImage.map((item, idx) => {
-          return <img key={idx} src={item} onClick={() => deleteImage(idx)} />;
-        })}
-        <ReviewLabelButton htmlFor="upload_file">+</ReviewLabelButton>
-        <input
-          type="file"
-          id="upload_file"
-          accept="image/*"
-          style={{ display: "none" }}
-          onChange={onImageChange}
-        />
-      </ReviewThumbnail>
-      <ReviewSubmitButtonDiv>
-        <button
-          className="cancel"
-          onClick={() => {
-            if (window.confirm("리뷰 작성을 취소하시겠습니까?")) {
-              window.location.replace(`/shopdetail/${match.params.shop_id}`);
-            }
-          }}
-        >
-          취소
-        </button>
-        <button className="submit" onClick={uploadReview}>
-          리뷰 올리기
-        </button>
-      </ReviewSubmitButtonDiv>
-    </ReviewBody>
-  );
+  if (!localStorage.getItem("accessToken")) {
+    window.location.replace("/");
+    return;
+  } else {
+    return (
+      <ReviewBody>
+        <div>
+          <ReviewShopName>{shopName}</ReviewShopName>에 대한 리뷰를
+          작성해주세요.
+        </div>
+        <div style={{ marginBottom: 10, marginTop: 10 }}>
+          {createArray(5).map((item, idx) => {
+            return (
+              <Star
+                key={idx}
+                selected={selectedStar > idx}
+                handleSelect={() => {
+                  setSelectedStar(idx + 1);
+                }}
+              />
+            );
+          })}
+        </div>
+        <ReviewInputText onChange={handleInputText} />
+        <div style={{ marginTop: 10, fontWeight: "bold" }}>사진 업로드</div>
+        <ReviewThumbnail>
+          {thumbnailImage.map((item, idx) => {
+            return (
+              <img key={idx} src={item} onClick={() => deleteImage(idx)} />
+            );
+          })}
+          <ReviewLabelButton htmlFor="upload_file">+</ReviewLabelButton>
+          <input
+            type="file"
+            id="upload_file"
+            accept="image/*"
+            style={{ display: "none" }}
+            onChange={onImageChange}
+          />
+        </ReviewThumbnail>
+        <ReviewSubmitButtonDiv>
+          <button
+            className="cancel"
+            onClick={() => {
+              if (window.confirm("리뷰 작성을 취소하시겠습니까?")) {
+                window.location.replace(`/shopdetail/${match.params.shop_id}`);
+              }
+            }}
+          >
+            취소
+          </button>
+          <button className="submit" onClick={uploadReview}>
+            리뷰 올리기
+          </button>
+        </ReviewSubmitButtonDiv>
+      </ReviewBody>
+    );
+  }
 }
