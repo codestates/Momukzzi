@@ -1,6 +1,7 @@
 const { user, bookmark, shop, shop_pic } = require("../../models");
 const jwt = require("jsonwebtoken");
 const axios = require("axios");
+const { slice } = require("cheerio/lib/api/traversing");
 
 module.exports = async (req, res) => {
   console.log("oauth login!!!!!!!!!!!!!!");
@@ -100,6 +101,7 @@ module.exports = async (req, res) => {
             user_id: id,
             nickname: nickname,
             email: email,
+            oauth: true
           });
 
           const userInfo = await user.findOne({
@@ -182,9 +184,8 @@ module.exports = async (req, res) => {
         "https://github.com/login/oauth/access_token",
         {
           client_id: REACT_APP_GITHUB_CLIENT_ID,
-          // "3e13dcd314570e792c58",
           client_secret: REACT_APP_GITHUB_CLIENT_SECRET,
-          //  "5c84df451bd83eff205c8b10c85a69206cbaabab",
+
           code: code,
         },
         {
@@ -208,9 +209,17 @@ module.exports = async (req, res) => {
             console.log("끝");
 
             const id = result.data.id;
-            const nickname = result.data.name;
+
+            let nickname
+
+            if(result.data.name){
+              nickname = result.data.name
+            }else{
+              nickname = (result.data.html_url).slice(19,result.data.html_url.length)
+            }
             const email = result.data.url;
-            console.log(id, nickname, email);
+
+            console.log(id, (result.data.html_url).slice(19,result.data.html_url.length), email);
 
             const oauthuser = await user.findOne({
               where: {
@@ -295,6 +304,7 @@ module.exports = async (req, res) => {
                 user_id: id,
                 nickname: nickname,
                 email: email,
+                oauth: true
               });
 
               const userInfo = await user.findOne({
