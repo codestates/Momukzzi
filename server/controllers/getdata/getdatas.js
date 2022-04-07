@@ -154,7 +154,7 @@ module.exports = async (req, res) => {
         }
       }
 
-      //await page.close();
+      await page.close();
 
       //크롤링 종료!
 
@@ -206,21 +206,21 @@ module.exports = async (req, res) => {
         },
       });
 
-      // try {
-      //   if (checkerr.dataValues.pic_URL === "") {
-      //     await shop.destroy({
-      //       where: {
-      //         id: shopid,
-      //       },
-      //     });
-      //   }
-      // } catch (err) {
-      //   await shop.destroy({
-      //     where: {
-      //       id: shopid,
-      //     },
-      //   });
-      // }
+      try {
+        if (checkerr.dataValues.pic_URL === "") {
+          await shop.destroy({
+            where: {
+              id: shopid,
+            },
+          });
+        }
+      } catch (err) {
+        await shop.destroy({
+          where: {
+            id: shopid,
+          },
+        });
+      }
 
       //if (photodatas.length !== 0 && menulist.length !== 0) {
         result.push({
