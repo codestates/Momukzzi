@@ -80,12 +80,9 @@ function Mypage() {
 								</My.MypageFixToggleContainer>
 							) : null}
 							{Oauth === 'true' ? (
-								<div
-									className="mypage-fix-myinfo-not-toggle-button"
-									disabled={true}
-								>
+								<My.MypageFixMyinfoToggleButton disabled={true}>
 									소셜 계정은 비밀번호 수정을 하실 수 없습니다.
-								</div>
+								</My.MypageFixMyinfoToggleButton>
 							) : (
 								<My.MypageFixMyinfoToggleButton
 									onClick={fixPasswordToggleHandler}
