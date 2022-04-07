@@ -71,6 +71,7 @@ module.exports = async (req, res) => {
             genus: shopInfo.genus,
             location: shopInfo.location,
             pic_URL: shopPicInfo.pic_URL,
+            star_avg: shopInfo.star_avg,
           };
 
           cookie.push(obj);
@@ -115,6 +116,7 @@ module.exports = async (req, res) => {
             genus: shopInfo.genus,
             location: shopInfo.location,
             pic_URL: shopPicInfo.pic_URL,
+            shop_avg: shopInfo.star_avg,
           };
 
           cookie.push(obj);

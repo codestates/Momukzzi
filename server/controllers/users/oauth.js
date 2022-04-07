@@ -101,7 +101,7 @@ module.exports = async (req, res) => {
             user_id: id,
             nickname: nickname,
             email: email,
-            oauth: true
+            oauth: true,
           });
 
           const userInfo = await user.findOne({
@@ -174,6 +174,7 @@ module.exports = async (req, res) => {
       })
       .catch((e) => {
         //오류 처리
+
         res.status(400).json({
           message: "Oauth login err",
         });
@@ -210,16 +211,23 @@ module.exports = async (req, res) => {
 
             const id = result.data.id;
 
-            let nickname
+            let nickname;
 
-            if(result.data.name){
-              nickname = result.data.name
-            }else{
-              nickname = (result.data.html_url).slice(19,result.data.html_url.length)
+            if (result.data.name) {
+              nickname = result.data.name;
+            } else {
+              nickname = result.data.html_url.slice(
+                19,
+                result.data.html_url.length
+              );
             }
             const email = result.data.url;
 
-            console.log(id, (result.data.html_url).slice(19,result.data.html_url.length), email);
+            console.log(
+              id,
+              result.data.html_url.slice(19, result.data.html_url.length),
+              email
+            );
 
             const oauthuser = await user.findOne({
               where: {
@@ -304,7 +312,7 @@ module.exports = async (req, res) => {
                 user_id: id,
                 nickname: nickname,
                 email: email,
-                oauth: true
+                oauth: true,
               });
 
               const userInfo = await user.findOne({

@@ -52,28 +52,12 @@ function OauthLoading() {
               localStorage.setItem("accessToken", res.data.data.accessToken);
               localStorage.setItem("email", res.data.data.email);
               localStorage.setItem("nickname", res.data.data.nickname);
-              if (res.data.data.accessToken) {
-                localStorage.setItem("accessToken", res.data.data.accessToken);
-                if (res.data.data.accessToken) {
-                  localStorage.setItem(
-                    "accessToken",
-                    res.data.data.accessToken
-                  );
-
-                  localStorage.setItem("Oauth", res.data.data.oauth);
-                }
-
-                return alert(
-                  "로그인 되었습니다!",
-                  window.location.replace("/")
-                );
-              }
+              alert("로그인 되었습니다!");
+              window.location.replace("/");
             })
             .catch((e) => {
-              return alert(
-                "로그인 오류가 발생했습니다. 다시 시도해 주세요.",
-                window.location.replace("/")
-              );
+              alert("로그인 오류가 발생했습니다. 다시 시도해 주세요.");
+              window.location.replace("/");
             });
         });
     } else {
@@ -94,27 +78,23 @@ function OauthLoading() {
           if (res.status === 400) {
             alert("로그인 오류가 발생했습니다. 다시 시도해 주세요.");
 
-            return window.location.replace("/");
+            window.location.replace("/");
           } else {
             console.log("응답 나가는 중");
             console.log(res.data.data);
             localStorage.setItem("accessToken", res.data.data.accessToken);
             localStorage.setItem("nickname", res.data.data.nickname);
-            if (res.data.data.accessToken) {
-              localStorage.setItem("accessToken", res.data.data.accessToken);
-              localStorage.setItem("nickname", res.data.data.nickname);
-              localStorage.setItem("Oauth", res.data.data.oauth);
-              if (res.data.data.accessToken) {
-                localStorage.setItem("accessToken", res.data.data.accessToken);
-              }
-              return alert("로그인 되었습니다!", window.location.replace("/"));
-            }
+            localStorage.setItem("Oauth", res.data.data.oauth);
+            alert("로그인 되었습니다!");
+            window.location.replace("/");
           }
         })
         .catch((err) => {
           console.log(err.response);
           alert("요청이 거부되었습니다. 다시 로그인 하세요");
           localStorage.removeItem("accessToken");
+          localStorage.removeItem("nickname");
+          localStorage.removetem("Oauth");
           window.location.replace("/");
         });
     }
