@@ -99,7 +99,7 @@ module.exports = async (req, res) => {
 
       let content = await page.content(req.body.data[i].place_url);
 
-      const $ = cheerio.load(content);
+      const $ = await cheerio.load(content);
       const photolists = await $(
         "#mArticle > div.cont_photo > div.photo_area > ul >li"
       ).children("a");
@@ -114,6 +114,7 @@ module.exports = async (req, res) => {
       // ).children("span");
       // console.log(worktime);
       // work_time = worktime[0].children[0].data;
+      console.log("crowling",photolists,menulists,price)
 
       for (let i = 0; i < photolists.length; i++) {
         let word =
