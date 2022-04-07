@@ -3,24 +3,24 @@ dotenv.config();
 
 module.exports = {
   development: {
-    username: "root",
+    username: "admin",
     password: process.env.DATABASE_PASSWORD,
     database: "momukzzi",
-    host: "127.0.0.1",
+    host: "database-3.cpvcd8yfubpy.us-east-1.rds.amazonaws.com",
     dialect: "mysql",
   },
   test: {
-    username: "root",
+    username: "admin",
     password: process.env.DATABASE_PASSWORD,
     database: "momukzzi",
-    host: "127.0.0.1",
+    host: "database-3.cpvcd8yfubpy.us-east-1.rds.amazonaws.com",
     dialect: "mysql",
   },
   production: {
-    username: "root",
+    username: "admin",
     password: process.env.DATABASE_PASSWORD,
     database: "momukzzi",
-    host: "127.0.0.1",
+    host: "database-3.cpvcd8yfubpy.us-east-1.rds.amazonaws.com",
     dialect: "mysql",
   },
 };
