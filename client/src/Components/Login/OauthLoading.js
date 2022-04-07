@@ -52,6 +52,7 @@ function OauthLoading() {
               localStorage.setItem("accessToken", res.data.data.accessToken);
               localStorage.setItem("email", res.data.data.email);
               localStorage.setItem("nickname", res.data.data.nickname);
+              localStorage.setItem("Oauth", res.data.data.oauth);
               alert("로그인 되었습니다!");
               window.location.replace("/");
             })
