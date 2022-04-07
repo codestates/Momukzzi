@@ -22,7 +22,7 @@ const initialState = {
   currentLocationShops: dummyShops,
   currentShopName: 0,
   loading: true,
-  loadingModal: true,
+  loadingModal: false,
 };
 
 function reducer(currentState = initialState, action) {
