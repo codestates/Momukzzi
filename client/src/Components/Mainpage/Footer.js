@@ -72,7 +72,7 @@ const Footer = () => {
     <FooterContainer>
       <ul className="footer_info">
         <li>
-          <Link to="/" textDecoration="none">
+          <Link to="/" style={{ textDecoration: "none" }}>
             <div>MUMUKZZI</div>
           </Link>
         </li>

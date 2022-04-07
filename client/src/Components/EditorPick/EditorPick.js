@@ -1,6 +1,7 @@
 import react, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { AiOutlineConsoleSql, AiOutlineStar } from "react-icons/ai";
+import { BsStar } from "react-icons/bs";
+import { FaStar } from "react-icons/fa";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -79,14 +80,11 @@ const ShopComponent = styled.div`
     
     cursor: pointer;
   }
-  .staricon {
-     font-size:40px;
-     color:gainsboro;
-     margin: 10px;
+  .staricon{
+    font-size:40px;
+    margin: 10px;
   }
-  .on {
-    color: yellow;
-  }
+  
 }
 `;
 
@@ -171,6 +169,7 @@ const EditorPick = ({ match }) => {
     var value = document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
     return value ? decodeURIComponent(value[2]) : null;
   };
+
   const [cookie, setCookie] = useState(JSON.parse(getCookie("bookmark")));
   const isAddedBookmark = (id) => {
     let result = false;
@@ -289,13 +288,17 @@ const EditorPick = ({ match }) => {
                         }
                       }}
                     >
-                      <AiOutlineStar
-                        className={
-                          isAddedBookmark(obj.shopinfo.shop_id)
-                            ? "staricon on"
-                            : "staricon"
-                        }
-                      />
+                      {isAddedBookmark(obj.shopinfo.shop_id) ? (
+                        <FaStar
+                          style={{ color: "#ffba34" }}
+                          className="staricon"
+                        ></FaStar>
+                      ) : (
+                        <BsStar
+                          style={{ color: "gainsboro" }}
+                          className="staricon"
+                        />
+                      )}
                     </div>
                   </div>
                   <div className="review">
