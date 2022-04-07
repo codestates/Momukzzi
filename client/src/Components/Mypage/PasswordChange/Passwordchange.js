@@ -130,7 +130,7 @@ function Passwordchange() {
 
 	return (
 		<div>
-			<PasswordTitle>비밀번호</PasswordTitle>
+			{/* <PasswordTitle>비밀번호</PasswordTitle> */}
 			<Passwordinput
 				handlePasswordChange={handlePasswordChange}
 				handleValidation={handleValidation}

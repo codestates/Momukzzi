@@ -150,10 +150,11 @@ function Nicknamechange() {
 	}
 	return (
 		<div>
-			<NickText>닉네임</NickText>
+			{/* <NickText>닉네임</NickText> */}
 			<div>
 				<Input
 					onChange={handleInputValue('nickname')}
+					placeholder="닉네임"
 					// onBlur={nicknameCheck('nickname')}
 				/>
 				{message.nickname ===
