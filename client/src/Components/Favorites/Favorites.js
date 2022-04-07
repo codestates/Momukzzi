@@ -56,6 +56,7 @@ const InfoDiv = styled.div`
     object-fit: cover;
     margin-right: 15px;
     flex-shrink: 0;
+    cursor: pointer;
   }
   & > div {
     flex-grow: 1;
@@ -202,7 +203,6 @@ const Favorite = () => {
                     onClick={() => {
                       window.location.replace(`/shopdetail/${obj.id}`);
                     }}
-                    cursor="pointer"
                   />
                   <div>
                     <MenuScore>
@@ -237,45 +237,6 @@ const Favorite = () => {
             })}
           </InfoContainer>
         ) : (
-          // <FavoriteBody>
-          //   {visited.map((obj, i) => {
-          //     return (
-          //       <FavoriteContent key={i}>
-          //         <div
-          //           className="shopdetail"
-          //           onClick={() => {
-          //             window.location.replace(`/shopdetail/${obj.id}`);
-          //           }}
-          //         >
-          //           <img src={obj.shop_pic}></img>
-          //         </div>
-          //         <div>
-          //           <div className="favorite-shopinfo">
-          //             {obj.shop_name} - {obj.genus}
-          //           </div>
-          //           <div className="favorite-shopinfo">{obj.location}</div>
-          //         </div>
-          //         <div
-          //           id="icon-container"
-          //           onClick={(e) => {
-          //             if (!localStorage.getItem("accessToken")) {
-          //               dispatch({ type: "login modal" });
-          //             } else {
-          //               handleStar(obj.id, e);
-          //             }
-          //           }}
-          //         >
-          //           <AiOutlineStar
-          //             className={
-          //               isAddedBookmark(obj.id) ? "staricon on" : "staricon"
-          //             }
-          //           />
-          //         </div>
-          //       </FavoriteContent>
-          //     );
-          //   })}
-          // </FavoriteBody>
-
           <InfoContainer>
             {visited.map((obj, i) => {
               return (

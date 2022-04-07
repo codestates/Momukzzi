@@ -26,7 +26,6 @@ const HeaderContainer = styled.div`
   }
 
   .navbar_logo img {
-    background-color: #d49466;
     width: 200px;
   }
 
@@ -92,7 +91,7 @@ const Header = () => {
       <nav className="navbar">
         <div className="navbar_logo">
           <Link to="/">
-            <img src="https://euilimchoibucket.s3.amazonaws.com/logo-removebg-preview.png" />
+            <img src="https://cdn.discordapp.com/attachments/947685049682247701/961421667157016686/logo-removebg-preview.png" />
           </Link>
         </div>
         {localStorage.getItem("accessToken") ? (

@@ -1,6 +1,5 @@
 import react from "react";
-import { Modal, Button } from "react-bootstrap";
-import { useState } from "react";
+import { Modal, Spinner } from "react-bootstrap";
 
 function LoadingModal(props) {
   return (
@@ -14,6 +13,9 @@ function LoadingModal(props) {
         <Modal.Title id="contained-modal-title-vcenter">
           페이지 로딩 중
         </Modal.Title>
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
       </Modal.Header>
       <Modal.Body>
         음식점 정보를 불러오고 있습니다. 잠시만 기다려 주세요.
