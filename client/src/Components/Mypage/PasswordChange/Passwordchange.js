@@ -2,6 +2,12 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import Passwordinput from './Passwordinput'
 import Confirmpassword from './Confirmpassword'
+import { Out } from '../Signout/Signout.style'
+import styled from 'styled-components'
+
+const PasswordTitle = styled.div`
+	font-size: 22px;
+`
 
 function Passwordchange() {
 	const accessToken = localStorage.getItem('accessToken')
@@ -124,7 +130,7 @@ function Passwordchange() {
 
 	return (
 		<div>
-			<div className="Fix-toggle-title">비밀번호</div>
+			<PasswordTitle>비밀번호</PasswordTitle>
 			<Passwordinput
 				handlePasswordChange={handlePasswordChange}
 				handleValidation={handleValidation}
@@ -137,9 +143,11 @@ function Passwordchange() {
 				confirmPasswordValue={passwordInput.confirmPassword}
 				confirmPasswordError={confirmPasswordError}
 			/>
-			<div>
-				<button onClick={fixPasswordHandler}>수정</button>
-			</div>
+			<Out.SubmitButtonDiv>
+				<button className="submit" onClick={fixPasswordHandler}>
+					수정
+				</button>
+			</Out.SubmitButtonDiv>
 		</div>
 	)
 }

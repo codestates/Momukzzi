@@ -60,12 +60,12 @@ function Mypage() {
 							<div>
 								{/* <FontAwesomeIcon icon={faUserCircle} className="photo-icon" /> */}
 							</div>
-							<My.MypageMyinfoNickname> 오늘 뭐먹지? </My.MypageMyinfoNickname>
+							{/* <My.MypageMyinfoNickname>오늘 뭐먹지?</My.MypageMyinfoNickname> */}
 							<My.MypageMyinfoNickname>
-								Nickname: {userInfo && userInfo.data.data.userInfo.nickname} 님
+								닉네임: {userInfo && userInfo.data.data.userInfo.nickname} 님
 							</My.MypageMyinfoNickname>
 							<My.MypageMyinfoNickname>
-								E-Mail: {userInfo && userInfo.data.data.userInfo.email}
+								이메일: {userInfo && userInfo.data.data.userInfo.email}
 							</My.MypageMyinfoNickname>
 							<My.MypageFixMyinfoToggleButton
 								onClick={fixNicknameToggleHandler}
@@ -100,12 +100,15 @@ function Mypage() {
 									</div>
 								</My.MypageFixToggleContainer>
 							) : null}
-							<My.MypageSignoutButton
-								onClick={() => {
-									setSignoutModal(true)
-								}}
-							>
-								회원탈퇴
+							<My.MypageSignoutButton>
+								<button
+									className="submit"
+									onClick={() => {
+										setSignoutModal(true)
+									}}
+								>
+									회원탈퇴
+								</button>
 							</My.MypageSignoutButton>
 							{signoutModal && <Signout setSignoutModal={setSignoutModal} />}
 						</My.MypageMyinfoContainer>

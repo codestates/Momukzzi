@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import Myreviewlist from './Myreviewlist'
 import { Styled } from './style'
-import Loader from '../../ShopDetail/Loader'
 import Emptyreview from './Emptyreview'
+import MoreviewLoader from './MoreviewLoader'
 
 function Myreview() {
 	const [userReview, setUserReview] = useState([])
@@ -66,7 +66,7 @@ function Myreview() {
 				<Emptyreview />
 			)}
 			{isLoaded ? (
-				<Loader />
+				<MoreviewLoader />
 			) : (
 				<Styled.ShopReviewPlusButton onClick={handleReviewMore}>
 					{reviewCount < newUserReview.length ? '더 보기' : ' '}
