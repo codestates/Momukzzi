@@ -238,25 +238,10 @@ module.exports = async (req, res) => {
           },
         });
       //}
+
+      setTimeout(console.log("time Out!"), 5000)
     }
   }
-
-  // console.log(req.body.data)
-  // console.log(req.body.data.length)
-  // console.log(result)
-  // console.log(result.length)
-
-  //응답 결과 정리
-
-  // let someerr = []
-
-  // for (let i = 0; i < result.length; i++){
-  //   if (result[i].shoppic.length === 0){
-  //     someerr.push(result[i])
-  //   }
-  // }
-
-  // console.log(someerr)
 
   res.status(200).json({
     message: "shopinfo crawling",
