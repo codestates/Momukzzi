@@ -46,7 +46,8 @@ const TopicName = styled.div`
   position: absolute;
   top: 40%;
   left: 30%;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 700;
   font-size: 1.5rem;
 `;
 function SlidePick() {
