@@ -44,6 +44,10 @@ const ButtonDiv = styled.div`
     background-color: white;
     border: none;
   }
+  .clicked {
+    border-bottom: 3px solid #ffba34;
+    color: #ffba34;
+  }
 `;
 
 const InfoDiv = styled.div`
@@ -170,7 +174,7 @@ const Favorite = () => {
       <ExampleBody onClick={(e) => e.stopPropagation()}>
         <ButtonDiv>
           <button
-            // className={recentClicked ? "recent on" : "recent"}
+            className={isBookMarkMenu ? "none" : "clicked"}
             onClick={() => {
               setIsBookMarkMenu(false);
             }}
@@ -178,7 +182,7 @@ const Favorite = () => {
             최근 본 맛집
           </button>
           <button
-            // className={favoriteClicked ? "favorite on" : "favorite"}
+            className={isBookMarkMenu ? "clicked" : "none"}
             onClick={() => {
               if (!localStorage.getItem("accessToken")) {
                 dispatch({ type: "login modal" });
