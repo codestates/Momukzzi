@@ -104,22 +104,25 @@ module.exports = async (req, res) => {
               id: bookmarkInfo[i].dataValues.shop_id,
             },
           });
-          const shopPicInfo = await shop_pic.findOne({
-            where: {
-              shop_id: shopInfo.id,
-            },
-          });
+          if (!shopInfo) {
+            cookie.push(null);
+          } else {
+            const shopPicInfo = await shop_pic.findOne({
+              where: {
+                shop_id: shopInfo.id,
+              },
+            });
 
-          const obj = {
-            id: shopInfo.id,
-            shop_name: shopInfo.shop_name,
-            genus: shopInfo.genus,
-            location: shopInfo.location,
-            pic_URL: shopPicInfo.pic_URL,
-            shop_avg: shopInfo.star_avg,
-          };
-
-          cookie.push(obj);
+            const obj = {
+              id: shopInfo.id,
+              shop_name: shopInfo.shop_name,
+              genus: shopInfo.genus,
+              location: shopInfo.location,
+              pic_URL: shopPicInfo.pic_URL,
+              shop_avg: shopInfo.star_avg,
+            };
+            cookie.push(obj);
+          }
         }
 
         // for (let i = 0; i < cookie.length; i++) {

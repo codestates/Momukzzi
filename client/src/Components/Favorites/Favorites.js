@@ -194,47 +194,51 @@ const Favorite = () => {
 
         {isBookMarkMenu ? (
           <InfoContainer>
-            {cookie.map((obj, i) => {
-              return (
-                <InfoDiv>
-                  <img
-                    src={obj.pic_URL}
-                    alt="shop_pic"
-                    onClick={() => {
-                      window.location.replace(`/shopdetail/${obj.id}`);
-                    }}
-                  />
-                  <div>
-                    <MenuScore>
-                      <span>{obj.shop_name}</span>
-                      <span style={{ color: "#ffba34" }}>
-                        {obj.star_avg?.toFixed(1)}
-                      </span>
-                    </MenuScore>
-                    <span style={{ color: "grey", fontSize: 12 }}>
-                      {obj.genus}
-                    </span>
-                  </div>
-                  <span>
-                    <FaStar
-                      color="#ffba34"
-                      style={{
-                        width: 30,
-                        height: 30,
+            {cookie
+              .filter((shop) => {
+                return shop !== null;
+              })
+              .map((obj, i) => {
+                return (
+                  <InfoDiv>
+                    <img
+                      src={obj.pic_URL}
+                      alt="shop_pic"
+                      onClick={() => {
+                        window.location.replace(`/shopdetail/${obj.id}`);
                       }}
-                      onClick={(e) => {
-                        if (!localStorage.getItem("accessToken")) {
-                          dispatch({ type: "login modal" });
-                        } else {
-                          handleStar(obj.id, e);
-                        }
-                      }}
-                      cursor="pointer"
                     />
-                  </span>
-                </InfoDiv>
-              );
-            })}
+                    <div>
+                      <MenuScore>
+                        <span>{obj.shop_name}</span>
+                        <span style={{ color: "#ffba34" }}>
+                          {obj.star_avg?.toFixed(1)}
+                        </span>
+                      </MenuScore>
+                      <span style={{ color: "grey", fontSize: 12 }}>
+                        {obj.genus}
+                      </span>
+                    </div>
+                    <span>
+                      <FaStar
+                        color="#ffba34"
+                        style={{
+                          width: 30,
+                          height: 30,
+                        }}
+                        onClick={(e) => {
+                          if (!localStorage.getItem("accessToken")) {
+                            dispatch({ type: "login modal" });
+                          } else {
+                            handleStar(obj.id, e);
+                          }
+                        }}
+                        cursor="pointer"
+                      />
+                    </span>
+                  </InfoDiv>
+                );
+              })}
           </InfoContainer>
         ) : (
           <InfoContainer>
