@@ -80,7 +80,6 @@ const ExampleBody = styled.div`
   width: 50%;
   min-height: calc(100vh - 106px);
   margin: 0 auto;
-  /* border: 1px solid black; */
 `;
 
 const ExampleTitle = styled.div`
@@ -99,17 +98,20 @@ const ExampleTitle = styled.div`
 const ExampleImage = styled.div`
   width: 50%;
   margin: 0 auto;
-  /* border-bottom: solid 1px black; */
+  padding-bottom: 30px;
 `;
 
 const ExampleInfo = styled.div`
   display: flex;
-  min-height: calc(100vh - 584px);
-  padding-top: 40px;
+  width: 80%;
+  margin: 0 auto;
+  border-top: 1px solid gainsboro;
+  min-height: calc(100vh - 625px);
+  padding-top: 30px;
+
   .menu {
-    width: 50%;
-    /* border-top: 1px solid black; */
-    padding: 20px;
+    width: 60%;
+    padding: 0px 20px 10px 0px;
     & > table > tbody {
       display: table-row-group;
       vertical-align: middle;
@@ -143,8 +145,7 @@ const ExampleInfo = styled.div`
     }
   }
   .map {
-    width: 50%;
-    /* border: 1px solid black; */
+    width: 40%;
   }
 `;
 
@@ -172,10 +173,10 @@ const ExampleOtherButton = styled.div`
   }
 `;
 
-const Line = styled.div`
-  border-top: 1px solid gainsboro;
-  margin-top: 20px;
-`;
+// const Line = styled.div`
+//   border-top: 1px solid gainsboro;
+//   margin-top: 20px;
+// `;
 
 const Intro = () => {
   const loading = useSelector((state) => state.loading);
@@ -373,7 +374,7 @@ const Intro = () => {
             })}
           </Carousel>
         </ExampleImage>
-        <Line />
+        {/* <Line /> */}
         <ExampleInfo>
           <div className="menu">
             <table>
@@ -435,7 +436,7 @@ const Intro = () => {
           <button
             className="bottomScroll"
             onClick={() => {
-              window.scrollTo({ top: 1010, behavior: "smooth" });
+              window.scrollTo({ top: 1040, behavior: "smooth" });
             }}
           >
             더 많은 정보 보기
