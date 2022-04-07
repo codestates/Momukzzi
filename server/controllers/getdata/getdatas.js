@@ -221,7 +221,7 @@ module.exports = async (req, res) => {
       //   });
       // }
 
-      if (photodatas.length !== 0 && menulist.length !== 0) {
+      //if (photodatas.length !== 0 && menulist.length !== 0) {
         result.push({
           shopinfo: {
             shop_id: shopid,
@@ -236,7 +236,7 @@ module.exports = async (req, res) => {
             menulist,
           },
         });
-      }
+      //}
     }
   }
 
