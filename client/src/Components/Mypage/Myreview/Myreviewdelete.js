@@ -40,7 +40,7 @@ const Myreviewdelete = ({ id }) => {
 				})
 		}
 	}
-	return <BsTrash onClick={deleteModal} />
+	return <BsTrash size="22" onClick={deleteModal} />
 }
 
 export default Myreviewdelete

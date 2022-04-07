@@ -1,6 +1,54 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import styled from 'styled-components'
 
+const SubmitButtonDiv = styled.div`
+	margin-top: 30px;
+	width: 100%;
+	height: 100px;
+	margin-right: 10px;
+	display: flex;
+
+	& > button {
+		padding: 6px 6px;
+		background-color: #ffba34;
+		border-radius: 4px;
+		border: none;
+		color: white;
+		cursor: pointer;
+		height: 50px;
+	}
+	.cancel {
+		margin-left: 5px;
+		margin-right: 5px;
+	}
+	.submit {
+	}
+`
+const InputForm = styled.div`
+	margin: 0 auto;
+	margin: 5px;
+`
+const InputBox = styled.div`
+	width: 300px;
+	height: 300px
+	border-bottom: solid 2px gainsboro;
+`
+const Input = styled.input`
+	width: 200px;
+	border-style: none;
+	height: 39px;
+	padding-left: 5px;
+	font-size: 13px;
+	border-bottom: solid 2px gainsboro;
+
+	:focus {
+		outline: none;
+	}
+`
+const NickText = styled.div`
+	font-size: 20px;
+`
 function Nicknamechange() {
 	const accessToken = localStorage.getItem('accessToken')
 
@@ -102,37 +150,35 @@ function Nicknamechange() {
 	}
 	return (
 		<div>
-			<div className="Fix-toggle-title">닉네임</div>
-			<div className="Fix-toggle-container">
-				<input
-					className="Fix-toggle-input"
+			{/* <NickText>닉네임</NickText> */}
+			<div>
+				<Input
 					onChange={handleInputValue('nickname')}
+					placeholder="닉네임"
 					// onBlur={nicknameCheck('nickname')}
 				/>
 				{message.nickname ===
 				'닉네임은 특수문자를 제외한 2 ~ 6 글자이어야 합니다.' ? (
-					<div>{message.nickname}</div>
+					<NickText>{message.nickname}</NickText>
 				) : message.nickname === '사용 가능한 닉네임입니다.' ? (
-					<div>{message.nickname}</div>
+					<NickText>{message.nickname}</NickText>
 				) : (
-					<div>{message.nickname}</div>
+					<NickText>{message.nickname}</NickText>
 				)}
-				<button className="FixToggleBtn" onClick={nicknameCheck('nickname')}>
-					중복확인
-				</button>
-				{isValidForNickname ? (
-					<button
-						className="FixToggleBtn"
-						onClick={fixNicknameHandler}
-						type="submit"
-					>
-						수정
+				<SubmitButtonDiv>
+					<button className="submit" onClick={nicknameCheck('nickname')}>
+						중복확인
 					</button>
-				) : (
-					<button className="FixToggleBtn" disabled={true}>
-						수정
-					</button>
-				)}
+					{isValidForNickname ? (
+						<button className="cancel" onClick={fixNicknameHandler}>
+							수정
+						</button>
+					) : (
+						<button className="cancel" disabled={true}>
+							수정
+						</button>
+					)}
+				</SubmitButtonDiv>
 			</div>
 		</div>
 	)

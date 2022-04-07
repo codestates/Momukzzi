@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import MypageImg from './21631.jpg'
+import MypageImg from './감자칩.jpeg'
 
 export const My = {
 	MypageContainer: styled.div`
@@ -46,6 +46,7 @@ export const My = {
 			margin-bottom: 10px;
 		}
 	`,
+
 	MypageMyinfoContainer: styled.div`
 		display: -webkit-box;
 		display: -ms-flexbox;
@@ -59,12 +60,11 @@ export const My = {
 		padding: 5px;
 		margin-bottom: 15px;
 		overflow: auto;
-		background-image: url('${MypageImg}');
-		background-position: 80px 50px;
-		border-right-style: solid;
+		/* border-right-style: solid; */
 		border-right-width: 5px;
 		border-right-color: #ffba34;
-		background-filter: blur(4px);
+		background-image: url('${MypageImg}');
+		background-position: 80px 50px;
 
 		@media (min-width: 1024px) {
 			height: 650px;
@@ -130,8 +130,8 @@ export const My = {
 			font-size: 18px;
 		}
 	`,
-	MypageSignoutButton: styled.button`
-		padding-top: 3px;
+	MypageSignoutButton: styled.div`
+		/* padding-top: 3px;
 		width: 100px;
 		margin-top: 4px;
 		-webkit-box-shadow: gray 4px 4px 4px;
@@ -170,6 +170,27 @@ export const My = {
 			width: 150px;
 			height: 35px;
 			font-size: 22px;
+		} */
+		margin-top: 10px;
+		width: 100%;
+		height: 100px;
+		display: flex;
+
+		& > button {
+			padding: 6px 6px;
+			background-color: #ffba34;
+			border-radius: 4px;
+			border: none;
+			color: white;
+			cursor: pointer;
+			width: 100px;
+			height: 50px;
+		}
+		.cancel {
+			margin-left: auto;
+			margin-right: 5px;
+		}
+		.submit {
 		}
 	`,
 	MypageRightContainer: styled.div`
