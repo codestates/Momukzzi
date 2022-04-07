@@ -29,53 +29,6 @@ import dummyKakaoShops from "../../dummy/dummyKakaoShops";
 import SlideShop from "../Mainpage/SlideShop";
 import LoadingIndicator from "../Loading/LoadingIndicator";
 
-// const TodaysPickContainer = styled.div`
-//   border: 1px solid black;
-//   width: 800px;
-//   height: 830px;
-//   margin: 0 auto;
-//   .swiper-slide {
-//     height: 300px;
-//     border: 1px solid black;
-//   }
-//   .swiper-slide > img {
-//     /* width: 790px; */
-//     /* height: 300px; */
-//   }
-//   .map-container {
-//     display: flex;
-//   }
-// `;
-
-// const Section = styled.section``;
-
-// const Map = styled.div``;
-
-// const ShopDetail = styled.div`
-//   text-align: right;
-//   font-size: 20px;
-//   color: gainsboro;
-// `;
-
-// const ShopName = styled.div`
-//   border: 1px solid black;
-//   height: 80px;
-//   text-align: center;
-//   line-height: 90px;
-//   #shop-name {
-//     font-size: 25px;
-//   }
-//   #shop-category {
-//     margin-left: 5px;
-//     color: rgb(0, 0, 0.4);
-//   }
-// `;
-
-// const ShopMenu = styled.div`
-//   border: solid 1px black;
-//   width: 50%;
-// `;
-
 const ExampleBody = styled.div`
   width: 50%;
   min-height: calc(100vh - 106px);
@@ -258,190 +211,140 @@ const Intro = () => {
     // const y = Number(res.data.data.result[randomInt].shopinfo.shopinfo.x);
     // const x = Number(res.data.data.result[randomInt].shopinfo.shopinfo.y);
     // console.log(x, y);
-    const container = document.getElementById("map"); //지도를 담을 영역의 DOM 레퍼런스
-    const options = {
-      //지도를 생성할 때 필요한 기본 옵션
-      center: new kakao.maps.LatLng(
+    if (!loading) {
+      const container = document.getElementById("map"); //지도를 담을 영역의 DOM 레퍼런스
+      const options = {
+        //지도를 생성할 때 필요한 기본 옵션
+        center: new kakao.maps.LatLng(
+          parseFloat(currentLocationShops[randomInt].shopinfo?.shopinfo.y),
+          parseFloat(currentLocationShops[randomInt].shopinfo?.shopinfo.x)
+        ), //지도의 중심좌표.
+        level: 3, //지도의 레벨(확대, 축소 정도)
+      };
+
+      const map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+      // 마커가 표시될 위치입니다
+      var markerPosition = new kakao.maps.LatLng(
         parseFloat(currentLocationShops[randomInt].shopinfo?.shopinfo.y),
         parseFloat(currentLocationShops[randomInt].shopinfo?.shopinfo.x)
-      ), //지도의 중심좌표.
-      level: 3, //지도의 레벨(확대, 축소 정도)
-    };
+      );
 
-    const map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
-    // 마커가 표시될 위치입니다
-    var markerPosition = new kakao.maps.LatLng(
-      parseFloat(currentLocationShops[randomInt].shopinfo?.shopinfo.y),
-      parseFloat(currentLocationShops[randomInt].shopinfo?.shopinfo.x)
-    );
+      // 마커를 생성합니다
+      var marker = new kakao.maps.Marker({
+        position: markerPosition,
+      });
 
-    // 마커를 생성합니다
-    var marker = new kakao.maps.Marker({
-      position: markerPosition,
-    });
+      // 마커가 지도 위에 표시되도록 설정합니다
+      marker.setMap(map);
 
-    // 마커가 지도 위에 표시되도록 설정합니다
-    marker.setMap(map);
-
-    // 아래 코드는 지도 위의 마커를 제거하는 코드입니다
-    // marker.setMap(null);
+      // 아래 코드는 지도 위의 마커를 제거하는 코드입니다
+      // marker.setMap(null);
+    }
   }, [randomInt]);
 
   return (
     <>
-      {/* {loading ? (
+      {loading ? (
         <LoadingIndicator />
       ) : (
-        <TodaysPickContainer>
-          <Section>
-            <ShopDetail>상세 정보</ShopDetail>
-            <Swiper
-              slidesPerView={2}
-              slidesPerGroup={2}
-              loop={true}
-              loopFillGroupWithBlank={true}
-              pagination={{
-                clickable: true,
+        <ExampleBody>
+          <ExampleTitle>
+            오늘은
+            <span
+              style={{
+                paddingLeft: 20,
+                paddingRight: 20,
+                fontSize: 32,
+                fontWeight: "bold",
               }}
-              navigation={true}
-              modules={[Pagination, Navigation]}
-              className="mySwiper"
             >
-              {currentLocationShops[randomInt].shoppic.photodatas.map((img) => {
-                return (
-                  <SwiperSlide>
-                    <img src={img}></img>
-                  </SwiperSlide>
-                );
-              })}
-              <SwiperSlide></SwiperSlide>
-            </Swiper>
-            <ShopName>
-              <span id="shop-name">
-                {currentLocationShops[randomInt].shopinfo.shopinfo.place_name}
-              </span>
-              <span id="shop-category">
-                {
-                  currentLocationShops[
-                    randomInt
-                  ].shopinfo?.shopinfo?.category_name.split(">")[1]
+              {currentLocationShops[randomInt].shopinfo?.shopinfo.place_name}
+            </span>
+            어떠세요?
+          </ExampleTitle>
+          <ExampleImage>
+            <Carousel>
+              {currentLocationShops[randomInt].shoppic?.photodatas.map(
+                (img) => {
+                  return (
+                    <Carousel.Item>
+                      <img width="100%" height="300" src={img} />
+                    </Carousel.Item>
+                  );
                 }
-              </span>
-            </ShopName>
-          </Section>
-          <Section className="map-container">
-            <Map>
-              <div id="map" style={{ width: "400px", height: "300px" }}></div>
-            </Map>
-
-            <ShopMenu className="test">
-              <ul>
-                <h3>메뉴</h3>
-                {currentLocationShops[randomInt].menulist.menulist.map(
-                  (menu, i) => {
-                    return <li key={i}>{`${menu[0]} : ${menu[1]}`}</li>;
-                  }
-                )}
-              </ul>
-            </ShopMenu>
-          </Section>
-        </TodaysPickContainer>
-      )} */}
-      <ExampleBody>
-        <ExampleTitle>
-          오늘은
-          <span
-            style={{
-              paddingLeft: 20,
-              paddingRight: 20,
-              fontSize: 32,
-              fontWeight: "bold",
-            }}
-          >
-            {currentLocationShops[randomInt].shopinfo?.shopinfo.place_name}
-          </span>
-          어떠세요?
-        </ExampleTitle>
-        <ExampleImage>
-          <Carousel>
-            {currentLocationShops[randomInt].shoppic?.photodatas.map((img) => {
-              return (
-                <Carousel.Item>
-                  <img width="100%" height="300" src={img} />
-                </Carousel.Item>
-              );
-            })}
-          </Carousel>
-        </ExampleImage>
-        <Line />
-        <ExampleInfo>
-          <div className="menu">
-            <table>
-              <tbody>
-                <tr>
-                  <th>주소</th>
-                  <td>
-                    {
-                      currentLocationShops[randomInt].shopinfo?.shopinfo
-                        .address_name
-                    }
-                  </td>
-                </tr>
-                <tr>
-                  <th>음식 종류</th>
-                  <td>
-                    {
-                      currentLocationShops[
-                        randomInt
-                      ].shopinfo?.shopinfo?.category_name.split(">")[
+              )}
+            </Carousel>
+          </ExampleImage>
+          <Line />
+          <ExampleInfo>
+            <div className="menu">
+              <table>
+                <tbody>
+                  <tr>
+                    <th>주소</th>
+                    <td>
+                      {
+                        currentLocationShops[randomInt].shopinfo?.shopinfo
+                          .address_name
+                      }
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>음식 종류</th>
+                    <td>
+                      {
                         currentLocationShops[
                           randomInt
-                        ].shopinfo?.shopinfo?.category_name.split(">").length -
-                          1
-                      ]
-                    }
-                  </td>
-                </tr>
-                <tr>
-                  <th>메뉴</th>
-                  <td>
-                    <ul style={{ margin: 0, padding: 0 }}>
-                      {currentLocationShops[randomInt].menulist?.menulist
-                        .slice(0, 7)
-                        .filter((menu, i) => {
-                          return menu[0] !== null;
-                        })
-                        .map((menu, i) => {
-                          return <li key={i}>{`${menu[0]} - ${menu[1]}`}</li>;
-                        })}
-                    </ul>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+                        ].shopinfo?.shopinfo?.category_name.split(">")[
+                          currentLocationShops[
+                            randomInt
+                          ].shopinfo?.shopinfo?.category_name.split(">")
+                            .length - 1
+                        ]
+                      }
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>메뉴</th>
+                    <td>
+                      <ul style={{ margin: 0, padding: 0 }}>
+                        {currentLocationShops[randomInt].menulist?.menulist
+                          .slice(0, 7)
+                          .filter((menu, i) => {
+                            return menu[0] !== null;
+                          })
+                          .map((menu, i) => {
+                            return <li key={i}>{`${menu[0]} - ${menu[1]}`}</li>;
+                          })}
+                      </ul>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
 
-          <div id="map" style={{ width: "400px", height: "300px" }}></div>
-        </ExampleInfo>
-        <ExampleOtherButton>
-          <button
-            className="other"
-            onClick={() => {
-              setRandomInt(getRandomInt(0, currentLocationShops.length));
-            }}
-          >
-            다른 메뉴 추천받기
-          </button>
-          <button
-            className="bottomScroll"
-            onClick={() => {
-              window.scrollTo({ top: 1010, behavior: "smooth" });
-            }}
-          >
-            더 많은 정보 보기
-          </button>
-        </ExampleOtherButton>
-      </ExampleBody>
+            <div id="map" style={{ width: "400px", height: "300px" }}></div>
+          </ExampleInfo>
+          <ExampleOtherButton>
+            <button
+              className="other"
+              onClick={() => {
+                setRandomInt(getRandomInt(0, currentLocationShops.length));
+              }}
+            >
+              다른 메뉴 추천받기
+            </button>
+            <button
+              className="bottomScroll"
+              onClick={() => {
+                window.scrollTo({ top: 1010, behavior: "smooth" });
+              }}
+            >
+              더 많은 정보 보기
+            </button>
+          </ExampleOtherButton>
+        </ExampleBody>
+      )}
     </>
   );
 };
