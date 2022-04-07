@@ -114,7 +114,7 @@ module.exports = async (req, res) => {
       // ).children("span");
       // console.log(worktime);
       // work_time = worktime[0].children[0].data;
-      console.log("crowling",photolists,menulists,price)
+      //console.log("crowling",photolists,menulists,price)
 
       for (let i = 0; i < photolists.length; i++) {
         let word =
