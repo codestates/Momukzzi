@@ -98,10 +98,6 @@ app.post("/data", controllers.data);
 // 주제별 식당 추천
 app.get("/topicshop/:topic", controllers.topicshop);
 
-// shop 테이블 정보 여러개 가져오기
-app.post("/shopmanyinfo", controllers.shopmanyinfo);
-// shop_pic 테이블 정보 여러개 가져오기
-app.post("/shopmanypics", controllers.shopmanypics);
 // review 테이블 정보 여러개 가져오기
 app.post("/shopmanyreviews", controllers.shopmanyreviews);
 // 즐겨찾기 추가/제거

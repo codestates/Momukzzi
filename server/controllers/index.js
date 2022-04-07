@@ -28,8 +28,6 @@ module.exports = {
   data: require("./getdata/getdatas"),
 
   topicshop: require("./shop/topicshop"),
-  shopmanyinfo: require("./shop/shopmanyinfo"),
-  shopmanypics: require("./shop/shopmanypics"),
   shopmanyreviews: require("./shop/shopmanyreviews"),
   bookmark: require("./bookmark/bookmark"),
 };
