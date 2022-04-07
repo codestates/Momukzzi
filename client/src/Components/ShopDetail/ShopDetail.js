@@ -12,6 +12,7 @@ import {
   ShopBasicInfo,
   ShopBasicInfoHeader,
   ShopDetailInfo,
+  ShopReviewHeader,
   ShopReview,
   ShopEachReview,
   ShopReviewPlusButton,
@@ -22,6 +23,7 @@ import {
   ShopReviewCommentPart,
 } from "./ShopDetail.style";
 import { useDispatch } from "react-redux";
+import { MdWavingHand } from "react-icons/md";
 
 /*global kakao*/
 
@@ -244,7 +246,7 @@ export default function ShopDetail({ match }) {
             {info.shop_name}
           </span>
           <span style={{ fontSize: 24, fontWeight: "bold", color: "red" }}>
-            {info.star_avg?.toFixed(1)}
+            {!info.star_avg ? "0.0" : info.star_avg?.toFixed(1)}
           </span>
           <Buttons>
             <ReviewButton onClick={handleReviewButton}>
@@ -310,6 +312,12 @@ export default function ShopDetail({ match }) {
           </ShopDetailInfo>
           <ShopLocation id="map"></ShopLocation>
         </ShopBasicInfo>
+        {!info.total_review ? (
+          ""
+        ) : (
+          <ShopReviewHeader>리뷰 ( {info.total_review} )</ShopReviewHeader>
+        )}
+
         <ShopReview>
           {info.reviews.length !== 0 ? (
             info.reviews.slice(0, reviewCount).map((el, idx) => {
@@ -324,7 +332,7 @@ export default function ShopDetail({ match }) {
                 >
                   <ShopReviewUserPart>
                     <BsPersonCircle className="userIcon" />
-                    <span>{el.user.user_id}</span>
+                    <span>{el.user.nickname}</span>
                   </ShopReviewUserPart>
 
                   <ShopReviewCommentPart>
@@ -343,7 +351,7 @@ export default function ShopDetail({ match }) {
                         return <Star key={idx} selected={el.star > idx} />;
                       })}
                     </div>
-                    <div style={{ marginTop: 15, minHeight: 100 }}>
+                    <div style={{ marginTop: 15, minHeight: 80 }}>
                       {el.comment}
                     </div>
                     <div>
@@ -357,6 +365,7 @@ export default function ShopDetail({ match }) {
                               height: 80,
                               borderRadius: 4,
                               marginRight: 5,
+                              marginTop: 20,
                             }}
                           />
                         );

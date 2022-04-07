@@ -22,7 +22,7 @@ const Star = ({ selected = false, handleSelect = (f) => f }) => {
   );
 };
 
-export default function Review({ history, match }) {
+export default function Review({ match }) {
   const [selectedStar, setSelectedStar] = useState(0);
   const [inputText, setInputText] = useState("");
   const [uploadImage, setUploadImage] = useState([]);
