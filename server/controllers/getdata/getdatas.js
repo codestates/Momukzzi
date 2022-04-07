@@ -23,7 +23,7 @@ module.exports = async (req, res) => {
     // console.log(shopinfo);
 
     if (shopinfo) {
-      console.log("데이터 베이스에서 정보가 나갑니다~");
+      console.log("from database");
       let photodatas = []; //이미지 크롤링 결과
       let menulist = []; //메뉴 정보 크롤링 결과
 
@@ -73,7 +73,7 @@ module.exports = async (req, res) => {
         });
       }
     } else {
-      console.log("크롤링해서 정보가 나갑니다~");
+      console.log("crawling start!");
 
       let eachshop = [];
       let photodatas = []; //이미지 크롤링 결과
