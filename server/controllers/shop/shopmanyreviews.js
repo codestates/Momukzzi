@@ -19,8 +19,17 @@ module.exports = async (req, res) => {
         shop_id: req.body.shop_ids[i],
       },
     });
+    if (!reviewInfo) {
+      result.push([reviewInfo, null]);
+    } else {
+      const userInfo = await user.findOne({
+        where: {
+          id: reviewInfo.dataValues.user_id,
+        },
+      });
 
-    result.push(reviewInfo);
+      result.push([reviewInfo, userInfo]);
+    }
   }
   res.status(200).send({ data: result });
 };

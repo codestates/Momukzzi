@@ -3,8 +3,8 @@ import styled from "styled-components";
 export const ReviewBody = styled.div`
   display: flex;
   flex-direction: column;
-  width: 70%;
-  padding-top: 200px;
+  width: 40%;
+  padding-top: 150px;
   margin: 0 auto;
 `;
 
@@ -14,12 +14,12 @@ export const ReviewShopName = styled.span`
 `;
 
 export const ReviewInputText = styled.textarea.attrs({
-  placeholder: "이곳에 리뷰를 작성해주세요.",
+  placeholder: "이 곳에 리뷰를 작성해주세요.",
 })`
   resize: none;
   width: 100%;
   height: 300px;
-  border: 1px solid grey;
+  border: 1px solid gainsboro;
 `;
 
 export const ReviewThumbnail = styled.div`
@@ -59,7 +59,7 @@ export const ReviewSubmitButtonDiv = styled.div`
 
   & > button {
     padding: 6px 6px;
-    background-color: #ff6600;
+    background-color: #ffba34;
     border-radius: 4px;
     border: none;
     color: white;

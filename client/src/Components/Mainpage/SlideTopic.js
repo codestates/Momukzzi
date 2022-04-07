@@ -14,31 +14,49 @@ import { Grid, Pagination, Navigation } from "swiper";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 const SlideTopicContainer = styled.div`
-  width: 1300px;
-  height: 660px;
-  border: 1px solid black;
+  width: 1600px;
+  height: 700px;
   margin: 0 auto;
   margin-bottom: 30px;
   font-size: 25px;
-  #topic {
-    margin: 5px;
-  }
-  .shop_list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
+
+  flex-wrap: wrap;
+  justify-content: space-between;
 `;
 const TopicShopList = styled.div`
-  width: 300px;
+  width: 350px;
   height: 300px;
-  border: 1px solid black;
   margin: 5px;
+  border-radius: 10px;
 `;
 const SlideTopicImage = styled.img`
-  width: 300px;
-  height: 300px;
-  border: 1px solid black;
+  width: 350px;
+  height: 80%;
+  border-radius: 10px;
+`;
+const SlideContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+`;
+const Title = styled.div`
+  color: #ffba34;
+  height: 50px;
+`;
+
+const ShopName = styled.div`
+  height: 100px;
+  text-align: center;
+
+  div {
+    display: inline-block;
+    font-size: 1.3rem;
+  }
+  span {
+    display: inline-block;
+    font-size: 15px;
+    color: darkgray;
+  }
 `;
 
 const SlideTopic = () => {
@@ -49,33 +67,43 @@ const SlideTopic = () => {
 
   useEffect(() => {
     axios
-      .get("https://localhost:4000/topicshop/total_review", {
+      .get(`${process.env.REACT_APP_API_URL}/topicshop/total_review`, {
         withCredentials: true,
       })
       .then((res) => {
         console.log(res);
         setTopicShopsInfo(res.data.data.shopInfo);
         setTopicShopPics(res.data.data.shopPicInfos);
+        console.log(res.data.data.shopInfo);
+        console.log(res.data.data.shopPicInfos);
       });
   }, []);
 
   return (
     <SlideTopicContainer>
-      <div id="topic">평점이 높은 식당</div>
-      <div className="shop_list">
+      <Title>평점이 높은 식당</Title>
+      <SlideContainer>
         {topicShopsInfo.map((obj, i) => {
           return (
             <TopicShopList key={i}>
-              <Link to={`/shopdetail/${obj.id}`}>
+              <Link
+                to={`/shopdetail/${obj.id}`}
+                style={{ textDecoration: "none", color: "#533026" }}
+              >
                 <SlideTopicImage
-                  className="shop_pic"
                   src={topicShopPics[i]?.pic_URL}
+                  alt={obj.shop_name}
                 ></SlideTopicImage>
+                <ShopName>
+                  <div>
+                    {obj.shop_name} <span>{obj.genus}</span>
+                  </div>
+                </ShopName>
               </Link>
             </TopicShopList>
           );
         })}
-      </div>
+      </SlideContainer>
     </SlideTopicContainer>
   );
 };

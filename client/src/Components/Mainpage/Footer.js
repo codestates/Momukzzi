@@ -8,16 +8,22 @@ const FooterContainer = styled.footer`
   display: flex;
   border: 1px solid black;
   height: 150px;
+  background-color: #3e3e3e;
+  color: white;
 
   .footer_info {
     list-style-type: none;
     flex: 1 1 auto;
     margin-left: 200px;
+    text-decoration: none;
   }
 
-  .footer_info > li img {
+  .footer_info > li div {
     width: 200px;
     height: 100px;
+    font-size: 50px;
+
+    color: white;
   }
 
   .footer_github {
@@ -41,7 +47,7 @@ const FooterContainer = styled.footer`
 
   .github_icons {
     font-size: 50px;
-    color: black;
+    color: white;
   }
   .currentColor {
     font-size: 25px;
@@ -54,7 +60,7 @@ const FooterContainer = styled.footer`
 
   .footer_github_members_name > a {
     text-decoration: none;
-    color: black;
+    color: white;
   }
 
   #github_title {
@@ -66,11 +72,8 @@ const Footer = () => {
     <FooterContainer>
       <ul className="footer_info">
         <li>
-          <Link to="/">
-            <img
-              src="https://euilimchoibucket.s3.amazonaws.com/1649123847358.png"
-              alt="logo"
-            />
+          <Link to="/" style={{ textDecoration: "none" }}>
+            <div>MOMUKZZI</div>
           </Link>
         </li>
         <li>Copyright @ 2022 All right Reserved</li>

@@ -58,22 +58,26 @@ module.exports = async (req, res) => {
               id: bookmarkInfo[i].dataValues.shop_id,
             },
           });
-          console.log("098sd7f9sd87f", shopInfo.id);
-          const shopPicInfo = await shop_pic.findOne({
-            where: {
-              shop_id: shopInfo.id,
-            },
-          });
+          if (!shopInfo) {
+          } else {
+            console.log("098sd7f9sd87f", shopInfo.id);
+            const shopPicInfo = await shop_pic.findOne({
+              where: {
+                shop_id: shopInfo.id,
+              },
+            });
 
-          const obj = {
-            id: shopInfo.id,
-            shop_name: shopInfo.shop_name,
-            genus: shopInfo.genus,
-            location: shopInfo.location,
-            pic_URL: shopPicInfo.pic_URL,
-          };
+            const obj = {
+              id: shopInfo.id,
+              shop_name: shopInfo.shop_name,
+              genus: shopInfo.genus,
+              location: shopInfo.location,
+              pic_URL: shopPicInfo.pic_URL,
+              star_avg: shopInfo.star_avg,
+            };
 
-          cookie.push(obj);
+            cookie.push(obj);
+          }
         }
 
         res
@@ -103,28 +107,25 @@ module.exports = async (req, res) => {
               id: bookmarkInfo[i].dataValues.shop_id,
             },
           });
-          const shopPicInfo = await shop_pic.findOne({
-            where: {
-              shop_id: shopInfo.id,
-            },
-          });
+          if (!shopInfo) {
+          } else {
+            const shopPicInfo = await shop_pic.findOne({
+              where: {
+                shop_id: shopInfo.id,
+              },
+            });
 
-          const obj = {
-            id: shopInfo.id,
-            shop_name: shopInfo.shop_name,
-            genus: shopInfo.genus,
-            location: shopInfo.location,
-            pic_URL: shopPicInfo.pic_URL,
-          };
-
-          cookie.push(obj);
+            const obj = {
+              id: shopInfo.id,
+              shop_name: shopInfo.shop_name,
+              genus: shopInfo.genus,
+              location: shopInfo.location,
+              pic_URL: shopPicInfo.pic_URL,
+              shop_avg: shopInfo.star_avg,
+            };
+            cookie.push(obj);
+          }
         }
-
-        // for (let i = 0; i < cookie.length; i++) {
-        //   if (cookie[i].id === Number(req.body.shop_id)) {
-        //     cookie.splice(i, 1);
-        //   }
-        // }
 
         res
           .cookie("bookmark", JSON.stringify(cookie))

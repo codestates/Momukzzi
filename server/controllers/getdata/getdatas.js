@@ -11,6 +11,11 @@ module.exports = async (req, res) => {
   let address = undefined;
   let result = []; //결과를 담을 객체
   // console.log(req.body);
+
+      const browser = await puppeteer.launch({args: [ '--disable-gpu', '--disable-setuid-sandbox', '--no-sandbox', '--no-zygote'] });
+
+      const page = await browser.newPage();
+
   for (let i = 0; i < req.body.data.length; i++) {
     // 데이터 베이스에 있는지 검증
 
@@ -80,18 +85,14 @@ module.exports = async (req, res) => {
       let menulist = []; //메뉴 정보 크롤링 결과
       let genus = req.body.data[i].category_name.split(" > ")[1];
 
-      // 크롤링시작
-
-      const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox']});
-
-      const page = await browser.newPage();
+      // 크롤링시작;;
 
       await page.setViewport({
         width: 1920,
         height: 1080,
       });
 
-      await page.goto(req.body.data[i].place_url);
+      await page.goto(req.body.data[i].place_url,{waitUntil:"networkidle0"});
 
       await scrollPageToBottom(page, {
         size: 500,
@@ -152,8 +153,6 @@ module.exports = async (req, res) => {
           }
         }
       }
-
-      await page.close();
 
       //크롤링 종료!
 
@@ -256,6 +255,8 @@ module.exports = async (req, res) => {
   // }
 
   // console.log(someerr)
+
+ await browser.close();
 
   res.status(200).json({
     message: "shopinfo crawling",

@@ -13,13 +13,6 @@ export const GlobalStyle = createGlobalStyle`
   }
 `;
 
-export const ShopHeader = styled.div`
-  height: 50px;
-  text-align: center;
-  border: 1px solid blue;
-  margin: 0px 0px 5px 0px;
-`;
-
 export const ShopImages = styled.div`
   width: 100%;
   height: 250px;
@@ -27,7 +20,7 @@ export const ShopImages = styled.div`
   flex-direction: row;
   overflow: auto;
   margin: 0 auto;
-  border-bottom: 1px solid grey;
+  border-bottom: 1px solid gainsboro;
   ::-webkit-scrollbar {
     display: none;
   }
@@ -49,7 +42,7 @@ export const ShopBody = styled.div`
 
 export const ShopBasicInfoHeader = styled.div`
   margin: 0 auto;
-  width: 70%;
+  width: 60%;
   height: 100px;
   display: flex;
   align-items: center;
@@ -83,7 +76,7 @@ export const ReviewButton = styled.button`
 `;
 
 export const ShopBasicInfo = styled.div`
-  width: 70%;
+  width: 60%;
   height: auto;
   min-height: 400px;
   display: flex;
@@ -109,7 +102,7 @@ export const ShopDetailInfo = styled.div`
 
   & > table > tbody > tr > th {
     width: 110px;
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: rgba(79, 79, 79, 0.6);
     line-height: 1.7;
     text-align: left;
@@ -119,7 +112,7 @@ export const ShopDetailInfo = styled.div`
   }
 
   & > table > tbody > tr > td {
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: #4f4f4f;
     line-height: 1.7;
     text-align: left;
@@ -135,23 +128,33 @@ export const ShopLocation = styled.div`
   height: auto;
 `;
 
+export const ShopReviewHeader = styled.div`
+  width: 60%;
+  margin: 0 auto;
+  padding-left: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid gainsboro;
+`;
+
 export const ShopReview = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  width: 70%;
+  width: 60%;
   height: auto;
 `;
 
 export const ShopEachReview = styled.div`
-  border-top: 1px solid grey;
-  padding: 20px 0px 30px 30px;
-  min-height: 100px;
+  border-bottom: 1px solid gainsboro;
+  padding: 10px 0px 30px 30px;
   display: flex;
 
   .userIcon {
     width: 32px;
     height: 32px;
+  }
+  :hover {
+    background-color: #e2e2e2;
   }
 `;
 
@@ -160,15 +163,17 @@ export const ShopReviewUserPart = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  min-width: 80px;
+  margin-right: 100px;
 
   & > span {
     display: flex-row;
-    padding-top: 5px;
+    padding-top: 10px;
   }
 `;
 
 export const ShopReviewCommentPart = styled.div`
-  padding-left: 100px;
+  padding-left: 20px;
 `;
 
 export const ShopReviewPlusButton = styled.button`
@@ -176,4 +181,5 @@ export const ShopReviewPlusButton = styled.button`
   width: 98%;
   border: none;
   background-color: white;
+  font-size: 20px;
 `;

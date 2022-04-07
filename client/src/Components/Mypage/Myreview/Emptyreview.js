@@ -1,11 +1,12 @@
 import React from 'react'
 import { Styled } from './style'
-import MypageImg from '../21631.jpg'
+import MypageImg from '../케이크.jpeg'
 
 const Empty = () => {
 	return (
 		<Styled.ContentEmpty>
-			새로운 리뷰를 작성해보세요 !<img src={MypageImg}></img>
+			<span className="imtext"> 새로운 리뷰를 작성해보세요 !</span>
+			<img src={MypageImg} className="blur"></img>
 		</Styled.ContentEmpty>
 	)
 }
