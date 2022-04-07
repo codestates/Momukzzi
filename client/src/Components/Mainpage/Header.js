@@ -115,6 +115,7 @@ const Header = () => {
               onClick={() => {
                 localStorage.removeItem("accessToken");
                 localStorage.removeItem("nickname");
+                localStorage.removeItem("Oauth");
                 axios.get("https://localhost:4000/users/logout", {
                   withCredentials: true,
                 });

@@ -17,7 +17,6 @@ import Signup from "./Components/Signup/Signup";
 import Intro from "./Components/intropage/Intro";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import SlideTopic from "./Components/Mainpage/SlideTopic";
-import Hashtag from "./Components/Mainpage/Hashtag";
 import Loginmodal from "./Components/Login/Loginmodal";
 import Mypage from "./Components/Mypage/Mypage";
 import Signout from "./Components/Mypage/Signout/Signout";
@@ -65,11 +64,6 @@ function App() {
           </Route>
           <Route path="/shopdetail/:id" component={ShopDetail} />
           <Route path="/editor_pick/:code" component={EditorPick} />
-          {localStorage.getItem("accessToken") ? (
-            <Route path={"/review/:shop_id"} component={Review} />
-          ) : (
-            <Redirect to="/" />
-          )}
           <Route path={"/review/:shop_id"} component={Review} />
           <Route path="/oauthloding" component={OauthLoding} />
         </Switch>

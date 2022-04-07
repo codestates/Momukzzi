@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import { BsStar, BsPersonCircle } from "react-icons/bs";
 import { BiMessageDetail } from "react-icons/bi";
 import { FaStar } from "react-icons/fa";
@@ -31,8 +30,8 @@ const createArray = (length) => [...Array(length)];
 const Star = ({ selected = false }) => {
   return (
     <FaStar
-      color={selected ? "orange" : "grey"}
-      style={{ width: 20, height: 20 }}
+      color={selected ? "#ffba34" : "grey"}
+      style={{ width: 16, height: 16 }}
     />
   );
 };
@@ -68,7 +67,6 @@ export default function ShopDetail({ match }) {
 
   const handleStar = () => {
     // 즐겨찾기 bookmark 상태변수 true or false, 별모양 빈거/채워진거
-
     axios
       .post(
         "https://localhost:4000/bookmark",
@@ -110,10 +108,6 @@ export default function ShopDetail({ match }) {
     setReviewCount(reviewCount + 4);
     setIsLoaded(false);
   };
-
-  // useEffect(() => {
-  //   console.log(reviewCount);
-  // }, [reviewCount]);
 
   useEffect(() => {
     const cookie = JSON.parse(getCookie("bookmark"));
@@ -253,20 +247,17 @@ export default function ShopDetail({ match }) {
             {info.star_avg?.toFixed(1)}
           </span>
           <Buttons>
-            {/* <Link to={`/review/${match.params.id}`}> */}
             <ReviewButton onClick={handleReviewButton}>
               <BiMessageDetail className="reviewButton" color="gainsboro" />
               <span>리뷰쓰기</span>
             </ReviewButton>
-            {/* </Link> */}
 
-            {/*클릭 시 즐겨찾기 등록 or 해제 */}
             <ReviewButton>
               {bookmark ? (
                 <FaStar
                   className="favoriteButton"
                   onClick={handleStar}
-                  color="orange"
+                  color="#ffba34"
                 />
               ) : (
                 <BsStar
@@ -304,15 +295,13 @@ export default function ShopDetail({ match }) {
                   <th>메뉴</th>
                   <td>
                     <ul style={{ margin: 0, padding: 0 }}>
-                      {info.menus
-                        .filter((el) => el.menu_name !== null)
-                        .map((item) => {
-                          return (
-                            <li>
-                              {item.menu_name} : {item.price}원
-                            </li>
-                          );
-                        })}
+                      {info.menus.map((item) => {
+                        return (
+                          <li>
+                            {item.menu_name} : {item.price}원
+                          </li>
+                        );
+                      })}
                     </ul>
                   </td>
                 </tr>
@@ -322,52 +311,64 @@ export default function ShopDetail({ match }) {
           <ShopLocation id="map"></ShopLocation>
         </ShopBasicInfo>
         <ShopReview>
-          {info.reviews.length !== 0
-            ? info.reviews.slice(0, reviewCount).map((el, idx) => {
-                return (
-                  <ShopEachReview
-                    key={idx}
-                    onClick={() => {
-                      if (el.review_pics.length === 0) {
-                        console.log("업로드된 사진 없음");
-                      } else handleReviewClick(idx);
-                    }}
-                  >
-                    <ShopReviewUserPart>
-                      <BsPersonCircle className="userIcon" />
-                      <span>{el.user.user_id}</span>
-                    </ShopReviewUserPart>
+          {info.reviews.length !== 0 ? (
+            info.reviews.slice(0, reviewCount).map((el, idx) => {
+              return (
+                <ShopEachReview
+                  key={idx}
+                  onClick={() => {
+                    if (el.review_pics.length === 0) {
+                      console.log("업로드된 사진 없음");
+                    } else handleReviewClick(idx);
+                  }}
+                >
+                  <ShopReviewUserPart>
+                    <BsPersonCircle className="userIcon" />
+                    <span>{el.user.user_id}</span>
+                  </ShopReviewUserPart>
 
-                    <ShopReviewCommentPart>
-                      <div>
-                        {createArray(5).map((item, idx) => {
-                          return <Star key={idx} selected={el.star > idx} />;
-                        })}
-                      </div>
-                      <div style={{ marginTop: 15, minHeight: 100 }}>
-                        {el.comment}
-                      </div>
-                      <div>
-                        {el.review_pics.map((picArr, idx) => {
-                          return (
-                            <img
-                              key={idx}
-                              src={picArr.pic_URL}
-                              style={{
-                                width: 80,
-                                height: 80,
-                                borderRadius: 4,
-                                marginRight: 5,
-                              }}
-                            />
-                          );
-                        })}
-                      </div>
-                    </ShopReviewCommentPart>
-                  </ShopEachReview>
-                );
-              })
-            : "리뷰 없음"}
+                  <ShopReviewCommentPart>
+                    <div
+                      style={{
+                        height: 30,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <span style={{ color: "grey", marginRight: 10 }}>
+                        {el.updatedAt.slice(0, 10)}
+                      </span>
+                      {createArray(5).map((item, idx) => {
+                        return <Star key={idx} selected={el.star > idx} />;
+                      })}
+                    </div>
+                    <div style={{ marginTop: 15, minHeight: 100 }}>
+                      {el.comment}
+                    </div>
+                    <div>
+                      {el.review_pics.map((picArr, idx) => {
+                        return (
+                          <img
+                            key={idx}
+                            src={picArr.pic_URL}
+                            style={{
+                              width: 80,
+                              height: 80,
+                              borderRadius: 4,
+                              marginRight: 5,
+                            }}
+                          />
+                        );
+                      })}
+                    </div>
+                  </ShopReviewCommentPart>
+                </ShopEachReview>
+              );
+            })
+          ) : (
+            <div style={{ marginLeft: 30 }}>등록된 리뷰가 없습니다.</div>
+          )}
           {isLoaded ? (
             <Loader />
           ) : (

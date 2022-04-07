@@ -15,11 +15,15 @@ const FooterContainer = styled.footer`
     list-style-type: none;
     flex: 1 1 auto;
     margin-left: 200px;
+    text-decoration: none;
   }
 
-  .footer_info > li img {
+  .footer_info > li div {
     width: 200px;
     height: 100px;
+    font-size: 50px;
+
+    color: white;
   }
 
   .footer_github {
@@ -68,11 +72,8 @@ const Footer = () => {
     <FooterContainer>
       <ul className="footer_info">
         <li>
-          <Link to="/">
-            <img
-              src="https://euilimchoibucket.s3.amazonaws.com/1649123847358.png"
-              alt="logo"
-            />
+          <Link to="/" textDecoration="none">
+            <div>MUMUKZZI</div>
           </Link>
         </li>
         <li>Copyright @ 2022 All right Reserved</li>
