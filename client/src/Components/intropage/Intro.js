@@ -126,10 +126,6 @@ const ExampleOtherButton = styled.div`
     margin-left: 50px;
   }
 `;
-const Line = styled.div`
-  border-top: 1px solid gainsboro;
-  margin-top: 20px;
-`;
 
 const Intro = () => {
   const loading = useSelector((state) => state.loading);
@@ -276,7 +272,7 @@ const Intro = () => {
               )}
             </Carousel>
           </ExampleImage>
-          <Line />
+
           <ExampleInfo>
             <div className="menu">
               <table>
