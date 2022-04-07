@@ -13,13 +13,6 @@ export const GlobalStyle = createGlobalStyle`
   }
 `;
 
-export const ShopHeader = styled.div`
-  height: 50px;
-  text-align: center;
-  border: 1px solid blue;
-  margin: 0px 0px 5px 0px;
-`;
-
 export const ShopImages = styled.div`
   width: 100%;
   height: 250px;
@@ -27,7 +20,7 @@ export const ShopImages = styled.div`
   flex-direction: row;
   overflow: auto;
   margin: 0 auto;
-  border-bottom: 1px solid grey;
+  border-bottom: 1px solid gainsboro;
   ::-webkit-scrollbar {
     display: none;
   }
@@ -140,7 +133,7 @@ export const ShopReviewHeader = styled.div`
   margin: 0 auto;
   padding-left: 30px;
   padding-bottom: 20px;
-  border-bottom: 1px solid grey;
+  border-bottom: 1px solid gainsboro;
 `;
 
 export const ShopReview = styled.div`
@@ -152,7 +145,7 @@ export const ShopReview = styled.div`
 `;
 
 export const ShopEachReview = styled.div`
-  border-bottom: 1px solid grey;
+  border-bottom: 1px solid gainsboro;
   padding: 10px 0px 30px 30px;
   display: flex;
 

@@ -95,7 +95,7 @@ export default function Review({ match }) {
           <ReviewShopName>{shopName}</ReviewShopName>에 대한 리뷰를
           작성해주세요.
         </div>
-        <div style={{ marginBottom: 10, marginTop: 10 }}>
+        <div style={{ marginBottom: 20, marginTop: 20 }}>
           {createArray(5).map((item, idx) => {
             return (
               <Star
