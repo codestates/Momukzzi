@@ -82,7 +82,7 @@ module.exports = async (req, res) => {
 
       // 크롤링시작
 
-      const browser = await puppeteer.launch({});
+      const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox']});
 
       const page = await browser.newPage();
 
