@@ -202,7 +202,7 @@ function Signup(props) {
     >
       <SignUpForm onClick={(e) => e.stopPropagation()}>
         <Div>
-          <img src="https://euilimchoibucket.s3.amazonaws.com/1649123847358.png"></img>
+          <img src="https://cdn.discordapp.com/attachments/947685049682247701/961421667157016686/logo-removebg-preview.png"></img>
           <InputForm>
             <div>아이디</div>
             <InputBox>
