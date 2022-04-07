@@ -71,7 +71,7 @@ export default function ShopDetail({ match }) {
     // 즐겨찾기 bookmark 상태변수 true or false, 별모양 빈거/채워진거
     axios
       .post(
-        "https://localhost:4000/bookmark",
+        `${process.env.REACT_APP_API_URL}/bookmark`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -124,7 +124,7 @@ export default function ShopDetail({ match }) {
 
     // match.params.id 활용
     axios
-      .get(`https://localhost:4000/shops/${match.params.id}`)
+      .get(`${process.env.REACT_APP_API_URL}/shops/${match.params.id}`)
       .then((res) => {
         // 방문한페이지 추가하는 로직 추가----------------------------
         if (

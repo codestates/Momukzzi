@@ -166,7 +166,7 @@ const Intro = () => {
 
                 axios
                   .post(
-                    "https://localhost:4000/data",
+                    `${process.env.REACT_APP_API_URL}/data`,
                     { data: res.data.documents },
                     {
                       withCredentials: true,
@@ -247,16 +247,21 @@ const Intro = () => {
         <ExampleBody>
           <ExampleTitle>
             오늘은
-            <span
-              style={{
-                paddingLeft: 20,
-                paddingRight: 20,
-                fontSize: 32,
-                fontWeight: "bold",
-              }}
+            <Link
+              to={`/shopdetail/${currentLocationShops[randomInt].shopinfo.shop_id}`}
+              style={{ textDecoration: "none", color: "black" }}
             >
-              {currentLocationShops[randomInt].shopinfo?.shopinfo.place_name}
-            </span>
+              <span
+                style={{
+                  paddingLeft: 20,
+                  paddingRight: 20,
+                  fontSize: 32,
+                  fontWeight: "bold",
+                }}
+              >
+                {currentLocationShops[randomInt].shopinfo?.shopinfo.place_name}
+              </span>
+            </Link>
             어떠세요?
           </ExampleTitle>
           <ExampleImage>
@@ -306,7 +311,7 @@ const Intro = () => {
                     <td>
                       <ul style={{ margin: 0, padding: 0 }}>
                         {currentLocationShops[randomInt].menulist?.menulist
-                          .slice(0, 7)
+                          .slice(0, 6)
                           .filter((menu, i) => {
                             return menu[0] !== null;
                           })
@@ -334,7 +339,7 @@ const Intro = () => {
             <button
               className="bottomScroll"
               onClick={() => {
-                window.scrollTo({ top: 1040, behavior: "smooth" });
+                window.scrollTo({ top: 1000, behavior: "smooth" });
               }}
             >
               더 많은 정보 보기

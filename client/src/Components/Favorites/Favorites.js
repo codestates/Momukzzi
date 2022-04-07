@@ -114,7 +114,7 @@ const Favorite = () => {
       console.log("hello");
       axios
         .post(
-          "https://localhost:4000/bookmark",
+          `${process.env.REACT_APP_API_URL}/bookmark`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -140,7 +140,7 @@ const Favorite = () => {
       console.log("hello");
       axios
         .post(
-          "https://localhost:4000/bookmark",
+          `${process.env.REACT_APP_API_URL}/bookmark`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("accessToken")}`,

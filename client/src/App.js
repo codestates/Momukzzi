@@ -31,6 +31,7 @@ import { Redirect } from "react-router-dom";
 import LoadingIndicator from "./Components/Loading/LoadingIndicator";
 import LoadingModal from "./Components/Loading/LoadingModal";
 import { Button } from "react-bootstrap";
+
 function App() {
   const isLogInOpen = useSelector((state) => state.isLogInOpen);
   const isSignUpOpen = useSelector((state) => state.isSignUpOpen);
