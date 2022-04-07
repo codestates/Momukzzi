@@ -3,6 +3,7 @@ import axios from "axios";
 import styled from "styled-components";
 import Loginoauth from "./Loginoauth";
 import { useDispatch } from "react-redux";
+import LoadingIndicator from "../Loading/LoadingIndicator";
 
 const Div = styled.div`
   margin: 0 auto;
@@ -53,7 +54,7 @@ function OauthLoading() {
               localStorage.setItem("email", res.data.data.email);
               localStorage.setItem("nickname", res.data.data.nickname);
               localStorage.setItem("Oauth", res.data.data.oauth);
-              alert("로그인 되었습니다!");
+
               window.location.replace("/");
             })
             .catch((e) => {
@@ -86,7 +87,7 @@ function OauthLoading() {
             localStorage.setItem("accessToken", res.data.data.accessToken);
             localStorage.setItem("nickname", res.data.data.nickname);
             localStorage.setItem("Oauth", res.data.data.oauth);
-            alert("로그인 되었습니다!");
+
             window.location.replace("/");
           }
         })
@@ -105,7 +106,11 @@ function OauthLoading() {
     kakaocode(code);
   }, []);
 
-  return <Div>loading~~~~~~~~~~~~~~~~~~~~~~~~</Div>;
+  return (
+    <>
+      <LoadingIndicator />
+    </>
+  );
 }
 
 export default OauthLoading;
