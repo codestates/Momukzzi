@@ -239,7 +239,7 @@ module.exports = async (req, res) => {
         });
       //}
 
-      setTimeout(() => {console.log("time Out!")}, 5000)
+      await setTimeout(() => {console.log("time Out!")}, 5000)
     }
   }
 
