@@ -73,7 +73,8 @@ module.exports = async (req, res) => {
         });
       }
     } else {
-      setTimeout(() => {
+
+      setTimeout(async () => {
 
 
         console.log("crawling start!");
