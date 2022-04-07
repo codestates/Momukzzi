@@ -154,7 +154,7 @@ module.exports = async (req, res) => {
         }
       }
 
-      await page.close();
+      //await page.close();
 
       //크롤링 종료!
 
