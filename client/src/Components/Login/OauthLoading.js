@@ -39,7 +39,7 @@ function OauthLoading() {
 
           axios
             .post(
-              "https://localhost:4000/users/oauth",
+              `${process.env.REACT_APP_API_URL}/users/oauth`,
               {
                 oauth: "KaKao",
                 code: result.data.access_token,
@@ -67,7 +67,7 @@ function OauthLoading() {
 
       axios
         .post(
-          "https://localhost:4000/users/oauth",
+          `${process.env.REACT_APP_API_URL}/users/oauth`,
           {
             oauth: "github",
             code: code,
@@ -96,7 +96,7 @@ function OauthLoading() {
           alert("요청이 거부되었습니다. 다시 로그인 하세요");
           localStorage.removeItem("accessToken");
           localStorage.removeItem("nickname");
-          localStorage.removetem("Oauth");
+          localStorage.removeItem("Oauth");
           window.location.replace("/");
         });
     }

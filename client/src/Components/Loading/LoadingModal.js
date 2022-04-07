@@ -17,9 +17,7 @@ function LoadingModal(props) {
           <span className="visually-hidden">Loading...</span>
         </Spinner>
       </Modal.Header>
-      <Modal.Body>
-        음식점 정보를 불러오고 있습니다. 잠시만 기다려 주세요.
-      </Modal.Body>
+      <Modal.Body>정보를 불러오고 있습니다. 잠시만 기다려 주세요.</Modal.Body>
     </Modal>
   );
 }

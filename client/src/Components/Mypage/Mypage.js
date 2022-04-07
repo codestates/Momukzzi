@@ -29,11 +29,11 @@ function Mypage() {
 
   const userInfoHandler = () => {
     if (!accessToken) {
-      return;
+      window.location.replace("/");
     } else {
       setLoading(true);
       axios
-        .get("https://localhost:4000/users", {
+        .get(`${process.env.REACT_APP_API_URL}/users`, {
           headers: { authorization: `Bearer ${accessToken}` },
           "Content-Type": "application/json",
         })

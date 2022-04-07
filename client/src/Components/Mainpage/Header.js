@@ -114,7 +114,7 @@ const Header = () => {
                 localStorage.removeItem("accessToken");
                 localStorage.removeItem("nickname");
                 localStorage.removeItem("Oauth");
-                axios.get("https://localhost:4000/users/logout", {
+                axios.get(`${process.env.REACT_APP_API_URL}/users/logout`, {
                   withCredentials: true,
                 });
                 window.location.replace(window.location.pathname);

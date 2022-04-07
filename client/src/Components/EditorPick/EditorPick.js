@@ -1,4 +1,4 @@
-import react, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { BsStar } from "react-icons/bs";
 import { FaStar } from "react-icons/fa";
@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import localShopInfo from "../../dummy/localShopInfo";
 import dummyKakaoShops from "../../dummy/dummyKakaoShops";
 import LoadingIndicator from "../Loading/LoadingIndicator";
+
 const Container = styled.div``;
 
 const EditorPickHeader = styled.div`
@@ -128,7 +129,7 @@ const EditorPick = ({ match }) => {
       .then((res) => {
         axios
           .post(
-            "https://localhost:4000/data",
+            `${process.env.REACT_APP_API_URL}/data`,
             { data: res.data.documents },
             {
               withCredentials: true,
@@ -144,7 +145,7 @@ const EditorPick = ({ match }) => {
             console.log("sdfsd", shopIds);
             axios
               .post(
-                "https://localhost:4000/shopmanyreviews",
+                `${process.env.REACT_APP_API_URL}/shopmanyreviews`,
                 {
                   shop_ids: shopIds,
                 },
@@ -192,7 +193,7 @@ const EditorPick = ({ match }) => {
       console.log("hello");
       axios
         .post(
-          "https://localhost:4000/bookmark",
+          `${process.env.REACT_APP_API_URL}/bookmark`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -218,7 +219,7 @@ const EditorPick = ({ match }) => {
       console.log("hello");
       axios
         .post(
-          "https://localhost:4000/bookmark",
+          `${process.env.REACT_APP_API_URL}/bookmark`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("accessToken")}`,

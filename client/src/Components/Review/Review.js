@@ -65,7 +65,7 @@ export default function Review({ match }) {
     });
 
     axios
-      .post("https://localhost:4000/reviews", reviewData, {
+      .post(`${process.env.REACT_APP_API_URL}/reviews`, reviewData, {
         headers: {
           authorization: localStorage.getItem("accessToken"),
         },
@@ -79,7 +79,7 @@ export default function Review({ match }) {
 
   useEffect(() => {
     axios
-      .get(`https://localhost:4000/shops/${match.params.shop_id}`)
+      .get(`${process.env.REACT_APP_API_URL}/shops/${match.params.shop_id}`)
       .then((res) => {
         setShopName(res.data.data.targetshop.shop_name);
       });

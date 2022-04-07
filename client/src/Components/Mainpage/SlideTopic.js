@@ -67,7 +67,7 @@ const SlideTopic = () => {
 
   useEffect(() => {
     axios
-      .get("https://localhost:4000/topicshop/total_review", {
+      .get(`${process.env.REACT_APP_API_URL}/topicshop/total_review`, {
         withCredentials: true,
       })
       .then((res) => {
