@@ -47,10 +47,6 @@ function reducer(currentState = initialState, action) {
 }
 const store = createStore(reducer);
 
-// 사가함수를 작성할땐 * 별포 키워드와 함께 시작하는 것 참고해주세요
-// 정확한 이론은 아니니 참고만 해주세요
-// 패턴처럼 이해하시면 쉽습니다.
-
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>

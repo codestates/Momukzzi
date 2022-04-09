@@ -122,7 +122,7 @@ const EditorPick = ({ match }) => {
         `https://dapi.kakao.com/v2/local/search/category.json?category_group_code=FD6&page=1&size=15&sort=accuracy&x=${x}&y=${y}&radius=2000`,
         {
           headers: {
-            Authorization: "KakaoAK 2af87592ef59bb8f2f504dc1544a0a89",
+            Authorization: `KakaoAK ${process.env.REACT_APP_REST_API_KEY}`,
           },
         }
       )

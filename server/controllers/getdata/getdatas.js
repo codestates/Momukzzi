@@ -4,7 +4,7 @@ const puppeteer = require("puppeteer");
 const { scrollPageToBottom } = require("puppeteer-autoscroll-down");
 const { data } = require("cheerio/lib/api/attributes");
 
-process.setMaxListeners(100);
+process.setMaxListeners(0);
 
 module.exports = async (req, res) => {
   // let address = req.body.road_address_name;

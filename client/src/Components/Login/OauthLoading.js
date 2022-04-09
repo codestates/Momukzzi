@@ -16,7 +16,7 @@ function OauthLoading() {
   let code = new URL(window.location.href).searchParams.get("code");
 
   const REACT_APP_REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
-  const REDIRECT_URI = "https://localhost:3000/oauthloding";
+  const REDIRECT_URI = `${process.env.REACT_APP_CLIENT_URL}/oauthloding`;
   const REACT_APP_GITHUB_CLIENT_ID = process.env.REACT_APP_GITHUB_CLIENT_ID;
   const REACT_APP_GITHUB_CLIENT_SECRET =
     process.env.REACT_APP_GITHUB_CLIENT_SECRET;

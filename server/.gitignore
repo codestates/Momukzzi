@@ -4,3 +4,4 @@ localhost*
 
 *package-lock.json
 *.pem
+package.json

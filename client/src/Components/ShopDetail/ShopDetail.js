@@ -128,7 +128,9 @@ export default function ShopDetail({ match }) {
       .then((res) => {
         // 방문한페이지 추가하는 로직 추가----------------------------
         if (
-          window.location.href.includes("https://localhost:3000/shopdetail")
+          window.location.href.includes(
+            `${process.env.REACT_APP_CLIENT_URL}/shopdetail`
+          )
         ) {
           const visited = JSON.parse(localStorage.getItem("visited"));
           let alreadyVisited = false;

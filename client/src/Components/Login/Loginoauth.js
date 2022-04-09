@@ -42,9 +42,8 @@ function OauthLoading() {
   const REACT_APP_REST_API_KEY = "2af87592ef59bb8f2f504dc1544a0a89";
   //process.env.REACT_APP_REST_API_KEY;
   const REACT_APP_GITHUB_CLIENT_ID = process.env.REACT_APP_GITHUB_CLIENT_ID;
-  const REDIRECT_URI = "https://localhost:3000/oauthloding";
-  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=2af87592ef59bb8f2f504dc1544a0a89&redirect_uri=https://localhost:3000/oauthloding&response_type=code`;
-
+  const REDIRECT_URI = `${process.env.REACT_APP_CLIENT_URL}/oauthloding`;
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_CLIENT_URL}/oauthloding&response_type=code`;
   const GITHUB_LOGIN_URL = `https://github.com/login/oauth/authorize?client_id=${REACT_APP_GITHUB_CLIENT_ID}`;
 
   return (

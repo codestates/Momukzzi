@@ -96,7 +96,7 @@ function SlideShop() {
                     to={`/shopdetail/${obj.shopinfo?.shop_id}`}
                     style={{ textDecoration: "none", color: "#533026" }}
                   >
-                    <img src={obj.shoppic?.photodatas[0]}></img>
+                    <img src={obj.shoppic?.photodatas[0]} alt="shopimage" />
                     <ShopName>
                       <div>
                         {obj.shopinfo.shopinfo.place_name}{" "}
