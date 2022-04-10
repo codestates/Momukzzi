@@ -67,12 +67,9 @@ const SlideTopic = () => {
 
   useEffect(() => {
     axios
-      .get(
-        `https://ec2-54-198-156-106.compute-1.amazonaws.com:4000/topicshop/total_review`,
-        {
-          withCredentials: true,
-        }
-      )
+      .get(`${process.env.REACT_APP_API_URL}/topicshop/total_review`, {
+        withCredentials: true,
+      })
       .then((res) => {
         console.log(res);
         setTopicShopsInfo(res.data.data.shopInfo);
