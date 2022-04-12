@@ -100,6 +100,7 @@ app.get("/topicshop/:topic", controllers.topicshop);
 
 // review 테이블 정보 여러개 가져오기
 app.post("/shopmanyreviews", controllers.shopmanyreviews);
+
 // 즐겨찾기 추가/제거
 app.post("/bookmark", controllers.bookmark);
 
