@@ -49,7 +49,37 @@ module.exports = async (req, res) => {
           });
 
           console.log(nickname);
+          const bookmarkInfo = await bookmark.findAll({
+            where: {
+              user_id: userInfo.dataValues.user_id,
+            },
+          });
 
+          const cookie = [];
+          for (let i = 0; i < bookmarkInfo.length; i++) {
+            const shopInfo = await shop.findOne({
+              where: {
+                id: bookmarkInfo[i].dataValues.shop_id,
+              },
+            });
+            const shopPicInfo = await shop_pic.findOne({
+              where: {
+                shop_id: shopInfo.id,
+              },
+            });
+
+            const obj = {
+              id: shopInfo.id,
+              shop_name: shopInfo.shop_name,
+              genus: shopInfo.genus,
+              location: shopInfo.location,
+              pic_URL: shopPicInfo.pic_URL,
+            };
+
+            cookie.push(obj);
+          }
+
+          res.cookie("bookmark", JSON.stringify(cookie));
           res
             .status(200)
             .cookie("refreshToken", refresh_Token, {
@@ -62,7 +92,7 @@ module.exports = async (req, res) => {
               data: {
                 accessToken: access_Token,
                 nickname: nickname,
-                oauth : true
+                oauth: true,
               },
             });
         } else {
@@ -71,7 +101,7 @@ module.exports = async (req, res) => {
             user_id: id,
             nickname: nickname,
             email: email,
-            oauth: true
+            oauth: true,
           });
 
           const userInfo = await user.findOne({
@@ -94,6 +124,37 @@ module.exports = async (req, res) => {
 
           console.log(access_Token);
 
+          const bookmarkInfo = await bookmark.findAll({
+            where: {
+              user_id: userInfo.dataValues.user_id,
+            },
+          });
+
+          const cookie = [];
+          for (let i = 0; i < bookmarkInfo.length; i++) {
+            const shopInfo = await shop.findOne({
+              where: {
+                id: bookmarkInfo[i].dataValues.shop_id,
+              },
+            });
+            const shopPicInfo = await shop_pic.findOne({
+              where: {
+                shop_id: shopInfo.id,
+              },
+            });
+
+            const obj = {
+              id: shopInfo.id,
+              shop_name: shopInfo.shop_name,
+              genus: shopInfo.genus,
+              location: shopInfo.location,
+              pic_URL: shopPicInfo.pic_URL,
+            };
+
+            cookie.push(obj);
+          }
+
+          res.cookie("bookmark", JSON.stringify(cookie));
           res
             .status(200)
             .cookie("refreshToken", refresh_Token, {
@@ -106,13 +167,14 @@ module.exports = async (req, res) => {
               data: {
                 accessToken: access_Token,
                 nickname: nickname,
-                oauth : true
+                oauth: true,
               },
             });
         }
       })
       .catch((e) => {
         //오류 처리
+
         res.status(400).json({
           message: "Oauth login err",
         });
@@ -149,16 +211,23 @@ module.exports = async (req, res) => {
 
             const id = result.data.id;
 
-            let nickname
+            let nickname;
 
-            if(result.data.name){
-              nickname = result.data.name
-            }else{
-              nickname = (result.data.html_url).slice(19,result.data.html_url.length)
+            if (result.data.name) {
+              nickname = result.data.name;
+            } else {
+              nickname = result.data.html_url.slice(
+                19,
+                result.data.html_url.length
+              );
             }
             const email = result.data.url;
 
-            console.log(id, (result.data.html_url).slice(19,result.data.html_url.length), email);
+            console.log(
+              id,
+              result.data.html_url.slice(19, result.data.html_url.length),
+              email
+            );
 
             const oauthuser = await user.findOne({
               where: {
@@ -190,7 +259,37 @@ module.exports = async (req, res) => {
 
               console.log(access_Token);
               console.log("res 발송");
+              const bookmarkInfo = await bookmark.findAll({
+                where: {
+                  user_id: userInfo.dataValues.user_id,
+                },
+              });
 
+              const cookie = [];
+              for (let i = 0; i < bookmarkInfo.length; i++) {
+                const shopInfo = await shop.findOne({
+                  where: {
+                    id: bookmarkInfo[i].dataValues.shop_id,
+                  },
+                });
+                const shopPicInfo = await shop_pic.findOne({
+                  where: {
+                    shop_id: shopInfo.id,
+                  },
+                });
+
+                const obj = {
+                  id: shopInfo.id,
+                  shop_name: shopInfo.shop_name,
+                  genus: shopInfo.genus,
+                  location: shopInfo.location,
+                  pic_URL: shopPicInfo.pic_URL,
+                };
+
+                cookie.push(obj);
+              }
+
+              res.cookie("bookmark", JSON.stringify(cookie));
               res
                 .status(200)
                 .cookie("refreshToken", refresh_Token, {
@@ -203,7 +302,7 @@ module.exports = async (req, res) => {
                   data: {
                     accessToken: access_Token,
                     nickname: userInfo.dataValues.nickname,
-                    oauth : true
+                    oauth: true,
                   },
                 });
             } else {
@@ -213,7 +312,7 @@ module.exports = async (req, res) => {
                 user_id: id,
                 nickname: nickname,
                 email: email,
-                oauth: true
+                oauth: true,
               });
 
               const userInfo = await user.findOne({
@@ -237,7 +336,37 @@ module.exports = async (req, res) => {
               console.log(payload);
 
               console.log(access_Token);
+              const bookmarkInfo = await bookmark.findAll({
+                where: {
+                  user_id: userInfo.dataValues.user_id,
+                },
+              });
 
+              const cookie = [];
+              for (let i = 0; i < bookmarkInfo.length; i++) {
+                const shopInfo = await shop.findOne({
+                  where: {
+                    id: bookmarkInfo[i].dataValues.shop_id,
+                  },
+                });
+                const shopPicInfo = await shop_pic.findOne({
+                  where: {
+                    shop_id: shopInfo.id,
+                  },
+                });
+
+                const obj = {
+                  id: shopInfo.id,
+                  shop_name: shopInfo.shop_name,
+                  genus: shopInfo.genus,
+                  location: shopInfo.location,
+                  pic_URL: shopPicInfo.pic_URL,
+                };
+
+                cookie.push(obj);
+              }
+
+              res.cookie("bookmark", JSON.stringify(cookie));
               res
                 .status(200)
                 .cookie("refreshToken", refresh_Token, {
@@ -250,7 +379,7 @@ module.exports = async (req, res) => {
                   data: {
                     accessToken: access_Token,
                     nickname: userInfo.dataValues.nickname,
-                    oauth : true
+                    oauth: true,
                   },
                 });
             }

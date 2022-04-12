@@ -22,6 +22,7 @@ export const Styled = {
 		margin-right: auto;
 		width: 100%;
 		hegith: 5px;
+		position: relative;
 		@media (max-width: 1200px) {
 			width: 100%;
 		}
@@ -127,7 +128,6 @@ export const Styled = {
 	`,
 
 	ProfileImg: styled.img`
-		/* border-radius: 50%; */
 		width: 100%;
 		height: 100%;
 		position: absolute;
@@ -135,11 +135,10 @@ export const Styled = {
 	`,
 
 	NickName: styled.div`
-		font-family: mypagefont;
 		position: relative;
 		font-size: 1rem;
 		text-align: center;
-		line-height: 40px;
+		line-height: 60px;
 		@media (max-width: 768px) {
 			font-size: 1rem;
 		}
@@ -232,10 +231,14 @@ export const Styled = {
 			padding-top: 250%;
 		}
 	`,
-	// ContentInput: styled.textarea`
-	// 	width: 100%;
-	// 	height: 80px;
-	// `,
+	Star: styled.div`
+		text-align: center;
+		weight: 100%;
+	`,
+
+	StarText: styled.span`
+		color: #ffba34;
+	`,
 	BtnOne: styled.div`
 	  position: absolute;
 	  top: 0;
@@ -311,41 +314,8 @@ export const Styled = {
 		}
 	`,
 
-	// ModalContainer: styled.div`
-	// 	position: relative;
-	// `,
-
-	// ModalBackdrop: styled.div`
-	// 	position: fixed;
-	// 	top: 0;
-	// 	left: 0;
-	// 	display: flex;
-	// 	justify-content: center;
-	// 	backdrop-filter: contrast(90%);
-	// 	align-items: center;
-	// 	width: 100vw;
-	// 	height: 100vh;
-	// 	z-index: 1000;
-	// `,
-	// ModalView: styled.div`
-	// 	position: fixed;
-	// 	background-color: white;
-	// 	width: 400px;
-	// 	height: 250px;
-	// 	z-index: 2;
-	// 	border: 1px solid white;
-	// 	border-radius: 20px;
-	// 	@media screen and (max-height: 900px) {
-	// 		width: 350px;
-	// 		height: 200px;
-	// 	}
-	// 	@media screen and (max-width: 500px) {
-	// 		width: 350px;
-	// 		height: 200px;
-	// 	}
-	// `,
 	ReviewContainer: styled.div`
-		border-bottom: 2px solid grey;
+		/* border-bottom: 2px solid grey; */
 		font-size: 14px;
 		padding: 0 5px 0 5px;
 		margin-bottom: 10px;
@@ -359,12 +329,21 @@ export const Styled = {
 		color: black;
 		font-size: 3rem;
 		/* margin-right: auto;
-		margin-left: auto;
-		margin-top: 180px; */
+		margin-left: auto; */
+		/* margin-top: 180px; */
 		font-weight: bold;
 		> img {
 			justify-content: center;
-			width: 100%;
+			/* width: 100%; */
+		}
+		.blur {
+			filter: blur(6px);
+		}
+		.imtext {
+			z-index: 1;
+			position: absolute;
+			font-size: 30px;
+			height: 100px;
 		}
 	`,
 }

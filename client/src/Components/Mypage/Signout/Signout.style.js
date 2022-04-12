@@ -16,9 +16,9 @@ export const Out = {
 		font-weight: 700;
 		text-align: left;
 		transform: translateY(20%);
-		border: 1px solid rgb(39, 51, 67);
+		border: 2px solid #ffba34;
 		background-color: white;
-		border-radius: 11px;
+		border-radius: 20px;
 	`,
 	Title: styled.div`
 		font-size: 20px;
@@ -27,8 +27,6 @@ export const Out = {
 		text-align: center;
 	`,
 	ContentContainer: styled.div`
-		border: 3px solid rgb(39, 51, 67);
-		border-radius: 10px;
 		padding: 10px;
 		display: -webkit-box;
 		display: -ms-flexbox;
@@ -106,7 +104,7 @@ export const Out = {
 
 		& > button {
 			padding: 6px 6px;
-			background-color: #ff6600;
+			background-color: #ffba34;
 			border-radius: 4px;
 			border: none;
 			color: white;

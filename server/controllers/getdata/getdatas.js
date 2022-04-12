@@ -4,13 +4,18 @@ const puppeteer = require("puppeteer");
 const { scrollPageToBottom } = require("puppeteer-autoscroll-down");
 const { data } = require("cheerio/lib/api/attributes");
 
-process.setMaxListeners(100);
+process.setMaxListeners(0);
 
 module.exports = async (req, res) => {
   // let address = req.body.road_address_name;
   let address = undefined;
   let result = []; //결과를 담을 객체
-  console.log(req.body);
+  // console.log(req.body);
+
+      const browser = await puppeteer.launch({args: [ '--disable-gpu', '--disable-setuid-sandbox', '--no-sandbox', '--no-zygote'] });
+
+      const page = await browser.newPage();
+
   for (let i = 0; i < req.body.data.length; i++) {
     // 데이터 베이스에 있는지 검증
 
@@ -81,18 +86,14 @@ module.exports = async (req, res) => {
       let menulist = []; //메뉴 정보 크롤링 결과
       let genus = req.body.data[i].category_name.split(" > ")[1];
 
-      // 크롤링시작
-
-      const browser = await puppeteer.launch({args: ['--no-sandbox']});
-
-      const page = await browser.newPage();
+      // 크롤링시작;;
 
       await page.setViewport({
         width: 1920,
         height: 1080,
       });
 
-      await page.goto(req.body.data[i].place_url);
+      await page.goto(req.body.data[i].place_url,{waitUntil:"networkidle0"});
 
       await scrollPageToBottom(page, {
         size: 500,
@@ -158,6 +159,7 @@ module.exports = async (req, res) => {
       await page.close();
 
       console.log("END!!!!!!!!!")
+
       //크롤링 종료!
 
       // 음식점 기본 정보 저장
@@ -244,6 +246,25 @@ module.exports = async (req, res) => {
   
     }
   }
+
+  // console.log(req.body.data)
+  // console.log(req.body.data.length)
+  // console.log(result)
+  // console.log(result.length)
+
+  //응답 결과 정리
+
+  // let someerr = []
+
+  // for (let i = 0; i < result.length; i++){
+  //   if (result[i].shoppic.length === 0){
+  //     someerr.push(result[i])
+  //   }
+  // }
+
+  // console.log(someerr)
+
+ await browser.close();
 
   res.status(200).json({
     message: "shopinfo crawling",
