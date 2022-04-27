@@ -12,9 +12,6 @@ module.exports = async (req, res) => {
   let result = []; //결과를 담을 객체
   // console.log(req.body);
 
-      const browser = await puppeteer.launch({args: [ '--disable-gpu', '--disable-setuid-sandbox', '--no-sandbox', '--no-zygote'] });
-
-      const page = await browser.newPage();
 
   for (let i = 0; i < req.body.data.length; i++) {
     // 데이터 베이스에 있는지 검증
@@ -88,16 +85,25 @@ module.exports = async (req, res) => {
 
       // 크롤링시작;;
 
+      const browser = await puppeteer.launch({args: [ '--disable-gpu', '--disable-setuid-sandbox', '--no-sandbox', '--no-zygote'] });
+
+      const page = await browser.newPage();
+
       await page.setViewport({
         width: 1920,
         height: 1080,
       });
 
-      await page.goto(req.body.data[i].place_url,{waitUntil:"networkidle0"});
+      await page.goto(req.body.data[i].place_url
+        //,{waitUntil:"networkidle0"}
+        );
 
-      await scrollPageToBottom(page, {
-        size: 500,
-      });
+        
+        await scrollPageToBottom(page, {
+          size: 500,
+        });
+        
+        await page.waitForSelector("#mArticle > div.cont_menu > ul > li > div")
 
       let content = await page.content(req.body.data[i].place_url);
 
@@ -156,7 +162,7 @@ module.exports = async (req, res) => {
         }
       }
 
-      await page.close();
+      await browser.close();
 
       console.log("END!!!!!!!!!")
 
@@ -264,7 +270,6 @@ module.exports = async (req, res) => {
 
   // console.log(someerr)
 
- await browser.close();
 
   res.status(200).json({
     message: "shopinfo crawling",
@@ -272,4 +277,6 @@ module.exports = async (req, res) => {
       result,
     },
   });
+
+  console.log("everything done!")
 };
