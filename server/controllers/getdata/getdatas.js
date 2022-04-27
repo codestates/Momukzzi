@@ -94,8 +94,7 @@ module.exports = async (req, res) => {
         height: 1080,
       });
 
-      await page.goto(req.body.data[i].place_url
-        //,{waitUntil:"networkidle0"}
+      await page.goto(req.body.data[i].place_url,{waitUntil:"networkidle0"}
         );
 
         
@@ -103,7 +102,7 @@ module.exports = async (req, res) => {
           size: 500,
         });
         
-        await page.waitForSelector("#mArticle > div.cont_menu > ul > li > div")
+        //await page.waitForSelector("#mArticle > div.cont_menu > ul > li > div")
 
       let content = await page.content(req.body.data[i].place_url);
 
