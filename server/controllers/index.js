@@ -30,4 +30,5 @@ module.exports = {
   topicshop: require("./shop/topicshop"),
   shopmanyreviews: require("./shop/shopmanyreviews"),
   bookmark: require("./bookmark/bookmark"),
+  getbookmark: require("./bookmark/getbookmark")
 };
