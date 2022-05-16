@@ -94,8 +94,7 @@ module.exports = async (req, res) => {
         height: 1080,
       });
 
-      await page.goto(req.body.data[i].place_url,{waitUntil:"networkidle0"}
-        );
+      await page.goto(req.body.data[i].place_url,{waitUntil:"networkidle0"});
 
         
         await scrollPageToBottom(page, {
@@ -247,8 +246,6 @@ module.exports = async (req, res) => {
           },
         });
       //}
-
-  
     }
   }
 
