@@ -1,12 +1,9 @@
-import React, { useRef, useState } from "react";
-import { useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import { Provider, useSelector, useDispatch, connect } from "react-redux";
-import { AiOutlineStar } from "react-icons/ai";
-import { FaBlackberry, FaStar } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { FaStar } from "react-icons/fa";
 import { BsStar } from "react-icons/bs";
-import { Link } from "react-router-dom";
 
 const BackDropModal = styled.div`
   position: fixed;
@@ -18,7 +15,7 @@ const BackDropModal = styled.div`
   background-color: rgba(0, 0, 0, 0.4);
 `;
 
-const ExampleBody = styled.div`
+const FavoritesContainer = styled.div`
   position: absolute;
   top: 70px;
   right: 10px;
@@ -34,47 +31,65 @@ const ExampleBody = styled.div`
   background-color: white;
 `;
 
-const ButtonDiv = styled.div`
+const FavoritesSubject = styled.div`
   display: flex;
-
-  & > button {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    width: 50%;
-    background-color: white;
-    border: none;
-  }
   .clicked {
     border-bottom: 3px solid #ffba34;
     color: #ffba34;
   }
 `;
 
+const RecentlyViewedPage = styled.button`
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 50%;
+  background-color: white;
+  border: none;
+`;
+
+const PlaceWantToGo = styled.button`
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 50%;
+  background-color: white;
+  border: none;
+`;
+
 const InfoDiv = styled.div`
   display: flex;
   padding: 10px;
-
-  & > img {
-    width: 70px;
-    height: 70px;
-    object-fit: cover;
-    margin-right: 15px;
-    flex-shrink: 0;
-    cursor: pointer;
-  }
-  & > div {
-    flex-grow: 1;
-  }
-  & > span {
-    flex-shrink: 0;
-    width: 30px;
-  }
 `;
 
-const MenuScore = styled.div`
-  & > span {
-    margin-right: 5px;
-  }
+const BookMark = styled.div`
+  width: 30px;
+`;
+
+const ShopTitle = styled.div`
+  flex: 1 1 auto;
+`;
+
+const ShopImg = styled.img`
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  margin-right: 15px;
+  flex-shrink: 0;
+  cursor: pointer;
+`;
+
+const Title = styled.div``;
+
+const ShopName = styled.span`
+  margin-right: 5px;
+`;
+const StarAvg = styled.span`
+  margin-right: 5px;
+  color: #ffba34;
+`;
+
+const ShopGenus = styled.div`
+  color: grey;
+  font-size: 13px;
 `;
 
 const InfoContainer = styled.div`
@@ -82,7 +97,6 @@ const InfoContainer = styled.div`
 `;
 
 const Favorite = () => {
-  // document.body.style.overflow = "hidden";
   const dispatch = useDispatch();
   const visited = JSON.parse(localStorage.getItem("visited")).slice(0, 9);
   const [isBookMarkMenu, setIsBookMarkMenu] = useState(false);
@@ -106,12 +120,10 @@ const Favorite = () => {
   };
   const handleStar = (id, e) => {
     const filteredCookie = cookie.filter((shop) => {
-      console.log(shop.id, id);
       return shop.id === id;
     });
-    console.log(filteredCookie);
+
     if (filteredCookie.length === 0) {
-      console.log("hello");
       axios
         .post(
           `${process.env.REACT_APP_API_URL}/bookmark`,
@@ -132,12 +144,8 @@ const Favorite = () => {
           } else if (res.data.message === "not authorized") {
             dispatch({ type: "login modal" });
           }
-
-          console.log("즐겨찾기 응답", res);
-          console.log(JSON.parse(getCookie("bookmark")));
         });
     } else {
-      console.log("hello");
       axios
         .post(
           `${process.env.REACT_APP_API_URL}/bookmark`,
@@ -158,31 +166,32 @@ const Favorite = () => {
           } else if (res.data.message === "not authorized") {
             dispatch({ type: "login modal" });
           }
-
-          console.log("즐겨찾기 응답", res);
-          console.log("쿠키", JSON.parse(getCookie("bookmark")));
         });
     }
   };
-  console.log("방문한 페이지", visited);
+
   return (
     <BackDropModal
       onClick={() => {
         dispatch({ type: "favorite modal" });
       }}
     >
-      <ExampleBody onClick={(e) => e.stopPropagation()}>
-        <ButtonDiv>
-          <button
-            className={isBookMarkMenu ? "none" : "clicked"}
+      {/* 이벤트 버블링은 상위 컴포넌트의 이벤트까지 실행되는 것인데 왜 stopPropagation을 하위 컴포넌트에 넣엇나요?
+      -> 백드롭을 클릭했을때는 상관이 없다. 그러나 모달창을 클릭했을때 상위 컴포넌트인 백드롭의 이벤트(창이 꺼지는 이벤트)가 
+      이벤트 버블링 때문에 실행되기 때문에 그 이전에 직전 컴포넌트에서 이벤트 버블링을 중단시키는 것이다. */}
+      <FavoritesContainer onClick={(e) => e.stopPropagation()}>
+        {/* 최근 본 맛집, 가고 싶다 부분 클릭할때마다 글자크기 다른데 이부분 수정해서 크기 통일하도록, 간격도 */}
+        <FavoritesSubject>
+          <RecentlyViewedPage
+            className={isBookMarkMenu ? "" : "clicked"}
             onClick={() => {
               setIsBookMarkMenu(false);
             }}
           >
             최근 본 맛집
-          </button>
-          <button
-            className={isBookMarkMenu ? "clicked" : "none"}
+          </RecentlyViewedPage>
+          <PlaceWantToGo
+            className={isBookMarkMenu ? "clicked" : ""}
             onClick={() => {
               if (!localStorage.getItem("accessToken")) {
                 dispatch({ type: "login modal" });
@@ -193,77 +202,73 @@ const Favorite = () => {
             }}
           >
             가고 싶다
-          </button>
-        </ButtonDiv>
+          </PlaceWantToGo>
+        </FavoritesSubject>
 
         {isBookMarkMenu ? (
           <InfoContainer>
-            {cookie.map((obj, i) => {
-              return (
-                <InfoDiv>
-                  <img
-                    src={obj.pic_URL}
-                    alt="shop_pic"
-                    onClick={() => {
-                      window.location.replace(`/shopdetail/${obj.id}`);
-                    }}
-                  />
-                  <div>
-                    <MenuScore>
-                      <span>{obj.shop_name}</span>
-                      <span style={{ color: "#ffba34" }}>
-                        {obj.star_avg?.toFixed(1)}
-                      </span>
-                    </MenuScore>
-                    <span style={{ color: "grey", fontSize: 12 }}>
-                      {obj.genus}
-                    </span>
-                  </div>
-                  <span>
-                    <FaStar
-                      color="#ffba34"
-                      style={{
-                        width: 30,
-                        height: 30,
+            {cookie
+              .filter((obj) => {
+                return obj !== null;
+              })
+              .map((obj, i) => {
+                return (
+                  <InfoDiv>
+                    <ShopImg
+                      src={obj.pic_URL}
+                      alt="shop_pic"
+                      onClick={() => {
+                        window.location.replace(`/shopdetail/${obj.id}`);
                       }}
-                      onClick={(e) => {
-                        if (!localStorage.getItem("accessToken")) {
-                          dispatch({ type: "login modal" });
-                        } else {
-                          handleStar(obj.id, e);
-                        }
-                      }}
-                      cursor="pointer"
                     />
-                  </span>
-                </InfoDiv>
-              );
-            })}
+                    <ShopTitle>
+                      <Title>
+                        <ShopName>{obj.shop_name}</ShopName>
+                        <StarAvg>{obj.star_avg?.toFixed(1)}</StarAvg>
+                      </Title>
+                      <ShopGenus>{obj.genus}</ShopGenus>
+                    </ShopTitle>
+                    <BookMark>
+                      <FaStar
+                        color="#ffba34"
+                        style={{
+                          width: 30,
+                          height: 30,
+                        }}
+                        onClick={(e) => {
+                          if (!localStorage.getItem("accessToken")) {
+                            dispatch({ type: "login modal" });
+                          } else {
+                            handleStar(obj.id, e);
+                          }
+                        }}
+                        cursor="pointer"
+                      />
+                    </BookMark>
+                  </InfoDiv>
+                );
+              })}
           </InfoContainer>
         ) : (
           <InfoContainer>
             {visited.map((obj, i) => {
               return (
                 <InfoDiv>
-                  <img
+                  <ShopImg
                     src={obj.shop_pic}
                     onClick={() => {
                       window.location.replace(`/shopdetail/${obj.id}`);
                     }}
                     cursor="pointer"
                   />
-                  <div>
-                    <MenuScore>
-                      <span>{obj.shop_name}</span>
-                      <span style={{ color: "#ffba34" }}>
-                        {obj.star_avg?.toFixed(1)}
-                      </span>
-                    </MenuScore>
-                    <span style={{ color: "grey", fontSize: 12 }}>
-                      {obj.genus}
-                    </span>
-                  </div>
-                  <span>
+                  <ShopTitle>
+                    <Title>
+                      <ShopName>{obj.shop_name}</ShopName>
+                      <StarAvg>{obj.star_avg?.toFixed(1)}</StarAvg>
+                    </Title>
+                    <ShopGenus>{obj.genus}</ShopGenus>
+                  </ShopTitle>
+                  <BookMark>
                     {isAddedBookmark(obj.id) ? (
                       <FaStar
                         style={{
@@ -297,14 +302,14 @@ const Favorite = () => {
                         cursor="pointer"
                       />
                     )}
-                  </span>
+                  </BookMark>
                 </InfoDiv>
               );
             })}
           </InfoContainer>
         )}
         {/* </FavoriteContainer> */}
-      </ExampleBody>
+      </FavoritesContainer>
     </BackDropModal>
   );
 };

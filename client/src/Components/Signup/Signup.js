@@ -1,10 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useState } from "react";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { Provider, useSelector, useDispatch, connect } from "react-redux";
-import { Modal, Button } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+
 const ModalBackdrop = styled.div`
   position: fixed;
   z-index: 999;
@@ -18,25 +17,24 @@ const ModalBackdrop = styled.div`
 const SignUpForm = styled.div`
   margin: 0 auto;
   width: 550px;
-  height: 740px;
+  height: 760px;
   font-weight: 700;
   text-align: left;
-  transform: translateY(20%);
+  transform: translateY(5%);
   border-radius: 5px;
   background-color: white;
 `;
 
-const Div = styled.div`
+const SignUpBody = styled.div`
   margin: 0 auto;
   padding-top: 20px;
   width: 440px;
   height: 100%;
-  /* border: 1px solid black; */
+`;
 
-  & > img {
-    width: 300px;
-    margin-left: 75px;
-  }
+const Logo = styled.img`
+  width: 300px;
+  margin-left: 75px;
 `;
 
 const InputForm = styled.div`
@@ -45,13 +43,14 @@ const InputForm = styled.div`
 `;
 const ValidateMsg = styled.div`
   display: ${(props) => (props.hide ? "none" : "")};
+  color: #f6bfbf;
   margin: 5px;
 `;
 
 const Input = styled.input`
   width: 390px;
   border-style: none;
-  height: 35px;
+  height: 40px;
   margin-left: 5px;
   font-size: 13px;
   :focus {
@@ -61,8 +60,8 @@ const Input = styled.input`
 
 const InputBox = styled.div`
   width: 430px;
-  height: 40px;
-  border: solid 1px gainsboro;
+  height: 45px;
+  border: solid 2px gainsboro;
   border-radius: 5px;
 `;
 
@@ -79,8 +78,21 @@ const SignUpButton = styled.div`
   line-height: 40px;
 `;
 
+const SignUpLabel = styled.div``;
+const CloseBtn = styled.div`
+  position: relative;
+`;
+const CloseImg = styled.img`
+  width: 15px;
+  height: 15px;
+  float: right;
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+`;
+
 function Signup(props) {
-  // document.body.style.overflow = "hidden";
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [passwordRetype, setPasswordRetype] = useState("");
@@ -95,46 +107,56 @@ function Signup(props) {
   const [hidePasswordFail, setHidePasswordFail] = useState(true);
   const [hideNameFail, setHideNameFail] = useState(true);
 
-  const isMoreThan4Length = () => {
+  const [userIdStyle, setUserIdStyle] = useState({});
+  const [passwordStyle, setPasswordStyle] = useState({});
+  const [emailStyle, setEmailStyle] = useState({});
+  const [nameStyle, setNameStyle] = useState({});
+
+  const isMoreThan4Length = (userId) => {
     if (userId.length < 4) {
-      setHideLengthFail(() => false);
+      setHideLengthFail(false);
+      setUserIdStyle({ borderColor: "#f6bfbf" });
       return false;
     } else {
-      setHideLengthFail(() => true);
+      setHideLengthFail(true);
       return true;
     }
   };
 
-  const onlyNumberAndEnglish = () => {
+  const onlyNumberAndEnglish = (userId) => {
     if (/^[A-Za-z][A-Za-z0-9]*$/.test(userId)) {
-      setHideIDFail(() => true);
+      setHideIDFail(true);
       return true;
     } else {
-      setHideIDFail(() => false);
+      setHideIDFail(false);
+      setUserIdStyle({ borderColor: "#f6bfbf" });
       return false;
     }
   };
 
-  const isEmailValidate = () => {
+  const isEmailValidate = (email) => {
     if (/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-z]+$/.test(email)) {
       setHideEmailFail(true);
+      setEmailStyle({ borderColor: "#c4e7c4" });
       return true;
     } else {
       setHideEmailFail(false);
+      setEmailStyle({ borderColor: "#f6bfbf" });
       return false;
     }
   };
-  const isPasswordEquel = () => {
+  const isPasswordEquel = (passwordRetype) => {
     if (password === passwordRetype) {
       setHidePasswordEquelFail(true);
       return true;
     } else {
       setHidePasswordEquelFail(false);
+      setPasswordStyle({ borderColor: "#f6bfbf" });
       return false;
     }
   };
 
-  const isPasswordValidate = () => {
+  const isPasswordValidate = (password) => {
     if (
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(
         password
@@ -144,28 +166,31 @@ function Signup(props) {
       return true;
     } else {
       setHidePasswordFail(false);
+      setPasswordStyle({ borderColor: "#f6bfbf" });
       return false;
     }
   };
 
-  const nameCheck = () => {
+  const nameCheck = (name) => {
     if (name === "") {
       setHideNameFail(false);
+      setNameStyle({ borderColor: "#f6bfbf" });
       return false;
     } else {
       setHideNameFail(true);
+      setNameStyle({ borderColor: "#c4e7c4" });
       return true;
     }
   };
 
   const submit = () => {
     if (
-      isMoreThan4Length() &&
-      onlyNumberAndEnglish() &&
-      isEmailValidate() &&
-      isPasswordEquel() &&
-      isPasswordValidate() &&
-      nameCheck()
+      isMoreThan4Length(userId) &&
+      onlyNumberAndEnglish(userId) &&
+      isEmailValidate(email) &&
+      isPasswordEquel(passwordRetype) &&
+      isPasswordValidate(password) &&
+      nameCheck(name)
     ) {
       axios
         .post(
@@ -181,10 +206,8 @@ function Signup(props) {
         .then((response) => {
           if (response.data.message === "exist") {
             setHideIDCheckFail(false);
-            console.log(response.data);
           } else if (response.data.message === "created") {
             setHideIDCheckFail(true);
-            console.log(response.data);
             window.location.replace("/");
           }
         })
@@ -201,12 +224,34 @@ function Signup(props) {
       }}
     >
       <SignUpForm onClick={(e) => e.stopPropagation()}>
-        <Div>
-          <img src="https://cdn.discordapp.com/attachments/947685049682247701/961421667157016686/logo-removebg-preview.png"></img>
+        <CloseBtn
+          onClick={() => {
+            dispatch({ type: "signup modal" });
+          }}
+        >
+          <CloseImg src="https://cdn-icons-png.flaticon.com/512/458/458595.png" />
+        </CloseBtn>
+        <SignUpBody>
+          <Logo src="https://cdn.discordapp.com/attachments/947685049682247701/961421667157016686/logo-removebg-preview.png"></Logo>
           <InputForm>
-            <div>아이디</div>
-            <InputBox>
-              <Input type="text" onChange={(e) => setUserId(e.target.value)} />
+            <SignUpLabel>아이디</SignUpLabel>
+            <InputBox style={userIdStyle}>
+              <Input
+                type="text"
+                onChange={(e) => {
+                  setUserId(e.target.value);
+                  isMoreThan4Length(e.target.value);
+                  onlyNumberAndEnglish(e.target.value);
+                  if (
+                    isMoreThan4Length(e.target.value) &&
+                    onlyNumberAndEnglish(e.target.value)
+                  ) {
+                    if (onlyNumberAndEnglish(userId)) {
+                      setUserIdStyle({ borderColor: "#c4e7c4" });
+                    }
+                  }
+                }}
+              />
             </InputBox>
             <ValidateMsg hide={hideLengthFail}>
               아이디는 네 글 자 이상이여야 합니다.
@@ -220,9 +265,15 @@ function Signup(props) {
           </InputForm>
 
           <InputForm>
-            <div>Email</div>
-            <InputBox>
-              <Input type="text" onChange={(e) => setEmail(e.target.value)} />
+            <SignUpLabel>Email</SignUpLabel>
+            <InputBox style={emailStyle}>
+              <Input
+                type="text"
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  isEmailValidate(e.target.value);
+                }}
+              />
             </InputBox>
             <ValidateMsg hide={hideEmailFail}>
               올바른 이메일 형식을 입력해주세요
@@ -230,21 +281,39 @@ function Signup(props) {
           </InputForm>
 
           <InputForm>
-            <div>비밀번호</div>
-            <InputBox>
+            <SignUpLabel>비밀번호</SignUpLabel>
+            <InputBox style={passwordStyle}>
               <Input
                 type="password"
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  isPasswordValidate(e.target.value);
+                  if (
+                    isPasswordEquel(passwordRetype) &&
+                    isPasswordValidate(e.target.value)
+                  ) {
+                    setPasswordStyle({ borderColor: "#c4e7c4" });
+                  }
+                }}
               />
             </InputBox>
           </InputForm>
 
           <InputForm>
-            <div>비밀번호 확인</div>
-            <InputBox>
+            <SignUpLabel>비밀번호 확인</SignUpLabel>
+            <InputBox style={passwordStyle}>
               <Input
                 type="password"
-                onChange={(e) => setPasswordRetype(e.target.value)}
+                onChange={(e) => {
+                  setPasswordRetype(e.target.value);
+                  isPasswordEquel(e.target.value);
+                  if (
+                    isPasswordEquel(e.target.value) &&
+                    isPasswordValidate(password)
+                  ) {
+                    setPasswordStyle({ borderColor: "#c4e7c4" });
+                  }
+                }}
               />
             </InputBox>
             <ValidateMsg hide={hidePasswordEquelFail}>
@@ -257,9 +326,15 @@ function Signup(props) {
           </InputForm>
 
           <InputForm>
-            <div>이름</div>
-            <InputBox>
-              <Input type="text" onChange={(e) => setName(e.target.value)} />
+            <SignUpLabel>이름</SignUpLabel>
+            <InputBox style={nameStyle}>
+              <Input
+                type="text"
+                onChange={(e) => {
+                  setName(e.target.value);
+                  nameCheck(e.target.value);
+                }}
+              />
             </InputBox>
             <ValidateMsg hide={hideNameFail}>
               이름은 필수입력입니다.
@@ -267,7 +342,7 @@ function Signup(props) {
           </InputForm>
 
           <SignUpButton onClick={submit}>가입하기</SignUpButton>
-        </Div>
+        </SignUpBody>
       </SignUpForm>
     </ModalBackdrop>
   );

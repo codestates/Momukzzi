@@ -1,6 +1,5 @@
-import React, { useRef, useState } from "react";
-import { useEffect } from "react";
-import Slider from "react-slick";
+import React from "react";
+
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
@@ -13,27 +12,32 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 
 // import required modules
-import { Grid, Pagination, Navigation } from "swiper";
-import { useDispatch } from "react-redux";
+import { Pagination, Navigation } from "swiper";
+
 import localShopInfo from "../../dummy/localShopInfo";
 const SlidePickContainer = styled.div`
   margin: 30px auto;
-  width: 1600px;
+  width: 80%;
+  .mySwiper {
+    height: 100px;
+  }
   .swiper {
     margin: 0 auto;
     width: 100%;
-    height: 300px;
+    height: 240px;
     border-radius: 5px;
   }
-  img {
-    width: 50%;
-    height: 80%;
-    border-radius: 10px;
-  }
+
   .swiper-slide {
     text-align: center;
     font-size: 1.3rem;
   }
+`;
+
+const SlideImage = styled.img`
+  width: 50%;
+  height: 200px;
+  border-radius: 10px;
 `;
 
 const Title = styled.div`
@@ -45,7 +49,7 @@ const TopicName = styled.div`
   height: 50px;
   position: absolute;
   top: 40%;
-  left: 30%;
+  left: 25%;
   color: rgba(255, 255, 255, 0.9);
   font-weight: 700;
   font-size: 1.5rem;
@@ -65,6 +69,17 @@ function SlidePick() {
         }}
         navigation={true}
         modules={[Pagination, Navigation]}
+        breakpoints={{
+          320: {
+            slidesPerView: 1,
+            slidesPerGroup: 1,
+          },
+          768: {
+            slidesPerView: 3,
+            spaceBetween: 30,
+            slidesPerGroup: 3,
+          },
+        }}
         className="mySwiper"
       >
         {localShopInfo.map((obj) => {
@@ -79,8 +94,8 @@ function SlidePick() {
                   position: "relative",
                 }}
               >
-                <img src={obj.img[0]}></img>
-                <img src={obj.img[1]}></img>
+                <SlideImage src={obj.img[0]}></SlideImage>
+                <SlideImage src={obj.img[1]}></SlideImage>
                 <TopicName>{obj.name}</TopicName>
               </Link>
             </SwiperSlide>

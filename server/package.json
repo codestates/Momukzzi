@@ -37,4 +37,8 @@
   "devDependencies": {
     "sequelize-cli": "^6.4.1"
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 3c1aa55e765ccb78bf7236a0785c182ffeaf2b74

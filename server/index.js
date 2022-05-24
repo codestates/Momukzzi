@@ -122,5 +122,7 @@ if (fs.existsSync("./key.pem") && fs.existsSync("./cert.pem")) {
   db.sequelize.sync();
   server = app.listen(HTTPS_PORT);
 }
+// db.sequelize.sync();
+// server = app.listen(HTTPS_PORT);
 
 module.exports = server;

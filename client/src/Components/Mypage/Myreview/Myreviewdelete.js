@@ -30,13 +30,11 @@ const Myreviewdelete = ({ id }) => {
           }
         )
         .then((res) => {
-          console.log("리뷰삭제");
           alert("리뷰가 삭제됐습니다.");
           return window.location.replace("/mypage");
         })
         .catch((err) => {
-          console.log("리뷰삭제 에러", err);
-          // alert("잘못된 요청입니다");
+          console.error("리뷰삭제 에러", err);
         });
     }
   };

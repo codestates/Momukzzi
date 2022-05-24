@@ -71,7 +71,6 @@ export default function Review({ match }) {
         },
       })
       .then((res) => {
-        console.log(res);
         alert("리뷰 작성이 완료되었습니다.");
         window.location.replace(`/shopdetail/${match.params.shop_id}`);
       });

@@ -3,17 +3,14 @@ import styled from "styled-components";
 import { BsStar } from "react-icons/bs";
 import { FaStar } from "react-icons/fa";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import localShopInfo from "../../dummy/localShopInfo";
-import dummyKakaoShops from "../../dummy/dummyKakaoShops";
-import LoadingIndicator from "../Loading/LoadingIndicator";
+import LoadingIndicator2 from "../Loading/LoadingIndicator2";
 
 const Container = styled.div``;
 
 const EditorPickHeader = styled.div`
   height: 200px;
-
   text-align: center;
   background-color: whitesmoke;
 
@@ -21,13 +18,15 @@ const EditorPickHeader = styled.div`
     height: 25%;
     line-height: 130px;
   }
-  #name {
-    font-size: 2.5rem;
-  }
-  #description {
-    font-size: 1.3rem;
-    color: rgba(0, 0, 0, 0.3);
-  }
+`;
+
+const EditorPickTitle = styled.div`
+  font-size: 2.5rem;
+`;
+
+const EditorPickDescription = styled.div`
+  font-size: 1.3rem;
+  color: rgba(0, 0, 0, 0.3);
 `;
 
 const ShopComponent = styled.div`
@@ -35,52 +34,8 @@ const ShopComponent = styled.div`
   width: 800px;
   height: 300px;
   border-bottom:solid 2px gainsboro ;
-  
   margin: 15px auto;
-  
-  
-  .shop_info1 {
-    position:relative ;
-    width: 300px;
-    height: 300px;
-  }
-  .shop_info2{
-   
-    width: 500px;
-  }
-  img {
-    width: 90%;
-    height: 90%;
-    position:absolute ;
-    top : 5%;
-    left: 5%;
-  }
-  .review {
-   border-top:solid 2px gainsboro ;
-    height: 200px ;
-    display: flex ;
-     padding: 15px 0 0 15px;
-  }
-  .review > #nickname {
-    font-weight:700 ;
-    margin-right : 10px;
-  }
-  .review > #comment
-  {
-  
-  }
-  .shop_name {
-    text-align:center ;
-    height: 100px;
-    display: flex ;
-    justify-content:space-between ;
-  }
 
-  #favorite {
-    text-align: right ;
-    
-    cursor: pointer;
-  }
   .staricon{
     font-size:40px;
     margin: 10px;
@@ -89,27 +44,73 @@ const ShopComponent = styled.div`
 }
 `;
 
-const ShopName = styled.div`
+const NickName = styled.div`
+  font-weight: 700;
+  margin-right: 10px;
+`;
+
+const Comment = styled.div``;
+
+const ShopReviewContainer = styled.div`
+  border-top: solid 2px gainsboro;
+  height: 200px;
+  display: flex;
+  padding: 15px 0 0 15px;
+`;
+
+const Favorite = styled.div`
+  text-align: right;
+
+  cursor: pointer;
+`;
+
+const ShopPhotoContainer = styled.div`
+  position: relative;
+  width: 300px;
+  height: 300px;
+`;
+
+const ShopPhoto = styled.img`
+  width: 90%;
+  height: 90%;
+  position: absolute;
+  top: 5%;
+  left: 5%;
+`;
+
+const ShopInfoContainer = styled.div`
+  width: 500px;
+`;
+
+const ShopTitleContainer = styled.div`
+  text-align: center;
+  height: 100px;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const ShopTitle = styled.div`
   div {
     text-align: center;
     width: 430px;
 
     margin-top: 10px;
   }
+`;
 
-  #name {
-    font-size: 1.3rem;
-  }
-  #address {
-    color: rgba(0, 0, 0, 0.3);
-  }
+const ShopName = styled.div`
+  font-size: 1.3rem;
+`;
+
+const ShopAddress = styled.div`
+  color: rgba(0, 0, 0, 0.3);
 `;
 const EditorPick = ({ match }) => {
   const dispatch = useDispatch();
   const y = match.params.code.split(",")[0];
   const x = match.params.code.split(",")[1];
-  const name = match.params.code.split(",")[2];
-  const description = match.params.code.split(",")[3];
+  const editorPickTitle = match.params.code.split(",")[2];
+  const editorPickDescription = match.params.code.split(",")[3];
   const [shops, setShops] = useState([]);
   const [shopManyReviews, setShopManyReviews] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -122,7 +123,7 @@ const EditorPick = ({ match }) => {
         `https://dapi.kakao.com/v2/local/search/category.json?category_group_code=FD6&page=1&size=15&sort=accuracy&x=${x}&y=${y}&radius=2000`,
         {
           headers: {
-            Authorization: "KakaoAK 2af87592ef59bb8f2f504dc1544a0a89",
+            Authorization: `KakaoAK ${process.env.REACT_APP_REST_API_KEY}`,
           },
         }
       )
@@ -136,13 +137,10 @@ const EditorPick = ({ match }) => {
             }
           )
           .then((res) => {
-            // console.log(res);
-
             setShops(res.data.data.result);
             const shopIds = res.data.data.result.map((obj) => {
               return obj.shopinfo.shop_id;
             });
-            console.log("sdfsd", shopIds);
             axios
               .post(
                 `${process.env.REACT_APP_API_URL}/shopmanyreviews`,
@@ -154,17 +152,16 @@ const EditorPick = ({ match }) => {
                 }
               )
               .then((res) => {
-                console.log(res);
                 setShopManyReviews(res.data.data);
                 setIsLoading(false);
                 dispatch({ type: "loading_modal", data: false });
               });
+          })
+          .catch((err) => {
+            window.location.replace(window.location.pathname);
           });
       });
   }, []);
-
-  // console.log(topicShops);
-  // console.log(shopManyReviews);
 
   const getCookie = function (name) {
     var value = document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
@@ -188,9 +185,8 @@ const EditorPick = ({ match }) => {
     const filteredCookie = cookie.filter((shop) => {
       return shop.id === id;
     });
-    console.log(filteredCookie);
+
     if (filteredCookie.length === 0) {
-      console.log("hello");
       axios
         .post(
           `${process.env.REACT_APP_API_URL}/bookmark`,
@@ -211,12 +207,8 @@ const EditorPick = ({ match }) => {
           } else if (res.data.message === "not authorized") {
             dispatch({ type: "login modal" });
           }
-
-          console.log("즐겨찾기 응답", res);
-          console.log(JSON.parse(getCookie("bookmark")));
         });
     } else {
-      console.log("hello");
       axios
         .post(
           `${process.env.REACT_APP_API_URL}/bookmark`,
@@ -237,49 +229,52 @@ const EditorPick = ({ match }) => {
           } else if (res.data.message === "not authorized") {
             dispatch({ type: "login modal" });
           }
-
-          console.log("즐겨찾기 응답", res);
-          console.log(JSON.parse(getCookie("bookmark")));
         });
     }
   };
-  // console.log("current", currentLocationShops);
+
   return (
     <>
       {isLoading ? (
-        <LoadingIndicator />
+        <LoadingIndicator2 />
       ) : (
         <Container>
           <EditorPickHeader>
-            <div id="name">{name}</div>
-            <div id="description">{description}</div>
+            <EditorPickTitle>{editorPickTitle}</EditorPickTitle>
+            <EditorPickDescription>
+              {editorPickDescription}
+            </EditorPickDescription>
           </EditorPickHeader>
 
           {shops.map((obj, i) => {
             return (
               <ShopComponent>
-                <div className="shop_info1">
+                <ShopPhotoContainer>
                   <Link to={`/shopdetail/${obj.shopinfo.shop_id}`}>
-                    <img src={obj.shoppic.photodatas[0]} />
+                    <ShopPhoto
+                      src={
+                        obj.shoppic.photodatas[0] ||
+                        "https://media.istockphoto.com/vectors/no-photo-available-vector-icon-default-image-symbol-picture-coming-vector-id1354776450?k=20&m=1354776450&s=612x612&w=0&h=hnTHv1X0Fu4viDTpJmBoJipQwoslNJbzVuF8IqI9vgY="
+                      }
+                    />
                   </Link>
-                </div>
-                <div className="shop_info2">
-                  <div className="shop_name">
-                    <ShopName>
+                </ShopPhotoContainer>
+                <ShopInfoContainer>
+                  <ShopTitleContainer>
+                    <ShopTitle>
                       <Link
                         to={`/shopdetail/${obj.shopinfo.shop_id}`}
                         style={{ textDecoration: "none", color: "#555555" }}
                       >
-                        <div id="name">{`${i + 1}. ${
+                        <ShopName>{`${i + 1}. ${
                           obj.shopinfo.shopinfo.place_name
-                        }`}</div>
+                        }`}</ShopName>
                       </Link>
-                      <div id="address">
+                      <ShopAddress>
                         {obj.shopinfo.shopinfo.address_name}
-                      </div>
-                    </ShopName>
-
-                    <div
+                      </ShopAddress>
+                    </ShopTitle>
+                    <Favorite
                       id="favorite"
                       onClick={(e) => {
                         if (!localStorage.getItem("accessToken")) {
@@ -300,13 +295,13 @@ const EditorPick = ({ match }) => {
                           className="staricon"
                         />
                       )}
-                    </div>
-                  </div>
-                  <div className="review">
-                    <div id="nickname">{shopManyReviews[i][1]?.nickname}</div>
-                    <div id="comment">{shopManyReviews[i][0]?.comment}</div>
-                  </div>
-                </div>
+                    </Favorite>
+                  </ShopTitleContainer>
+                  <ShopReviewContainer>
+                    <NickName>{shopManyReviews[i][1]?.nickname}</NickName>
+                    <Comment>{shopManyReviews[i][0]?.comment}</Comment>
+                  </ShopReviewContainer>
+                </ShopInfoContainer>
               </ShopComponent>
             );
           })}

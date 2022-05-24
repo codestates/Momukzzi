@@ -25,12 +25,7 @@ import Favorite from "./Components/Favorites/Favorites";
 import ShopDetail from "./Components/ShopDetail/ShopDetail";
 import EditorPick from "./Components/EditorPick/EditorPick";
 import OauthLoding from "./Components/Login/OauthLoading";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { Redirect } from "react-router-dom";
-import LoadingIndicator from "./Components/Loading/LoadingIndicator";
 import LoadingModal from "./Components/Loading/LoadingModal";
-import { Button } from "react-bootstrap";
 
 function App() {
   const isLogInOpen = useSelector((state) => state.isLogInOpen);
@@ -47,7 +42,7 @@ function App() {
       <BrowserRouter>
         <Header />
         {isLogInOpen ? <Loginmodal /> : ""}
-        {isSignUpOpen ? <Signup show={isLogInOpen} /> : ""}
+        {isSignUpOpen ? <Signup /> : ""}
         {isFavoriteModal ? <Favorite /> : ""}
         {loadingModal ? <LoadingModal show={loadingModal} /> : ""}
         <Switch>
