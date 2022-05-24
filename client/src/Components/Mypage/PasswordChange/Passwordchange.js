@@ -5,10 +5,6 @@ import Confirmpassword from "./Confirmpassword";
 import { Out } from "../Signout/Signout.style";
 import styled from "styled-components";
 
-const PasswordTitle = styled.div`
-  font-size: 22px;
-`;
-
 function Passwordchange() {
   const accessToken = localStorage.getItem("accessToken");
   const [passwordError, setPasswordErr] = useState("");
@@ -33,10 +29,9 @@ function Passwordchange() {
         })
         .then((res) => {
           setchangeInfo(res.data.data.userInfo);
-          console.log("개인정보가져오기 성공");
         })
         .catch((err) => {
-          console.log("개인가져오기 에러", err);
+          console.error("개인가져오기 에러", err);
         });
     }
   };
@@ -46,10 +41,7 @@ function Passwordchange() {
 
   const fixPasswordHandler = () => {
     const { password } = passwordInput;
-    // console.log('click')
-    // console.log('userid', changeInfo.user_id)
-    // console.log('password', changeInfo.password)
-    // console.log('input', passwordInput.password)
+
     if (passwordInput.confirmPassword === "" && passwordInput.password === "") {
       return setPasswordErr("비밀번호를 입력해주세요");
     }
@@ -66,14 +58,12 @@ function Passwordchange() {
           if (changeInfo.password === passwordInput.password) {
             return alert("기존에 사용하는 비밀번호와 같습니다.");
           } else {
-            console.log("패스워드 변경 완료", res);
             alert("패스워드가 변경되었습니다.");
             return window.location.replace("/mypage");
           }
         })
         .catch((err) => {
           alert("패스워드 변경 에러입니다.");
-          console.log("패스워드 패치 오류입니다.", err);
         });
     }
   };
@@ -130,7 +120,6 @@ function Passwordchange() {
 
   return (
     <div>
-      {/* <PasswordTitle>비밀번호</PasswordTitle> */}
       <Passwordinput
         handlePasswordChange={handlePasswordChange}
         handleValidation={handleValidation}

@@ -43,10 +43,8 @@ function Myreview() {
     setReviewCount(reviewCount + 4);
     setIsLoaded(false);
   };
-  useEffect(() => {
-    console.log(reviewCount);
-  }, [reviewCount]);
-  console.log(newUserReview);
+  useEffect(() => {}, [reviewCount]);
+
   return (
     <Styled.ReviewContainer>
       {newUserReview.length !== 0 ? (

@@ -25,15 +25,7 @@ const SubmitButtonDiv = styled.div`
   .submit {
   }
 `;
-const InputForm = styled.div`
-  margin: 0 auto;
-  margin: 5px;
-`;
-const InputBox = styled.div`
-	width: 300px;
-	height: 300px
-	border-bottom: solid 2px gainsboro;
-`;
+
 const Input = styled.input`
   width: 200px;
   border-style: none;
@@ -114,13 +106,11 @@ function Nicknamechange() {
         nickname,
       })
       .then((res) => {
-        console.log("닉네임 사용가능", res);
         setValidation({ ...validation, nickname: true });
-        console.log("validation", validation);
+
         setMessage({ ...message, nickname: "사용 가능한 닉네임입니다." });
       })
       .catch((err) => {
-        console.log("닉네임 중복", err);
         setValidation({ ...validation, nickname: false });
         setMessage({ ...message, nickname: "사용 불가능한 닉네임입니다." });
       });
@@ -128,15 +118,13 @@ function Nicknamechange() {
 
   const fixNicknameHandler = () => {
     const { nickname } = changeInfo;
-    console.log("userid", changeInfo.user_id);
+
     axios
       .patch(`${process.env.REACT_APP_API_URL}/users`, {
         user_id: changeInfo.user_id,
         nickname,
       })
       .then((res) => {
-        console.log("닉네임 패치", res);
-        console.log("유저정보변경");
         alert("닉네임이 변경되었습니다.");
         // openAlertHandler();
         // fixNicknameToggleHandler()
@@ -145,7 +133,6 @@ function Nicknamechange() {
       .catch((err) => {
         alert("닉네임 변경 에러입니다.");
         // openWarningAlertHandler();
-        console.log("닉네임 패치오류", err);
       });
   };
   return (

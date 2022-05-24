@@ -29,12 +29,10 @@ function Signout({ close }) {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("email");
         alert("회원 탈퇴가 완료되었습니다.");
-        // openAlertHandler();
         window.location.replace("/");
       })
       .catch((err) => {
         alert("잘못된 요청입니다");
-        // openWarningAlertHandler();
         console.log("회원탈퇴실패", err);
       });
   };

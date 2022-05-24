@@ -6,14 +6,10 @@ import Myreview from "./Myreview/Myreview";
 import Nicknamechange from "./NicknameChange/Nicknamechange";
 import Passwordchange from "./PasswordChange/Passwordchange";
 import Signout from "./Signout/Signout";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserCircle } from "@fortawesome/free-regular-svg-icons";
-import { useDispatch } from "react-redux";
 import LoadingIndicator from "../Loading/LoadingIndicator";
 function Mypage() {
   const accessToken = localStorage.getItem("accessToken");
   const Oauth = localStorage.getItem("Oauth");
-  console.log(Oauth);
 
   const [signoutModal, setSignoutModal] = useState(false);
   const [userInfo, setUserInfo] = useState("");
@@ -38,11 +34,8 @@ function Mypage() {
           "Content-Type": "application/json",
         })
         .then((res) => {
-          console.log(res);
-          console.log(res.data.data);
           setUserInfo(res);
           setLoading(false);
-          console.log("개인정보가져오기 성공");
         })
         .catch((err) => {
           console.log("개인가져오기 에러", err);

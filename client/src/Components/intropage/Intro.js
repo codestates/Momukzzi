@@ -1,130 +1,130 @@
 /* global kakao */
 
-import react, { useEffect, useState, Suspense } from "react";
+import react, { useEffect, useState } from "react";
 import { Carousel } from "react-bootstrap";
 import styled from "styled-components";
-import Slider from "react-slick";
+
 // Import Swiper React components
-import { Swiper, SwiperSlide } from "swiper/react";
+
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/grid";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 // import required modules
-import { Grid, Pagination, Navigation } from "swiper";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import {
-  Provider,
-  useSelector,
-  useDispatch,
-  connect,
-  shallowEqual,
-} from "react-redux";
-import { put } from "redux-saga/effects";
-import { AiOutlineConsoleSql } from "react-icons/ai";
-import { type } from "@testing-library/user-event/dist/type";
-import dummyKakaoShops from "../../dummy/dummyKakaoShops";
-import SlideShop from "../Mainpage/SlideShop";
-import LoadingIndicator from "../Loading/LoadingIndicator";
+import { useSelector, useDispatch } from "react-redux";
+import LocationLoading from "../Loading/LocationLoading";
 
-const ExampleBody = styled.div`
-  width: 50%;
+const RecommenedShopContainer = styled.div`
+  width: 60%;
   min-height: calc(100vh - 106px);
   margin: 0 auto;
 `;
 
-const ExampleTitle = styled.div`
+const ShopTitle = styled.div`
   display: flex;
-  padding: 20px 0px 20px 0px;
+  padding: 20px 0;
   font-size: 24px;
   justify-content: center;
   align-items: center;
-  & > span {
-    padding: 0px 20px 0px 20px;
-    font-size: 32px;
-    font-weight: bold;
+  width: 100%;
+  margin: 0 auto;
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
   }
 `;
 
-const ExampleImage = styled.div`
-  width: 50%;
+const ShopName = styled.span`
+  padding: 0px 20px 0px 20px;
+  font-size: 32px;
+  font-weight: bold;
+`;
+
+const ShopImageContainer = styled.div`
+  width: 400px;
   margin: 0 auto;
   padding-bottom: 30px;
 `;
 
-const ExampleInfo = styled.div`
+const ShopImage = styled.img`
+  width: 100%;
+  height: 300px;
+`;
+
+const RecommendShopInfo = styled.div`
   display: flex;
-  width: 80%;
-  margin: 0 auto;
   border-top: 1px solid gainsboro;
-  min-height: calc(100vh - 625px);
+  min-height: calc(100vh - 800px);
   padding-top: 30px;
 
-  .menu {
-    width: 60%;
-    padding: 0px 20px 10px 0px;
-    & > table > tbody {
-      display: table-row-group;
-      vertical-align: middle;
-      border-color: inherit;
-    }
-
-    & > table > tbody > tr {
-      display: table-row;
-      vertical-align: inherit;
-      border-color: inherit;
-    }
-
-    & > table > tbody > tr > th {
-      width: 110px;
-      font-size: 16px;
-      color: rgba(79, 79, 79, 0.6);
-      line-height: 1.7;
-      text-align: left;
-      vertical-align: top;
-      padding-right: 10px;
-      padding-bottom: 5px;
-    }
-
-    & > table > tbody > tr > td {
-      font-size: 16px;
-      color: #4f4f4f;
-      line-height: 1.7;
-      text-align: left;
-      vertical-align: middle;
-      padding-bottom: 5px;
-    }
-  }
-  .map {
-    width: 40%;
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
   }
 `;
 
-const ExampleOtherButton = styled.div`
+const ShopMenu = styled.div`
+  width: 400px;
+  margin: 0 0 0 auto;
+`;
+
+const ShopMenuDetailContainer = styled.div`
+  display: flex;
+`;
+
+const ShopMenuDetail1 = styled.div`
+  width: 120px;
+  font-size: 16px;
+  color: rgba(79, 79, 79, 0.6);
+  line-height: 1.7;
+  text-align: left;
+  vertical-align: top;
+  padding-right: 10px;
+  padding-bottom: 5px;
+`;
+const ShopMenuDetail2 = styled(ShopMenuDetail1)`
+  width: 280px;
+  font-size: 16px;
+  color: #4f4f4f;
+  line-height: 1.7;
+  text-align: left;
+  vertical-align: middle;
+  padding-bottom: 5px;
+  list-style-type: none;
+  @media screen and (max-width: 768px) {
+  }
+`;
+const ButtonContainer = styled.div`
   display: flex;
   width: 100%;
   height: 100px;
   justify-content: center;
   align-items: center;
   padding-bottom: 35px;
-  & > button {
-    width: 250px;
-    height: 50px;
-    background: #ffba34;
-    border-radius: 30px;
-    border: none;
-    color: white;
-    font-weight: bold;
-  }
+`;
 
-  .other {
-    margin-right: 50px;
-  }
-  .bottomScroll {
-    margin-left: 50px;
-  }
+const OtherMenuButton = styled.button`
+  width: 250px;
+  height: 50px;
+  background: #ffba34;
+  border-radius: 30px;
+  border: none;
+  color: white;
+  font-weight: bold;
+  margin-right: 50px;
+`;
+
+const ScrollButton = styled.button`
+  width: 250px;
+  height: 50px;
+  background: #ffba34;
+  border-radius: 30px;
+  border: none;
+  color: white;
+  font-weight: bold;
+  margin-left: 50px;
 `;
 
 const Intro = () => {
@@ -162,8 +162,6 @@ const Intro = () => {
                 }
               )
               .then((res) => {
-                // console.log(res.data.documents);
-
                 axios
                   .post(
                     `${process.env.REACT_APP_API_URL}/data`,
@@ -173,8 +171,6 @@ const Intro = () => {
                     }
                   )
                   .then((res) => {
-                    console.log(res);
-
                     dispatch({
                       type: "current_location_shops",
                       data: res.data.data.result,
@@ -185,7 +181,8 @@ const Intro = () => {
                   })
                   .then((res) => {
                     setRandomInt(getRandomInt(0, res.data.data.result.length));
-                  });
+                  })
+                  .catch((err) => {});
               });
           },
           function (error) {
@@ -205,9 +202,6 @@ const Intro = () => {
   }, []);
 
   useEffect(() => {
-    // const y = Number(res.data.data.result[randomInt].shopinfo.shopinfo.x);
-    // const x = Number(res.data.data.result[randomInt].shopinfo.shopinfo.y);
-    // console.log(x, y);
     if (!loading) {
       const container = document.getElementById("map"); //지도를 담을 영역의 DOM 레퍼런스
       const options = {
@@ -242,110 +236,102 @@ const Intro = () => {
   return (
     <>
       {loading ? (
-        <LoadingIndicator />
+        <LocationLoading />
       ) : (
-        <ExampleBody>
-          <ExampleTitle>
+        <RecommenedShopContainer>
+          <ShopTitle>
             오늘은
             <Link
               to={`/shopdetail/${currentLocationShops[randomInt].shopinfo.shop_id}`}
               style={{ textDecoration: "none", color: "black" }}
             >
-              <span
-                style={{
-                  paddingLeft: 20,
-                  paddingRight: 20,
-                  fontSize: 32,
-                  fontWeight: "bold",
-                }}
-              >
+              <ShopName>
                 {currentLocationShops[randomInt].shopinfo?.shopinfo.place_name}
-              </span>
+              </ShopName>
             </Link>
             어떠세요?
-          </ExampleTitle>
-          <ExampleImage>
+          </ShopTitle>
+          <ShopImageContainer>
             <Carousel>
               {currentLocationShops[randomInt].shoppic?.photodatas.map(
                 (img) => {
                   return (
                     <Carousel.Item>
-                      <img width="100%" height="300" src={img} />
+                      <ShopImage src={img} />
                     </Carousel.Item>
                   );
                 }
               )}
             </Carousel>
-          </ExampleImage>
+          </ShopImageContainer>
 
-          <ExampleInfo>
-            <div className="menu">
-              <table>
-                <tbody>
-                  <tr>
-                    <th>주소</th>
-                    <td>
-                      {
-                        currentLocationShops[randomInt].shopinfo?.shopinfo
-                          .address_name
-                      }
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>음식 종류</th>
-                    <td>
-                      {
-                        currentLocationShops[
-                          randomInt
-                        ].shopinfo?.shopinfo?.category_name.split(">")[
-                          currentLocationShops[
-                            randomInt
-                          ].shopinfo?.shopinfo?.category_name.split(">")
-                            .length - 1
-                        ]
-                      }
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>메뉴</th>
-                    <td>
-                      <ul style={{ margin: 0, padding: 0 }}>
-                        {currentLocationShops[randomInt].menulist?.menulist
-                          .slice(0, 6)
-                          .filter((menu, i) => {
-                            return menu[0] !== null;
-                          })
-                          .map((menu, i) => {
-                            return <li key={i}>{`${menu[0]} - ${menu[1]}`}</li>;
-                          })}
-                      </ul>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div id="map" style={{ width: "400px", height: "300px" }}></div>
-          </ExampleInfo>
-          <ExampleOtherButton>
-            <button
+          <RecommendShopInfo>
+            <ShopMenu>
+              <ShopMenuDetailContainer>
+                <ShopMenuDetail1>주소</ShopMenuDetail1>
+                <ShopMenuDetail2>
+                  {
+                    currentLocationShops[randomInt].shopinfo?.shopinfo
+                      .address_name
+                  }
+                </ShopMenuDetail2>
+              </ShopMenuDetailContainer>
+              <ShopMenuDetailContainer>
+                <ShopMenuDetail1>음식 종류</ShopMenuDetail1>
+                <ShopMenuDetail2>
+                  {
+                    currentLocationShops[
+                      randomInt
+                    ].shopinfo?.shopinfo?.category_name.split(">")[
+                      currentLocationShops[
+                        randomInt
+                      ].shopinfo?.shopinfo?.category_name.split(">").length - 1
+                    ]
+                  }
+                </ShopMenuDetail2>
+              </ShopMenuDetailContainer>
+              <ShopMenuDetailContainer>
+                <ShopMenuDetail1>메뉴</ShopMenuDetail1>
+                <ShopMenuDetail2>
+                  {currentLocationShops[randomInt].menulist?.menulist
+                    .slice(0, 6)
+                    .filter((menu, i) => {
+                      return menu[0] !== null;
+                    })
+                    .map((menu, i) => {
+                      return <li key={i}>{`${menu[0]} - ${menu[1]}`}</li>;
+                    })}
+                </ShopMenuDetail2>
+              </ShopMenuDetailContainer>
+            </ShopMenu>
+            <div
+              id="map"
+              style={{
+                width: "300px",
+                height: "300px",
+                margin: "0 auto",
+              }}
+            ></div>
+          </RecommendShopInfo>
+          <ButtonContainer>
+            <OtherMenuButton
               className="other"
               onClick={() => {
                 setRandomInt(getRandomInt(0, currentLocationShops.length));
               }}
             >
               다른 메뉴 추천받기
-            </button>
-            <button
+            </OtherMenuButton>
+            <ScrollButton
               className="bottomScroll"
               onClick={() => {
                 window.scrollTo({ top: 1000, behavior: "smooth" });
               }}
             >
               더 많은 정보 보기
-            </button>
-          </ExampleOtherButton>
-        </ExampleBody>
+            </ScrollButton>
+          </ButtonContainer>
+        </RecommenedShopContainer>
       )}
     </>
   );

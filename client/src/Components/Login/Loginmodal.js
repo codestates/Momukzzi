@@ -63,6 +63,18 @@ const Input = styled.input`
     outline: none;
   }
 `;
+const CloseBtn = styled.div`
+  position: relative;
+`;
+const CloseImg = styled.img`
+  width: 15px;
+  height: 15px;
+  float: right;
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+`;
 
 function Loginmodal({ setOpenModal, close }) {
   // document.body.style.overflow = 'hidden'
@@ -74,18 +86,15 @@ function Loginmodal({ setOpenModal, close }) {
   const handleInputValue = (key) => (e) => {
     setLoginInfo({ ...loginInfo, [key]: e.target.value.toLowerCase() });
   };
-  console.log(loginInfo);
 
   const onClickLogin = () => {
     const { user_id, password } = loginInfo;
     if (user_id === "") {
-      console.log("아이디를 입력하세요");
       return;
     } else if (password === "") {
-      console.log("비밀번호를 입력하세요");
       return;
     }
-    console.log("click login");
+
     axios
       .post(
         `${process.env.REACT_APP_API_URL}/users/login`,
@@ -96,8 +105,6 @@ function Loginmodal({ setOpenModal, close }) {
         { "Content-Type": "application/json", withCredentials: true }
       )
       .then((res) => {
-        console.log(res);
-        console.log(res.data.data.accessToken);
         localStorage.setItem("accessToken", res.data.data.accessToken);
         localStorage.setItem("nickname", res.data.data.nickname);
         if (res.data.data.accessToken) {
@@ -107,8 +114,6 @@ function Loginmodal({ setOpenModal, close }) {
         return window.location.replace(window.location.pathname);
       })
       .catch((err) => {
-        console.log(err);
-        console.log("로그인실패");
         alert("아이디와 비밀번호를 확인해 주세요.");
       });
   };
@@ -125,15 +130,14 @@ function Loginmodal({ setOpenModal, close }) {
       }}
     >
       <LoginForm onClick={(e) => e.stopPropagation()}>
+        <CloseBtn
+          onClick={() => {
+            dispatch({ type: "login modal" });
+          }}
+        >
+          <CloseImg src="https://cdn-icons-png.flaticon.com/512/458/458595.png" />
+        </CloseBtn>
         <Div>
-          {/* <button
-						onClick={() => {
-							setOpenModal(false)
-						}}
-					>
-						X
-					</button> */}
-
           <InputForm>
             <h4>아이디</h4>
             <InputBox>

@@ -92,9 +92,6 @@ export default function ShopDetail({ match }) {
         } else if (res.data.message === "not authorized") {
           dispatch({ type: "login modal" });
         }
-
-        console.log("즐겨찾기 응답", res);
-        console.log(JSON.parse(getCookie("bookmark")));
       });
   };
 
@@ -120,7 +117,6 @@ export default function ShopDetail({ match }) {
         }
       }
     }
-    console.log(cookie);
 
     // match.params.id 활용
     axios
@@ -155,14 +151,6 @@ export default function ShopDetail({ match }) {
         }
 
         setInfo(res.data.data.targetshop);
-        console.log(res.data.data.targetshop);
-
-        // dispatch({
-        //   type: "current_shop_name",
-        //   payload: {
-        //     shop_name: res.data.data.targetshop.shop_name,
-        //   },
-        // });
 
         return res.data.data.targetshop;
       })
@@ -229,7 +217,10 @@ export default function ShopDetail({ match }) {
           return (
             <img
               key={idx}
-              src={item.pic_URL}
+              src={
+                item.pic_URL ||
+                "https://media.istockphoto.com/vectors/no-photo-available-vector-icon-default-image-symbol-picture-coming-vector-id1354776450?k=20&m=1354776450&s=612x612&w=0&h=hnTHv1X0Fu4viDTpJmBoJipQwoslNJbzVuF8IqI9vgY="
+              }
               onClick={() => handleImageClick(idx)}
             />
           );
@@ -328,7 +319,6 @@ export default function ShopDetail({ match }) {
                   key={idx}
                   onClick={() => {
                     if (el.review_pics.length === 0) {
-                      console.log("업로드된 사진 없음");
                     } else handleReviewClick(idx);
                   }}
                 >
