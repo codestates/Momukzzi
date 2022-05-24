@@ -387,6 +387,7 @@ module.exports = async (req, res) => {
           .then(console.log("인증절차 통과"))
           .catch((e) => {
             //오류 처리
+            console.log("오류 발생")
             res.status(400).json({
               message: "Oauth login err",
             });

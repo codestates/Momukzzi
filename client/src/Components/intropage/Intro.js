@@ -162,6 +162,11 @@ const Intro = () => {
                 }
               )
               .then((res) => {
+<<<<<<< HEAD
+=======
+                console.log(res.data.documents);
+
+>>>>>>> 3c1aa55e765ccb78bf7236a0785c182ffeaf2b74
                 axios
                   .post(
                     `${process.env.REACT_APP_API_URL}/data`,

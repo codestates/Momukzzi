@@ -1,17 +1,13 @@
 const { review, shop, user,review_pic } = require('../../models');
 const Sequelize = require('sequelize');
 const jwt = require("jsonwebtoken");
-const { end } = require('cheerio/lib/api/traversing');
 
 module.exports = async (req, res) => {
     console.log('create review')
     console.log(Object.keys(req))
     console.log(req.body)
     console.log(req.files)
-
     
-
-
     const newreview = req.body
     const newreviewpic = req.files
     const logininfo = req.headers.authorization;
@@ -99,8 +95,6 @@ module.exports = async (req, res) => {
 
                 review_pic.create(payload)
             }
-        }).then(async ()=>{
-
         }).then(
             res.status(200).json({
                 message : "new review updated!",

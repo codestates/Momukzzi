@@ -9,7 +9,6 @@ const {
   user,
   bookmark,
 } = require("../../models");
-const userinfo = require("../users/userinfo");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 

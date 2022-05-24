@@ -11,8 +11,7 @@ function OauthLoading() {
   const REACT_APP_REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
   const REDIRECT_URI = `${process.env.REACT_APP_CLIENT_URL}/oauthloding`;
   const REACT_APP_GITHUB_CLIENT_ID = process.env.REACT_APP_GITHUB_CLIENT_ID;
-  const REACT_APP_GITHUB_CLIENT_SECRET =
-    process.env.REACT_APP_GITHUB_CLIENT_SECRET;
+  const REACT_APP_GITHUB_CLIENT_SECRET =process.env.REACT_APP_GITHUB_CLIENT_SECRET;
 
   const kakaocode = (code) => {
     if (code.length !== 20) {
