@@ -29,8 +29,6 @@ npm install
 npm run dev
 ```
 
-해당 서버 주소와 api키들이 .env로 관리되고 있기 때문에 실질적인 실행은 어렵습니다.
-
 ## Contributor
 
 | 역할 | 이름   | 포지션    | Github                                      |
@@ -38,3 +36,4 @@ npm run dev
 | 팀장 | 최의림 | BACK-END  | [euilimchoi](https://github.com/EuilimChoi) |
 | 팀원 | 정윤혁 | FRONT-END | [hyukzz](https://github.com/hyukzz)         |
 | 팀원 | 김여명 | FRONT-END | [Kim Yea Myeong](https://github.com/yomae)  |
+| 팀원 | 강호중 | FRONT-END | rkdghwnd |
