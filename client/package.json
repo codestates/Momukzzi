@@ -1,63 +1,35 @@
 {
-	"name": "my-app",
-	"version": "0.1.0",
-	"private": true,
-	"dependencies": {
-		"@fortawesome/fontawesome-svg-core": "^6.1.1",
-		"@fortawesome/free-regular-svg-icons": "^6.1.1",
-		"@fortawesome/react-fontawesome": "^0.1.18",
-		"@reduxjs/toolkit": "^1.8.0",
-		"@testing-library/jest-dom": "^5.16.2",
-		"@testing-library/react": "^12.1.4",
-		"@testing-library/user-event": "^13.5.0",
-		"axios": "^0.26.1",
-		"bootstrap": "^5.1.3",
-		"dotenv": "^16.0.0",
-		"jquery": "^3.6.0",
-		"node-sass": "^7.0.1",
-		"react": "^17.0.2",
-		"react-bootstrap": "^2.2.3",
-		"react-dom": "^17.0.2",
-		"react-icons": "^4.3.1",
-		"react-loading": "^2.0.3",
-		"react-redux": "^7.2.6",
-		"react-router": "^6.2.2",
-		"react-router-dom": "^5.3.0",
-		"react-scripts": "5.0.0",
-		"react-slick": "^0.28.1",
-		"redux": "^4.1.2",
-		"redux-saga": "^1.1.3",
-		"redux-thunk": "^2.4.1",
-		"slick-carousel": "^1.8.1",
-		"styled-components": "^5.3.5",
-		"swiper": "^8.0.7",
-		"web-vitals": "^2.1.4"
-	},
-	"scripts": {
-		"start": "HTTPS=true SSL_CRT_FILE='./cert.pem' SSL_KEY_FILE='./key.pem' react-scripts start",
-		"build": "react-scripts build",
-		"test": "react-scripts test",
-		"eject": "react-scripts eject"
-	},
-	"eslintConfig": {
-		"extends": [
-			"react-app",
-			"react-app/jest"
-		]
-	},
-	"resolutions": {
-		"styled-components": "^5"
-	},
-	"browserslist": {
-		"production": [
-			">0.2%",
-			"not dead",
-			"not op_mini all"
-		],
-		"development": [
-			"last 1 chrome version",
-			"last 1 firefox version",
-			"last 1 safari version"
-		]
-	}
+  "name": "remomukzzi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "author": "kimyounlim",
+  "license": "ISC",
+  "dependencies": {
+    "antd": "^4.20.0",
+    "axios": "^0.27.2",
+    "dotenv": "^16.0.0",
+    "js-cookie": "^3.0.1",
+    "lodash": "^4.17.21",
+    "next": "^12.1.5",
+    "next-images": "^1.8.4",
+    "next-redux-wrapper": "^7.0.5",
+    "react": "^17.0.0",
+    "react-icons": "^4.3.1",
+    "react-loading": "^2.0.3",
+    "react-redux": "^8.0.1",
+    "react-slick": "^0.29.0",
+    "redux": "^4.2.0",
+    "slick-carousel": "^1.8.1",
+    "styled-components": "^5.3.5"
+  },
+  "devDependencies": {
+    "babel-plugin-styled-components": "^2.0.7",
+    "react-dom": "^17.0.0"
+  }
 }
