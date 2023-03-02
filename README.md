@@ -7,17 +7,7 @@
 
 추가로 다른 유저분, 에디터들이 선정한 맛집도 확인해 보실 수 있고, 여러분의 소중한 리뷰 하나하나가 쌓여 더 좋은 선택지를 추천해 드립니다!!
 
-## 프로젝트 설명 및 시연
-
-<a href="https://younhyuk.notion.site/db5720ded66d4fa58a30b899cb8df8c7" target="_blank" >project 설명 및 시연</a>
-
 ## Stack
-
-- `Library` React
-- `Framework` Next.js
-- `Style` Styled-component
-- `Deploy` Vercel
-- `VCS` Github
 
 ![프로젝트 '뭐먹지' 아키텍쳐 (8)](https://user-images.githubusercontent.com/81045794/162653808-5a68a78b-4d16-4ddf-9299-22a310589da9.png)
 
