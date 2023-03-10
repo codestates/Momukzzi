@@ -158,7 +158,7 @@ const Home = () => {
     <>
       {!isLoading ? (
         <>
-          <Header />
+          <Header style={{"width":"100%"}}/>
           {isFavoriteOn && <FavoriteModal />}
 
           <Row>
